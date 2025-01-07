@@ -1,0 +1,43 @@
+<div class="flex justify-center items-center min-h-screen bg-gray-100">
+  <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+    <h2 class="text-3xl font-bold text-center text-blue-600 mb-6">Crie sua conta</h2>
+
+    <form (ngSubmit)="onRegister()" class="space-y-4">
+     
+      <!--MUDAR O NGMODAL PARA FORMCONTROL NOS INPUTS E VER SE ESTA PEGANDO OS VALORES -->
+     
+      <!-- Campo de Nome -->
+      <div>
+        <app-input-global [model]="name" id="nome" label="Nome Completo" typeInput="text"></app-input-global>
+      </div>
+
+      <!-- Campo de Email -->
+      <div>
+        <app-input-global [model]="email" id="email" label="Email" typeInput="email"></app-input-global>
+      </div>
+      <!-- Campo de Senha -->
+      <div class="w-full">
+        <app-input-password-global [model]="senha" id="senha" name="senha" class="w-full"></app-input-password-global>
+      </div>
+
+
+      <div class="card flex justify-center">
+        <p-select [options]="typeUser" optionDisabled="disabled" [checkmark]="true" [(ngModel)]="selectedUser"
+          name="role" optionLabel="role" placeholder="Role" class="w-full" />
+      </div>
+
+
+      <!-- Botão de Registro -->
+      <div class="flex justify-center content-center">
+        <p-button label="Cadastrar" type="submit" [rounded]="true" size="large" [raised]="true" class="w-full"
+          styleClass="width-full"></p-button>
+      </div>
+
+
+      <p class="text-center text-sm mt-4 font-normal">
+        Já possui uma conta? 
+        <a href="/" class="text-blue-600 font-medium">Faça o login</a>
+      </p>
+    </form>
+  </div>
+</div>

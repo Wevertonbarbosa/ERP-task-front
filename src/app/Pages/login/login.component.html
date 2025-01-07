@@ -1,0 +1,31 @@
+<div class="flex justify-center items-center min-h-screen bg-gray-100">
+  <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
+    <h2 class="text-3xl font-bold text-center text-blue-600 mb-6">Happy Do</h2>
+
+    <form (ngSubmit)="onSubmit()">
+     
+      <!--MUDAR O NGMODAL PARA FORMCONTROL NOS INPUTS E VER SE ESTA PEGANDO OS VALORES -->
+      <div class="mb-4">
+        <app-input-global [model]="email" id="email" label="Email" typeInput="email"></app-input-global>
+      </div>
+    
+      <div class="mb-4">
+        <app-input-global [model]="senha" id="senha" label="Senha" typeInput="password"></app-input-global>
+      </div>
+
+      <p class="text-center mb-4">
+        <a href="#" class="text-blue-600 font-medium">Esqueceu sua senha?</a>
+      </p>
+
+      <!-- Botão de Login -->
+      <div class="flex justify-center content-center">
+        <p-button label="Confirmar" type="submit" [rounded]="true" size="large" [raised]="true" class="w-full"
+          styleClass="width-full"></p-button>
+      </div>
+      <p class="text-center text-sm mt-4 font-normal">
+        Não possui uma conta? 
+        <a href="/register" class="text-blue-600 font-medium">Crie sua conta</a>
+      </p>
+    </form>
+  </div>
+</div>
