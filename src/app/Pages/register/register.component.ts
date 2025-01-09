@@ -74,8 +74,6 @@ export class RegisterComponent implements OnInit {
       if (this.registerForm.valid) {
         this.service.postRegister(this.registerForm.value).subscribe({
           next: (value) => {
-            const userId = value.usuarioId;
-            localStorage.setItem('userId', userId);
             this.showToasRight(
               'success',
               'Usuário cadastrado!',
@@ -84,7 +82,7 @@ export class RegisterComponent implements OnInit {
             this.loading = false;
           },
           error: (err) => {
-            console.error('Erro para registrar', err.error.nome);
+            console.error('Erro para registrar ', err.error);
             this.showToasRight(
               'error',
               'Erro ao cadastrar usuário',
@@ -98,7 +96,7 @@ export class RegisterComponent implements OnInit {
         });
       }
     } catch (error) {
-      console.error('Error do catch', error);
+      console.error('Error do Try Catch', error);
       this.loading = false;
     }
   }

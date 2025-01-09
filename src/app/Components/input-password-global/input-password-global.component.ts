@@ -20,6 +20,7 @@ import { DividerModule } from 'primeng/divider';
 export class InputPasswordGlobalComponent {
   @Input() control!: FormControl | any;
   @Input() name!: string;
+  @Input() placeholder!: string;
   @Input() class!: string[];
   @Input() id!: string;
 }

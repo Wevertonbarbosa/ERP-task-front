@@ -38,7 +38,7 @@
       </div>
       <!-- Campo de Senha -->
       <div class="w-full">
-        <app-input-password-global [control]="registerForm.get('senha')!" id="senha" name="senha" [class]="(registerForm.controls['senha'].invalid && (registerForm.controls['senha'].touched || registerForm.controls['senha'].dirty))? classError : class"  >
+        <app-input-password-global [control]="registerForm.get('senha')!" id="senha" name="senha" placeholder="Senha" [class]="(registerForm.controls['senha'].invalid && (registerForm.controls['senha'].touched || registerForm.controls['senha'].dirty))? classError : class"  >
         </app-input-password-global>
 
         <div
@@ -62,7 +62,8 @@
 
       <!-- Botão de Registro -->
       <div class="flex justify-center content-center">
-        <p-button label="Cadastrar" [loading]="loading" type="submit" [disabled]="registerForm.invalid" [rounded]="true" size="large" [raised]="true" class="w-full" styleClass="width-full"></p-button>
+        <p-button label="Cadastrar" [loading]="loading" type="submit" 
+        [disabled]="registerForm.invalid" [rounded]="true" size="large" [raised]="true" class="w-full" styleClass="width-full"></p-button>
       </div>
 
 

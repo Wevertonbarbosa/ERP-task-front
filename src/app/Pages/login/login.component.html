@@ -2,15 +2,40 @@
   <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
     <h2 class="text-3xl font-bold text-center text-blue-600 mb-6">Happy Do</h2>
 
-    <form (ngSubmit)="onSubmit()">
-     
+    <form [formGroup]="registerForm" (ngSubmit)="onLogin()">
+
       <!--MUDAR O NGMODAL PARA FORMCONTROL NOS INPUTS E VER SE ESTA PEGANDO OS VALORES -->
       <div class="mb-4">
-        <!-- <app-input-global [model]="email" id="email" label="E-mail" typeInput="email"></app-input-global> -->
+        <app-input-global [control]="registerForm.get('email')" id="email" label="E-mail" typeInput="email"
+          [class]="(registerForm.controls['email'].invalid && (registerForm.controls['email'].touched || registerForm.controls['email'].dirty))? classError : class"></app-input-global>
+
+        <div
+          *ngIf="(registerForm.controls['email'].invalid && (registerForm.controls['email'].touched || registerForm.controls['email'].dirty))">
+
+          <span class="text-xs text-red-600 font-semibold"
+            *ngIf="registerForm.controls['email'].errors?.['required']">E-mail precisa ser preenchido!</span>
+
+          <span class="text-xs text-red-600 font-semibold"
+            *ngIf="registerForm.controls['email'].errors?.['email']">E-mail com formato inválido</span>
+        </div>
       </div>
-    
+
       <div class="mb-4">
-        <!-- <app-input-global [model]="senha" id="senha" label="Senha" typeInput="password"></app-input-global> -->
+        <app-input-password-global [control]="registerForm.get('senha')!" id="senha" name="senha" placeholder="Senha"
+          [class]="(registerForm.controls['senha'].invalid && (registerForm.controls['senha'].touched || registerForm.controls['senha'].dirty))? classError : class">
+        </app-input-password-global>
+
+        <div
+          *ngIf="(registerForm.controls['senha'].invalid && (registerForm.controls['senha'].touched || registerForm.controls['senha'].dirty))">
+
+          <span class="text-xs text-red-600 font-semibold"
+            *ngIf="registerForm.controls['senha'].errors?.['required']">Senha precisa ser preenchido!</span>
+
+          <span class="text-xs text-red-600 font-semibold"
+            *ngIf="registerForm.controls['senha'].errors?.['minlength']">Senha precisa ser maior que 6
+            caracteres!</span>
+        </div>
+
       </div>
 
       <p class="text-center mb-4">
@@ -19,13 +44,16 @@
 
       <!-- Botão de Login -->
       <div class="flex justify-center content-center">
-        <p-button label="Confirmar" type="submit" [rounded]="true" size="large" [raised]="true" class="w-full"
-          styleClass="width-full"></p-button>
+        <p-button label="Confirmar" type="submit" [loading]="loading" [rounded]="true" size="large" [raised]="true" class="w-full" styleClass="width-full" 
+        [disabled]="registerForm.invalid"></p-button>
       </div>
       <p class="text-center text-sm mt-4 font-normal">
-        Não possui uma conta? 
+        Não possui uma conta?
         <a href="/register" class="text-blue-600 font-medium">Crie sua conta</a>
       </p>
+
+      <app-toast-global [key]="keyToast">
+      </app-toast-global>
     </form>
   </div>
 </div>
