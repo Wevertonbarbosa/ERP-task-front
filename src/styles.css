@@ -19,3 +19,9 @@
 .p-password-input{
   width: 100% !important;
 }
+
+@media (max-width: 960px) {
+  .p-menubar-mobile .p-menubar-button {
+    display: none !important;
+  }
+}
