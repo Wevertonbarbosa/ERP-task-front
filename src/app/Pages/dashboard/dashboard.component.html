@@ -11,8 +11,8 @@
   </div>
 
   <div class="w-full flex flex-wrap gap-2">
-    <p-card class="shadow-lg rounded flex-1 basis-[321px]" 
-    [style]="{borderLeft:'4px solid rgb(0, 117, 252)', height: '100%'}">
+    <p-card class="shadow-lg rounded flex-1 basis-[321px]"
+      [style]="{borderLeft:'4px solid rgb(0, 117, 252)', height: '100%'}">
 
       <div class="w-full flex flex-col">
 
@@ -24,20 +24,58 @@
     </p-card>
 
     <p-card class="shadow-lg rounded flex-1 basis-[321px]"
-    [style]="{borderLeft:'4px solid rgb(0, 117, 252)', height: '100%'}">
-      <div class="p-4">
-        Card 2 - APROVEITAMENTO
+      [style]="{borderLeft:'4px solid rgb(0, 117, 252)', height: '100%',}">
+
+      <div class="w-full flex flex-col h-full gap-10">
+
+        <div class="p-4 pt-3 flex items-center gap-3">
+          <p-avatar icon="pi pi-percentage" size="large" shape="circle" class="bg-teal-400 text-zinc-50" />
+          <h2 class="font-semibold text-start text-2xl">Aproveitamento</h2>
+        </div>
+
+        <div class="w-full flex h-24">
+
+          <div class="w-full flex flex-col items-center gap-2 justify-start">
+            <h2 class="italic font-normal text-lg">Tarefas feitas</h2>
+            <span class="font-semibold text-4xl">7</span>
+          </div>
+
+          <div>
+            <p-divider layout="vertical" class="p-0 m-0">
+              <span class="font-bold">%</span>
+            </p-divider>
+          </div>
+
+          <div class="w-full flex flex-col items-center gap-2 justify-start">
+            <h2 class="italic font-normal text-lg">Aproveitamento</h2>
+            <span class="text-4xl font-semibold">20<b class="text-base">%mês</b></span>
+          </div>
+        </div>
       </div>
+
     </p-card>
 
-    <p-card class="shadow-lg flex-1 basis-[321px]"
-    [style]="{borderLeft:'4px solid rgb(0, 117, 252)', height: '100%'}">
-      <div class="p-4">
-        Card 3 - DESEMPENHO
+    <p-card class="shadow-lg flex-1 basis-[321px]" [style]="{borderLeft:'4px solid rgb(0, 117, 252)', height: '100%'}">
+      <div class="p-4 pt-1">
+        <div class="flex items-center justify-center">
+          <p-knob valueTemplate="{value}%" [readonly]="true" size="180" />
+        </div>
+      </div>
+
+      <div class="w-full text-center">
+        <span class="m-2 text-center font-medium italic">Tarefas em andamento</span>
       </div>
     </p-card>
   </div>
 
+  <div class="w-full">
+    <p-divider class="bg-red-700"></p-divider>
+  </div>
+
+
+  <app-finance>
+
+  </app-finance>
 
 
 
