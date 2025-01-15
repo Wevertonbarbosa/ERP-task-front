@@ -1,9 +1,105 @@
-<div class="w-full">
-  <p-card>
-    <div class="w-full">
-      <div class="w-[50%] p-3">
-        <p-chart type="bar" [data]="chartData" [options]="chartOptions" class="" />
-      </div>
+<div class="w-full py-3 px-1 divMainFinance">
+
+  <div class="w-full flex flex-wrap gap-3">
+
+    <div class="w-full flex-1">
+      <p-card class="w-full shadow-lg rounded-sm h-full">
+        <div class="w-full p-3 divChart">
+          <p-chart type="bar" [data]="chartData" [options]="chartOptions" width="450" height="350">
+          </p-chart>
+        </div>
+      </p-card>
     </div>
-  </p-card>
+
+    <div class="w-full flex-1">
+      <p-card class="w-full shadow-lg rounded-sm h-full" [style]="{height: '100%'}">
+        <div class="card h-full">
+          <p-tabs value="0" scrollable class="w-full h-full">
+            <p-tablist>
+              <ng-template #previcon>
+                <i class="pi pi-minus"></i>
+              </ng-template>
+              <p-tab value="0">
+                <i class="pi pi-wallet"></i>
+                <span class="font-bold whitespace-nowrap">Gastos total</span>
+              </p-tab>
+              <p-tab value="1">
+                <i class="pi pi-chart-bar"></i>
+                <span class="font-bold whitespace-nowrap">Essenciais</span>
+              </p-tab>
+              <p-tab value="2">
+                <i class="pi pi-money-bill"></i>
+                <span class="font-bold whitespace-nowrap">Não essenciais</span>
+
+              </p-tab>
+              <ng-template #nexticon>
+                <i class="pi pi-plus"></i>
+              </ng-template>
+            </p-tablist>
+
+            <p-tabpanels class="pt-1 panelsTab">
+
+              <p-tabpanel value="0">
+                <div class="w-full pt-5">
+                  <p-card class="w-full shadow-lg rounded-sm" [style]="{background: 'lightgreen',}">
+                    <div class="w-full flex items-center justify-between">
+                      <h1 class="font-semibold text-2xl text-white">Seus total de gastos</h1>
+                      <i class="pi pi-dollar text-white text-4xl"></i>
+                    </div>
+
+                    <div class="w-full flex justify-center p-3">
+                      <span class="text-white text-5xl font-bold italic">
+                        R$: 2.000,00
+                      </span>
+                    </div>
+
+                  </p-card>
+                </div>
+              </p-tabpanel>
+
+              <p-tabpanel value="1">
+
+                <div class="w-full">
+                  <div class="card">
+                    <p-table [value]="products" scrollHeight="220px">
+                      <ng-template #caption>
+                        <div class="flex items-center justify-between">
+                          <span class="text-xl font-bold">Gastos essenciais</span>
+                          <p-button icon="pi pi-refresh" rounded raised />
+                        </div>
+                      </ng-template>
+                      <ng-template #header>
+                        <tr>
+                          <th>Code</th>
+                          <th>Produto</th>
+                          <th>Categoria</th>
+                          <th>Preço</th>
+                        </tr>
+                      </ng-template>
+                      <ng-template #body let-product>
+                        <tr>
+                          <td>{{ product.code }}</td>
+                          <td>{{ product.produto }}</td>
+                          <td>{{ product.category }}</td>
+                          <td>{{ product.preco }}</td>
+                        </tr>
+                      </ng-template>
+                    </p-table>
+                  </div>
+                </div>
+
+              </p-tabpanel>
+
+              <p-tabpanel value="2">
+
+              </p-tabpanel>
+            </p-tabpanels>
+          </p-tabs>
+        </div>
+      </p-card>
+    </div>
+
+
+  </div>
+
 </div>

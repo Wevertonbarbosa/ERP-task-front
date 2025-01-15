@@ -1,4 +1,4 @@
-<div class="w-full h-screen bg-slate-100">
+<div class="w-full bg-slate-100">
   <app-menu></app-menu>
 
   <div class="w-full py-2">
@@ -16,7 +16,7 @@
 
       <div class="w-full flex flex-col">
 
-        <p-chart type="doughnut" [data]="chartData" [options]="chartOptions" width="200" height="200">
+        <p-chart type="doughnut" [data]="chartData" [options]="chartOptions" width="200" height="200" class="chartPie">
         </p-chart>
 
         <span class="m-2 text-center font-medium italic">Overview das tarefas</span>
@@ -73,10 +73,9 @@
   </div>
 
 
-  <app-finance>
-
-  </app-finance>
-
+  <div class="w-full">
+    <app-finance></app-finance>
+  </div>
 
 
 

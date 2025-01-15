@@ -1,73 +1,70 @@
 import { Component, OnInit } from '@angular/core';
-import { CardModule } from 'primeng/card';
 import { ChartModule } from 'primeng/chart';
+import { CardModule } from 'primeng/card';
+import { TableModule } from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
+import { TabsModule } from 'primeng/tabs';
 
 @Component({
   selector: 'app-finance',
-  imports: [CardModule, ChartModule],
+  imports: [ChartModule, CardModule, TableModule, ButtonModule, TabsModule],
   templateUrl: './finance.component.html',
   styleUrl: './finance.component.css',
 })
 export class FinanceComponent implements OnInit {
+  products!: any[];
   chartData: any;
   chartOptions: any;
 
   ngOnInit() {
+    this.products = [
+      { code: '01', produto: 'Aluguel', category: 'Essencial', preco: 1000 },
+      { code: '01', produto: 'Aluguel', category: 'Essencial', preco: 1000 },
+      { code: '01', produto: 'Aluguel', category: 'Essencial', preco: 1000 },
+      { code: '01', produto: 'Aluguel', category: 'Essencial', preco: 1000 },
+      { code: '01', produto: 'Aluguel', category: 'Essencial', preco: 1000 },
+      { code: '01', produto: 'Aluguel', category: 'Essencial', preco: 1000 },
+      { code: '01', produto: 'Aluguel', category: 'Essencial', preco: 1000 },
+      { code: '01', produto: 'Aluguel', category: 'Essencial', preco: 1000 },
+    ];
+
     this.chartData = {
-      // PRIMEIRO SEMESTRE
-      labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho'],
+      labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
       datasets: [
         {
-          label: 'Gastos essencias',
-          data: [1605],
-          backgroundColor: ['#649bd9'],
-          hoverBackgroundColor: ['lightblue'],
+          label: 'Gastos essenciais',
+          data: [2500],
+          backgroundColor: ['blue'],
+          hoverBackgroundColor: ['darkblue'],
         },
         {
-          label: 'Gastos não essencias',
-          data: [750.5],
+          label: 'Gastos não essenciais',
+          data: [500],
           backgroundColor: ['gray'],
-          hoverBackgroundColor: ['lightgray'],
+          hoverBackgroundColor: ['darkgray'],
         },
       ],
     };
 
     this.chartOptions = {
       responsive: true,
-      maintainAspectRatio: false,
-      aspectRatio: 0.9,
+      indexAxis: 'x',
+      aspectRatio: 0.8,
+      maintainAspectRatio: true,
       plugins: {
         legend: {
+          align: 'center',
           display: true,
-
           position: 'top',
           labels: {
+            pointStyle: 'circle',
+            padding: 7,
             usePointStyle: true,
-            boxWidth: 65,
             font: {
-              size: 14,
-              weight: 'bold',
+              size: 13,
+              weight: 'bolder'
             },
           },
-        },
-      },
-
-      scales: {
-        x: {
-          ticks: {
-            font: {
-              weight: 700,
-            },
-          },
-          grid: {
-            drawBorder: false,
-          },
-        },
-      },
-
-      y: {
-        grid: {
-          drawBorder: false,
         },
       },
     };
