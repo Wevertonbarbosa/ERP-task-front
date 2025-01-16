@@ -6,7 +6,6 @@
 
     </ng-template>
 
-
     <ng-template #item let-item let-root="root">
       <a *ngIf="item.routerLink; else noRouterLink" [routerLink]="item.routerLink" routerLinkActive="active"
         class="flex items-center p-menubar-item-link" pRipple>
@@ -50,12 +49,106 @@
       </ng-template>
     </ng-template>
 
-
     <ng-template #end>
       <div class="flex items-center gap-2">
 
         <p-chip label="Amy Elsner" image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
-          alt="Avatar image" />
+          alt="Avatar User" class="cursor-pointer" (click)="visible = true" />
+
+        <p-drawer [(visible)]="visible" [closable]="false" position="right">
+          <ng-template #header>
+            <div class="flex flex-col w-full">
+              <div class="flex items-center gap-2">
+                <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" shape="circle" />
+                <span class="font-bold">NOME DO USUÁRIO</span>
+              </div>
+
+              <div>
+                <p-divider type="solid" />
+              </div>
+            </div>
+          </ng-template>
+          <div class="w-full">
+            <form [formGroup]="registerForm" (ngSubmit)="onUpdateUser()" class="space-y-4 py-3">
+
+              <!-- Campo de Nome -->
+              <div>
+                <app-input-global [control]="registerForm.get('nome')" name="nome" id="nome" label="Nome Completo"
+                  [class]="(registerForm.controls['nome'].invalid && (registerForm.controls['nome'].touched || registerForm.controls['nome'].dirty))? classError : class"
+                  typeInput="text"></app-input-global>
+
+                <div
+                  *ngIf="(registerForm.controls['nome'].invalid && (registerForm.controls['nome'].touched || registerForm.controls['nome'].dirty))">
+
+                  <span class="text-xs text-red-600 font-semibold"
+                    *ngIf="registerForm.controls['nome'].errors?.['required']">Nome precisa ser preenchido!</span>
+
+                  <span class="text-xs text-red-600 font-semibold"
+                    *ngIf="registerForm.controls['nome'].errors?.['minlength']">Nome precisa ser maior que 2
+                    caracteres!</span>
+                </div>
+              </div>
+
+              <!-- Campo de Email -->
+              <div>
+                <app-input-global [control]="registerForm.get('email')!" name="email" id="email" label="E-mail"
+                  typeInput="email"
+                  [class]="(registerForm.controls['email'].invalid && (registerForm.controls['email'].touched || registerForm.controls['email'].dirty))? classError : class"></app-input-global>
+
+                <div
+                  *ngIf="(registerForm.controls['email'].invalid && (registerForm.controls['email'].touched || registerForm.controls['email'].dirty))">
+
+                  <span class="text-xs text-red-600 font-semibold"
+                    *ngIf="registerForm.controls['email'].errors?.['required']">E-mail precisa ser preenchido!</span>
+
+                  <span class="text-xs text-red-600 font-semibold"
+                    *ngIf="registerForm.controls['email'].errors?.['email']">E-mail com formato inválido</span>
+                </div>
+
+              </div>
+              <!-- Campo de Senha -->
+              <div class="w-full">
+                <app-input-password-global [control]="registerForm.get('senha')!" id="senha" name="senha"
+                  placeholder="Senha"
+                  [class]="(registerForm.controls['senha'].invalid && (registerForm.controls['senha'].touched || registerForm.controls['senha'].dirty))? classError : class">
+                </app-input-password-global>
+
+                <div
+                  *ngIf="(registerForm.controls['senha'].invalid && (registerForm.controls['senha'].touched || registerForm.controls['senha'].dirty))">
+
+                  <span class="text-xs text-red-600 font-semibold"
+                    *ngIf="registerForm.controls['senha'].errors?.['required']">Senha precisa ser preenchido!</span>
+
+                  <span class="text-xs text-red-600 font-semibold"
+                    *ngIf="registerForm.controls['senha'].errors?.['minlength']">Senha precisa ser maior que 6
+                    caracteres!</span>
+                </div>
+              </div>
+
+
+              <div class="card flex justify-center">
+                <p-select [options]="typeUser" formControlName="role" optionDisabled="disabled" [checkmark]="true"
+                  name="role" optionLabel="role" placeholder="Role" class="w-full" />
+              </div>
+
+
+              <!-- Botão de Registro -->
+              <div class="flex justify-center content-center">
+                <p-button label="Atualizar" [loading]="loading" type="submit" [disabled]="registerForm.invalid"
+                  [rounded]="true" size="large" [raised]="true" class="w-full" styleClass="width-full"></p-button>
+              </div>
+
+            </form>
+          </div>
+
+          <ng-template #footer>
+            <div class="flex items-center gap-2">
+              <button pButton label="Account" icon="pi pi-user" class="w-full" disabled outlined></button>
+              <button pButton label="Logout" icon="pi pi-sign-out" class="w-full" severity="danger" text></button>
+            </div>
+          </ng-template>
+        </p-drawer>
+
       </div>
     </ng-template>
 

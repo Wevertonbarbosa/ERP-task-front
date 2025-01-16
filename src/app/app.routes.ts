@@ -5,6 +5,7 @@ import { CheckEmailComponent } from './Pages/check-email/check-email.component';
 import { RedefinirComponent } from './Pages/redefinir/redefinir.component';
 import { authGuard } from './Guard/auth.guard';
 import { DashboardComponent } from './Pages/dashboard/dashboard.component';
+import { TaskComponent } from './Pages/task/task.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -13,5 +14,6 @@ export const routes: Routes = [
   { path: 'check-email', component: CheckEmailComponent },
   { path: 'redefinir', component: RedefinirComponent, canActivate: [authGuard] },
   { path: 'dashboard', component: DashboardComponent },
+  { path: 'tarefas', component: TaskComponent },
   { path: '**', redirectTo: '/login' }, // Redireciona para o login em caso de URL inexistente
 ];
