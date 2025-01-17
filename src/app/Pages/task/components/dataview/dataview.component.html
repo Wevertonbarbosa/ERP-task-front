@@ -6,14 +6,12 @@
           styleClass="mb-2 md:mb-0" />
       </div>
     </ng-template>
-
     <ng-template #list let-items>
 
-      <p-scrollpanel [style]="{ width: '100%', height: '390px' }">
-        <div class="grid grid-cols-12 gap-4 grid-nogutter">
+      <p-scrollpanel *ngIf="this.products.length != 0" [style]="{ width: '100%', height: '385px' }">
+        <div *ngIf="this.products.length != 0" class="grid grid-cols-12 gap-4 grid-nogutter">
 
           <div class="col-span-12" *ngFor="let item of items; let first = first">
-
 
             <div class="flex flex-col sm:flex-row sm:items-center p-6 gap-4"
               [ngClass]="{ 'border-t border-surface-200 dark:border-surface-700': !first }">
@@ -62,7 +60,6 @@
                     <i class="pi pi-pencil cursor-pointer text-blue-400 text-xl"></i>
                     <i class="pi pi-trash text-red-600 cursor-pointer text-xl"></i>
                   </div>
-
                 </div>
 
 
@@ -75,12 +72,29 @@
 
               </div>
             </div>
-
           </div>
-
         </div>
       </p-scrollpanel>
     </ng-template>
+
+    <ng-template #emptymessage>
+      <div class="w-full flex flex-col items-center justify-center p-4">
+        <i class="pi pi-bolt text-blue-400 text-4xl"></i>
+        <h2 class="text-2xl font-semibold italic">Sem tarefas no momento</h2>
+      </div>
+    </ng-template>
+
   </p-dataview>
+
+  <div class="w-full">
+    <p-divider type="solid" />
+  </div>
+
+  <div class="w-full card flex flex-wrap justify-center">
+    <p-button icon="pi pi-plus" [rounded]="true" [text]="true" tooltipPosition="top" pTooltip="Criar uma tarefa"
+      [raised]="true" severity="success" (onClick)="openModalAddTask()" />
+  </div>
+  <!-- MODAL ADD TAREFAS -->
+  <app-add-task [visible]="false"></app-add-task>
 
 </div>

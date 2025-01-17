@@ -90,13 +90,7 @@ export class MenuComponent implements OnInit {
           },
           {
             label: 'Tarefas do Dia',
-            url: '/tarefas'
-          },
-          {
-            label: 'Cadastrar Tarefas',
-          },
-          {
-            separator: true,
+            url: '/tarefas',
           },
         ],
       },
