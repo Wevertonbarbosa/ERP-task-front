@@ -16,6 +16,18 @@
   width: 100%;
 }
 
+.p-orderlist-list-container{
+  width: 100% !important;
+}
+.p-orderlist-controls{
+  display: none !important;
+}
+
+.tag-manager-list{
+  padding: 1px !important;
+  font-size: x-small;
+}
+
 .p-password-input{
   width: 100% !important;
 }

@@ -17,27 +17,33 @@ import { ButtonModule } from 'primeng/button';
 import { InputGlobalComponent } from '../../../../Components/input-global/input-global.component';
 import { ToastGlobalComponent } from '../../../../Components/toast-global/toast-global.component';
 import { Frequence } from '../../../../Interface/frequence';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ToastModule } from 'primeng/toast';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 @Component({
-  selector: 'app-add-task',
+  selector: 'app-update-task',
   imports: [
     DialogModule,
     ButtonModule,
     Select,
     FloatLabel,
     TextareaModule,
+    ToastModule,
     DatePickerModule,
     ReactiveFormsModule,
+    ConfirmDialogModule,
     SelectModule,
     CommonModule,
     FormsModule,
     InputGlobalComponent,
     ToastGlobalComponent,
   ],
-  templateUrl: './add-task.component.html',
-  styleUrl: './add-task.component.css',
+  templateUrl: './update-task.component.html',
+  styleUrl: './update-task.component.css',
+  providers: [ConfirmationService, MessageService],
 })
-export class AddTaskComponent implements OnInit {
+export class UpdateTaskComponent implements OnInit {
   @Input() visible!: boolean;
 
   registerForm!: FormGroup;
@@ -56,12 +62,6 @@ export class AddTaskComponent implements OnInit {
     this.dateStart = new Date();
     this.dateStart.getDate();
 
-    this.frequence = [
-      { choose: 'DIARIA' },
-      { choose: 'SEMANAL' },
-      { choose: 'MENSAL' },
-      { choose: 'ESPORADICA' },
-    ];
 
     this.registerForm = this.fb.group({
       titulo: ['', [Validators.required, Validators.minLength(3)]],
@@ -75,11 +75,7 @@ export class AddTaskComponent implements OnInit {
     });
   }
 
-  onAddTask() {
-    console.log(this.registerForm.value);
-  }
-
-  showDialog() {
+  onUpdateTask(){
     this.visible = true;
   }
 }

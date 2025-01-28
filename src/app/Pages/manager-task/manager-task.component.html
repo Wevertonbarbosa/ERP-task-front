@@ -1,0 +1,114 @@
+<div class="w-full bg-slate-100 min-h-dvh">
+  <app-menu></app-menu>
+
+
+  <div class="w-full flex gap-3 p-2">
+    <div class="w-full">
+      <p-card header="Gestão das tarefas">
+
+        <p-orderlist [value]="products" [responsive]="true" filterBy="titulo" filterPlaceholder="Titulo"
+          scrollHeight="26rem">
+
+          <ng-template let-option let-selected="selected" #item>
+
+
+            <div class="flex flex-wrap p-1 items-center gap-4 w-full">
+
+              <div class="md:w-20 relative">
+                <i class="block xl:block mx-auto rounded-border w-full pi pi-th-large text-2xl text-amber-300"
+                  alt="Tarefas"></i>
+                <p-tag [value]="option.frequencia" [severity]="(option)" class="absolute" [style.left.px]="20"
+                  [style.top.px]="-12" styleClass="tag-manager-list" />
+              </div>
+
+
+              <div class="flex-1 flex flex-col">
+                <span class="font-medium text-sm">{{ option.titulo }}</span>
+                <span [ngClass]="{
+                            'text-sm': true,
+                            'text-surface-500': !selected,
+                            'dark:text-surface-400': !selected,
+                            'text-inherit': selected,
+                        }">{{ option.descricao }}</span>
+              </div>
+
+              <div class="flex flex-col">
+                <span class="font-bold sm:ml-8">{{option.categoria }}</span>
+                <span class="font-normal text-xs sm:ml-8"><b class="italic">Início:</b> {{option.dataInicio }} <b
+                    class="italic">até </b> {{option.dataFim}}</span>
+              </div>
+
+            </div>
+
+
+          </ng-template>
+
+          <ng-template #option>
+            <h1>semm</h1>
+          </ng-template>
+
+
+
+        </p-orderlist>
+
+
+      </p-card>
+    </div>
+
+    <div class="w-full flex flex-col gap-2">
+      <p-card header="Download relatórios">
+      </p-card>
+
+      <p-card>
+        
+        <div class="w-full py-4 flex flex-col gap-6">
+          <h2 class="text-2xl font-semibold text-center italic">Veja seu progresso!</h2>
+          <i class="pi pi-spin pi-globe font-bold text-7xl text-center text-blue-700"></i>
+        </div>
+
+        <div class="w-full flex items-center justify-center pt-4">
+          <p-button label="Baixar relatório global" class="w-3/4" [rounded]="true" styleClass="width-full"
+            [raised]="true" icon="pi pi-download" />
+        </div>
+
+        <div class="w-full flex items-center justify-center pt-5">
+
+          <p-floatlabel variant="on">
+            <p-datepicker [(ngModel)]="startDate" showIcon iconDisplay="input" view="month" dateFormat="mm/yy"
+              inputId="on_label" [readonlyInput]="true" />
+            <label for="on_label">De</label>
+          </p-floatlabel>
+
+          <div class="p-2">
+            <p-divider align="center" type="solid">
+              <b>Data</b>
+            </p-divider>
+          </div>
+
+          <p-floatlabel variant="on">
+            <p-datepicker [(ngModel)]="endDate" showIcon iconDisplay="input" view="month" dateFormat="mm/yy"
+              inputId="on_label" [readonlyInput]="true" />
+            <label for="on_label">até</label>
+          </p-floatlabel>
+
+        </div>
+
+        <div class="w-full w-full flex items-center justify-center py-4">
+          <p-button label="Baixar relatório por período" [disabled]="true" class="w-3/4" [rounded]="true" styleClass="width-full"
+            [raised]="true" icon="pi pi-download" />
+        </div>
+
+
+
+      </p-card>
+
+
+
+    </div>
+
+
+  </div>
+
+
+
+</div>

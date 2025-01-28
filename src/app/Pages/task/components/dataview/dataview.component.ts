@@ -21,6 +21,8 @@ import {
 } from '@angular/forms';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { AddTaskComponent } from '../add-task/add-task.component';
+import { UpdateTaskComponent } from '../update-task/update-task.component';
+import { ConfirmPopupModule } from 'primeng/confirmpopup';
 
 @Component({
   selector: 'app-dataview',
@@ -35,11 +37,13 @@ import { AddTaskComponent } from '../add-task/add-task.component';
     ScrollPanelModule,
     ToastModule,
     CommonModule,
+    ConfirmPopupModule,
     Tag,
     ButtonModule,
     DropdownModule,
     SelectModule,
     AddTaskComponent,
+    UpdateTaskComponent,
   ],
   templateUrl: './dataview.component.html',
   styleUrl: './dataview.component.css',
@@ -53,9 +57,10 @@ export class DataviewComponent implements OnInit {
   checked: boolean = false;
 
   visible: boolean = false;
+  visibleUpdate: boolean = false;
 
-  @ViewChild(AddTaskComponent) addTaskComponent!: AddTaskComponent; // Referência ao filho
-
+  @ViewChild(AddTaskComponent) addTaskComponent!: AddTaskComponent;
+  @ViewChild(UpdateTaskComponent) updateTaskComponent!: UpdateTaskComponent;
 
   constructor(
     private confirmationService: ConfirmationService,
@@ -71,15 +76,15 @@ export class DataviewComponent implements OnInit {
     ];
 
     this.products = [
-      // {
-      //   titulo: 'Tomar Banho',
-      //   descricao: 'Tomar banho nesse lindo dia',
-      //   categoria: 'Fazeres',
-      //   frequencia: 'SEMANAL',
-      //   dataInicio: '02/02/2025',
-      //   dataFim: '10/02/2025',
-      //   diasSemana: '13208',
-      // },
+      {
+        titulo: 'Tomar Banho',
+        descricao: 'Tomar banho nesse lindo dia',
+        categoria: 'Fazeres',
+        frequencia: 'SEMANAL',
+        dataInicio: '02/02/2025',
+        dataFim: '10/02/2025',
+        diasSemana: '13208',
+      },
       // {
       //   titulo: 'Segundo titulo',
       //   descricao: 'Comprar comida',
@@ -90,12 +95,18 @@ export class DataviewComponent implements OnInit {
       //   diasSemana: '13208',
       // },
     ];
-
   }
 
   openModalAddTask() {
     if (this.addTaskComponent) {
-      this.addTaskComponent.showDialog(); // Invoca a função do filho
+      this.addTaskComponent.showDialog();
+    }
+  }
+
+  openModalUpdateTask() {
+    if (this.updateTaskComponent) {
+      this.visibleUpdate = true;
+      this.updateTaskComponent.onUpdateTask();
     }
   }
 
@@ -111,35 +122,69 @@ export class DataviewComponent implements OnInit {
     }
   }
 
-  confirm1(event: any) {
+  confirmTaskDone(event: any) {
     this.confirmationService.confirm({
       target: event.target as EventTarget,
-      message: 'Are you sure that you want to proceed?',
-      header: 'Confirmation',
+      message: 'Tem certeza que deseja concluír a tarefa?',
+      header: 'Concluír tarefa',
       closable: true,
       closeOnEscape: true,
       icon: 'pi pi-exclamation-triangle',
       rejectButtonProps: {
-        label: 'Cancel',
+        label: 'Cancelar',
         severity: 'secondary',
         outlined: true,
       },
       acceptButtonProps: {
-        label: 'Save',
+        label: 'Confirmar',
       },
       accept: () => {
         this.messageService.add({
-          severity: 'info',
-          summary: 'Confirmed',
-          detail: 'You have accepted',
+          severity: 'success',
+          summary: 'Concluír tarefa',
+          detail: 'Tarefa concluída com sucesso',
         });
       },
       reject: () => {
         this.checked = false;
         this.messageService.add({
-          severity: 'error',
-          summary: 'Rejected',
-          detail: 'You have rejected',
+          severity: 'info',
+          summary: 'Tarefa não concluída',
+          detail: 'Sua tarefa não foi concluída',
+          life: 3000,
+        });
+      },
+    });
+  }
+
+  deleteTask(event: any) {
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: 'Você tem certeza que deseja excluir essa tarefa',
+      header: 'Deletar tarefa',
+      icon: 'pi pi-info-circle',
+      rejectButtonProps: {
+        label: 'Cancelar',
+        severity: 'secondary',
+        outlined: true,
+      },
+      acceptButtonProps: {
+        label: 'Deletar',
+        severity: 'danger',
+      },
+      accept: () => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Tarefa excluída',
+          detail: 'Sua tarefa foi excluída com sucesso',
+          life: 3000,
+        });
+      },
+      reject: () => {
+        this.messageService.add({
+          severity: 'info',
+          summary: 'Tarefa',
+          detail: 'Sua tarefa não foi excluída',
           life: 3000,
         });
       },

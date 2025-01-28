@@ -86,7 +86,7 @@ export class MenuComponent implements OnInit {
         items: [
           {
             label: 'Gestão de tarefas',
-            url: '/dashboard',
+            url: '/gerenciar-tarefas',
           },
           {
             label: 'Tarefas do Dia',
