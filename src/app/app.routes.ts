@@ -7,6 +7,7 @@ import { authGuard } from './Guard/auth.guard';
 import { DashboardComponent } from './Pages/dashboard/dashboard.component';
 import { TaskComponent } from './Pages/task/task.component';
 import { ManagerTaskComponent } from './Pages/manager-task/manager-task.component';
+import { ExpensesComponent } from './Pages/expenses/expenses.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -21,5 +22,6 @@ export const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
   { path: 'tarefas', component: TaskComponent },
   { path: 'gerenciar-tarefas', component: ManagerTaskComponent },
+  { path: 'gastos', component: ExpensesComponent },
   { path: '**', redirectTo: '/login' },
 ];

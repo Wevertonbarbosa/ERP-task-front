@@ -98,8 +98,8 @@ export class MenuComponent implements OnInit {
         label: 'Financeiro',
         items: [
           {
-            label: 'Calculadora de gastos',
-            url: '/dashboard',
+            label: 'Gastos mensais',
+            url: '/gastos',
           },
           {
             label: 'Registros de gastos',

@@ -1,0 +1,178 @@
+<div class="w-full bg-slate-100 min-h-dvh">
+  <app-menu></app-menu>
+
+  <div class="w-full">
+    <div class="w-full flex items-center justify-center gap-3 p-2">
+      <p-card class="w-full" [style]="{background: 'lightgray'}">
+        <div class="w-full flex items-center justify-between text-white">
+          <h2 class="text-xl font-semibold italic">Gasto mensal total</h2>
+          <i class="pi pi-dollar text-xl"></i>
+        </div>
+        <p-divider />
+        <div class="w-full text-white text-center">
+          <span class="text-center italic font-bold text-2xl">
+            R$: 2.000,00
+          </span>
+        </div>
+
+      </p-card>
+
+      <p-card class="w-full" [style]="{background: 'yellow'}">
+        <div class="w-full flex items-center justify-between">
+          <h2 class="text-xl font-semibold italic">Gastos não essenciais</h2>
+          <i class="pi pi-info-circle text-xl"></i>
+        </div>
+        <p-divider />
+        <div class="w-full text-center">
+          <span class="text-center italic font-bold text-2xl">
+            R$: 500,00
+          </span>
+        </div>
+
+      </p-card>
+
+      <p-card class="w-full" [style]="{background: 'red'}">
+        <div class="w-full flex items-center justify-between text-white">
+          <h2 class="text-xl font-semibold italic">Gastos essenciais</h2>
+          <i class="pi pi-wave-pulse text-xl"></i>
+        </div>
+        <p-divider />
+        <div class="w-full text-center text-white">
+          <span class="text-center italic font-bold text-2xl">
+            R$: 700,00
+          </span>
+        </div>
+
+
+      </p-card>
+
+      <p-card class="w-full" [style]="{background: 'lightgreen'}">
+        <div class="w-full flex items-center justify-between text-white">
+          <h2 class="text-xl font-semibold italic">Saldo disponivel</h2>
+          <i class="pi pi-verified text-xl"></i>
+        </div>
+        <p-divider />
+        <div class="w-full text-center text-white">
+          <span class="text-center italic font-bold text-2xl">
+            R$: 700,00
+          </span>
+        </div>
+
+      </p-card>
+
+    </div>
+
+  </div>
+
+
+  <div class="w-full py-3 flex gap-3 justify-center">
+
+    <div class="w-full">
+      <p-card class="w-full h-full">
+        <p-tabs value="0" scrollable class="w-full h-full">
+          <p-tablist>
+            <ng-template #previcon>
+              <i class="pi pi-minus"></i>
+            </ng-template>
+            <p-tab value="0">
+              <i class="pi pi-wave-pulse"></i>
+              <span class="font-bold whitespace-nowrap">Gastos essenciais</span>
+            </p-tab>
+            <p-tab value="1">
+              <i class="pi pi-info-circle"></i>
+              <span class="font-bold whitespace-nowrap">Não essenciais</span>
+            </p-tab>
+            <ng-template #nexticon>
+              <i class="pi pi-plus"></i>
+            </ng-template>
+          </p-tablist>
+
+          <p-tabpanels class="pt-1 panelsTab">
+
+
+            <p-tabpanel value="0">
+
+              <div class="w-full">
+                <div class="card">
+                  <p-table [value]="products" scrollHeight="220px">
+                    <ng-template #caption>
+                      <div class="flex items-center justify-between">
+                        <span class="text-xl font-bold">Gastos essenciais</span>
+                        <p-button icon="pi pi-refresh" rounded raised />
+                      </div>
+                    </ng-template>
+                    <ng-template #header>
+                      <tr>
+                        <th>Code</th>
+                        <th>Produto</th>
+                        <th>Categoria</th>
+                        <th>Preço</th>
+                      </tr>
+                    </ng-template>
+                    <ng-template #body let-product>
+                      <tr>
+                        <td>{{ product.code }}</td>
+                        <td>{{ product.produto }}</td>
+                        <td>{{ product.category }}</td>
+                        <td>{{ product.preco }}</td>
+                      </tr>
+                    </ng-template>
+                  </p-table>
+                </div>
+              </div>
+
+            </p-tabpanel>
+
+            <p-tabpanel value="1">
+
+              <div class="w-full">
+                <div class="card">
+                  <p-table [value]="products" scrollHeight="220px">
+                    <ng-template #caption>
+                      <div class="flex items-center justify-between">
+                        <span class="text-xl font-bold">Gastos não essenciais</span>
+                        <p-button icon="pi pi-refresh" rounded raised />
+                      </div>
+                    </ng-template>
+                    <ng-template #header>
+                      <tr>
+                        <th>Code</th>
+                        <th>Produto</th>
+                        <th>Categoria</th>
+                        <th>Preço</th>
+                      </tr>
+                    </ng-template>
+                    <ng-template #body let-product>
+                      <tr>
+                        <td>{{ product.code }}</td>
+                        <td>{{ product.produto }}</td>
+                        <td>{{ product.category }}</td>
+                        <td>{{ product.preco }}</td>
+                      </tr>
+                    </ng-template>
+                  </p-table>
+                </div>
+              </div>
+
+            </p-tabpanel>
+
+          </p-tabpanels>
+
+        </p-tabs>
+      </p-card>
+
+    </div>
+
+    <div class="w-full">
+      <app-form-expense></app-form-expense>
+    </div>
+
+
+
+  </div>
+
+
+
+
+
+</div>
