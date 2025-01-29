@@ -54,6 +54,7 @@ export class FormExpenseComponent implements OnInit {
 
     this.registerForm = this.fb.group({
       valor: ['', [Validators.required]],
+      titulo: ['', [Validators.required, Validators.minLength(2)]],
       categoria: ['', [Validators.required]],
       descricao: ['', [Validators.required, Validators.minLength(5)]],
     });

@@ -43,12 +43,7 @@
 
           </ng-template>
 
-          <ng-template #option>
-            <h1>semm</h1>
-          </ng-template>
-
-
-
+       
         </p-orderlist>
 
 
@@ -63,7 +58,7 @@
         
         <div class="w-full py-4 flex flex-col gap-6">
           <h2 class="text-2xl font-semibold text-center italic">Veja seu progresso!</h2>
-          <i class="pi pi-spin pi-globe font-bold text-7xl text-center text-blue-700"></i>
+          <i class="pi pi-file-pdf font-bold text-7xl text-center text-blue-700"></i>
         </div>
 
         <div class="w-full flex items-center justify-center pt-4">
@@ -93,7 +88,9 @@
 
         </div>
 
-        <div class="w-full w-full flex items-center justify-center py-4">
+        <p-divider />
+
+        <div class="w-full flex items-center justify-center py-4">
           <p-button label="Baixar relatório por período" [disabled]="true" class="w-3/4" [rounded]="true" styleClass="width-full"
             [raised]="true" icon="pi pi-download" />
         </div>

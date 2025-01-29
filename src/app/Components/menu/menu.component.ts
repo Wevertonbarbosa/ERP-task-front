@@ -102,12 +102,8 @@ export class MenuComponent implements OnInit {
             url: '/gastos',
           },
           {
-            label: 'Registros de gastos',
-            url: '/dashboard',
-          },
-          {
             label: 'Relatório de gastos',
-            url: '/dashboard',
+            url: '/relatorio-gastos',
           },
         ],
       },

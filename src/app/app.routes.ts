@@ -8,6 +8,7 @@ import { DashboardComponent } from './Pages/dashboard/dashboard.component';
 import { TaskComponent } from './Pages/task/task.component';
 import { ManagerTaskComponent } from './Pages/manager-task/manager-task.component';
 import { ExpensesComponent } from './Pages/expenses/expenses.component';
+import { ReportExpenseComponent } from './Pages/report-expense/report-expense.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -23,5 +24,6 @@ export const routes: Routes = [
   { path: 'tarefas', component: TaskComponent },
   { path: 'gerenciar-tarefas', component: ManagerTaskComponent },
   { path: 'gastos', component: ExpensesComponent },
+  { path: 'relatorio-gastos', component: ReportExpenseComponent },
   { path: '**', redirectTo: '/login' },
 ];
