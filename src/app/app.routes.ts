@@ -9,6 +9,7 @@ import { TaskComponent } from './Pages/task/task.component';
 import { ManagerTaskComponent } from './Pages/manager-task/manager-task.component';
 import { ExpensesComponent } from './Pages/expenses/expenses.component';
 import { ReportExpenseComponent } from './Pages/report-expense/report-expense.component';
+import { MenteeComponent } from './Pages/mentee/mentee.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -25,5 +26,6 @@ export const routes: Routes = [
   { path: 'gerenciar-tarefas', component: ManagerTaskComponent },
   { path: 'gastos', component: ExpensesComponent },
   { path: 'relatorio-gastos', component: ReportExpenseComponent },
+  { path: 'mentoria', component: MenteeComponent },
   { path: '**', redirectTo: '/login' },
 ];

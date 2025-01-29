@@ -85,12 +85,12 @@ export class MenuComponent implements OnInit {
         icon: 'pi pi-search',
         items: [
           {
-            label: 'Gestão de tarefas',
-            url: '/gerenciar-tarefas',
-          },
-          {
             label: 'Tarefas do Dia',
             url: '/tarefas',
+          },
+          {
+            label: 'Gestão de tarefas',
+            url: '/gerenciar-tarefas',
           },
         ],
       },
@@ -112,7 +112,7 @@ export class MenuComponent implements OnInit {
         items: [
           {
             label: 'Mentorados',
-            url: '/dashboard',
+            url: '/mentoria',
           },
           {
             label: 'Desempenho mentorado',
