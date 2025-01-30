@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CardModule } from 'primeng/card';
 import { DataViewModule } from 'primeng/dataview';
@@ -20,6 +20,7 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { SpeedDialButtonComponent } from './components/speed-dial-button/speed-dial-button.component';
+import { AddMenteeComponent } from './components/add-mentee/add-mentee.component';
 
 @Component({
   selector: 'app-mentee',
@@ -38,6 +39,7 @@ import { SpeedDialButtonComponent } from './components/speed-dial-button/speed-d
     SpeedDialModule,
     ButtonModule,
     SpeedDialButtonComponent,
+    AddMenteeComponent,
   ],
   templateUrl: './mentee.component.html',
   styleUrl: './mentee.component.css',
@@ -49,7 +51,10 @@ export class MenteeComponent implements OnInit {
   sortOrder!: number;
   sortField!: string;
 
+  visible: boolean = false;
   value: number = 60;
+
+  @ViewChild(AddMenteeComponent) addMenteeComponent!: AddMenteeComponent;
 
   constructor() {}
   ngOnInit() {
@@ -58,7 +63,6 @@ export class MenteeComponent implements OnInit {
         nome: 'Weverton',
         email: 'teste@gmail.com',
       },
-      
     ];
   }
 
@@ -73,4 +77,11 @@ export class MenteeComponent implements OnInit {
       this.sortField = value;
     }
   }
+
+  openModalAddMentee(){
+    if(this.addMenteeComponent){
+      this.addMenteeComponent.showDialog()
+    }
+  }
+
 }

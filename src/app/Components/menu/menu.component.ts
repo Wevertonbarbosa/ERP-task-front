@@ -115,16 +115,12 @@ export class MenuComponent implements OnInit {
             url: '/mentoria',
           },
           {
-            label: 'Desempenho mentorado',
-            url: '/dashboard',
-          },
-          {
             label: 'Cadastro de tarefas mentorados ',
-            url: '/dashboard',
+            url: '/tarefas-mentorados',
           },
           {
-            label: 'Tarefas do mentorado',
-            url: '/dashboard',
+            label: 'Tarefas dos mentorados',
+            url: '/lista-tarefas-mentorados',
           },
         ],
       },

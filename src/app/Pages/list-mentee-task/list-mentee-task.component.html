@@ -1,0 +1,69 @@
+<div class="w-full bg-slate-100 min-h-dvh">
+  <app-menu></app-menu>
+
+  <div class="w-full p-2">
+
+    <div class="w-full">
+
+      <p-card header="Lista de tarefas dos mentorados">
+        <div class="w-full flex justify-end py-4">
+          <div class="w-72">
+            <p-select class="w-full" [options]="" name="" [checkmark]="true" optionLabel="" [showClear]="true"
+              placeholder="Mentorado" />
+          </div>
+        </div>
+
+
+
+        <div class="w-full">
+          <p-orderlist [value]="products" [responsive]="true" filterBy="titulo" filterPlaceholder="Titulo"
+            scrollHeight="26rem">
+
+            <ng-template let-option let-selected="selected" #item>
+
+
+              <div class="flex flex-wrap p-1 items-center gap-4 w-full">
+
+                <div class="md:w-20 relative">
+                  <i class="block xl:block mx-auto rounded-border w-full pi pi-th-large text-2xl text-amber-300"
+                    alt="Tarefas"></i>
+                  <p-tag [value]="option.frequencia" [severity]="(option)" class="absolute" [style.left.px]="20"
+                    [style.top.px]="-12" styleClass="tag-manager-list" />
+                </div>
+
+
+                <div class="flex-1 flex flex-col">
+                  <span class="font-medium text-sm">{{ option.titulo }}</span>
+                  <span [ngClass]="{
+                              'text-sm': true,
+                              'text-surface-500': !selected,
+                              'dark:text-surface-400': !selected,
+                              'text-inherit': selected,
+                          }">{{ option.descricao }}</span>
+                </div>
+
+                <div class="flex flex-col">
+                  <span class="font-bold sm:ml-8">{{option.categoria }}</span>
+                  <span class="font-normal text-xs sm:ml-8"><b class="italic">Início:</b> {{option.dataInicio }} <b
+                      class="italic">até </b> {{option.dataFim}}</span>
+                </div>
+
+              </div>
+
+
+            </ng-template>
+
+
+          </p-orderlist>
+
+
+        </div>
+
+
+      </p-card>
+
+    </div>
+  </div>
+
+
+</div>
