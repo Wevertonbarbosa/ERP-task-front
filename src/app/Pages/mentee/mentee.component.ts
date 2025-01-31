@@ -21,6 +21,7 @@ import {
 } from '@angular/forms';
 import { SpeedDialButtonComponent } from './components/speed-dial-button/speed-dial-button.component';
 import { AddMenteeComponent } from './components/add-mentee/add-mentee.component';
+import { AddPaymentComponent } from './components/add-payment/add-payment.component';
 
 @Component({
   selector: 'app-mentee',
@@ -52,9 +53,11 @@ export class MenteeComponent implements OnInit {
   sortField!: string;
 
   visible: boolean = false;
+  // visiblePayment: boolean = false;
   value: number = 60;
 
   @ViewChild(AddMenteeComponent) addMenteeComponent!: AddMenteeComponent;
+  @ViewChild(AddPaymentComponent) addPaymentComponent!: AddPaymentComponent;
 
   constructor() {}
   ngOnInit() {
@@ -78,10 +81,9 @@ export class MenteeComponent implements OnInit {
     }
   }
 
-  openModalAddMentee(){
-    if(this.addMenteeComponent){
-      this.addMenteeComponent.showDialog()
+  openModalAddMentee() {
+    if (this.addMenteeComponent) {
+      this.addMenteeComponent.showDialog();
     }
   }
-
 }
