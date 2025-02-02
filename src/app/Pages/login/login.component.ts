@@ -16,7 +16,7 @@ import { ButtonModule } from 'primeng/button';
 import { InputGlobalComponent } from '../../Components/input-global/input-global.component';
 import { InputPasswordGlobalComponent } from '../../Components/input-password-global/input-password-global.component';
 import { LoginUserService } from '../../Service/login-user.service';
-import { ToastGlobalComponent } from "../../Components/toast-global/toast-global.component";
+import { ToastGlobalComponent } from '../../Components/toast-global/toast-global.component';
 
 @Component({
   selector: 'app-login',
@@ -29,8 +29,8 @@ import { ToastGlobalComponent } from "../../Components/toast-global/toast-global
     ButtonModule,
     InputGlobalComponent,
     InputPasswordGlobalComponent,
-    ToastGlobalComponent
-],
+    ToastGlobalComponent,
+  ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
   providers: [MessageService, LoginUserService],
@@ -60,8 +60,7 @@ export class LoginComponent implements OnInit {
       if (this.registerForm.valid) {
         this.service.postLogin(this.registerForm.value).subscribe({
           next: (value) => {
-            const userId = value.usuarioId;
-            localStorage.setItem('userId', userId);
+            localStorage.setItem('user', JSON.stringify(value));
             this.showToasRight(
               'success',
               'Usuário cadastrado!',
@@ -78,7 +77,7 @@ export class LoginComponent implements OnInit {
                 ? 'Estamos ajustando voltamos em breve'
                 : err.error
             );
-            
+
             this.loading = false;
           },
         });
@@ -89,7 +88,6 @@ export class LoginComponent implements OnInit {
     }
   }
 
-
   showToasRight(color: string, title: string, msg: string) {
     this.messageService.add({
       severity: color,
@@ -99,5 +97,4 @@ export class LoginComponent implements OnInit {
       life: 4000,
     });
   }
-
 }

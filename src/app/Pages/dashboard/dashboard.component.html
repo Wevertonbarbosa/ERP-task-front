@@ -4,7 +4,7 @@
   <div class="w-full py-2">
     <p-card class="shadow-lg rounded-sm">
       <div class="flex items-center gap-3">
-        <h1 class="font-semibold text-2xl"> Olá (Usuário), seja muito bem-vindo(a)</h1>
+        <h1 class="font-semibold text-2xl"> Olá {{userName}}, seja muito bem-vindo(a)</h1>
         <i class="pi pi-users" style="font-size: 2rem; color: rgb(0, 117, 252);"></i>
       </div>
     </p-card>
@@ -37,7 +37,7 @@
 
           <div class="w-full flex flex-col items-center gap-2 justify-start">
             <h2 class="italic font-normal text-lg">Tarefas feitas</h2>
-            <span class="font-semibold text-4xl">7</span>
+            <span class="font-semibold text-4xl">{{taskDone}}</span>
           </div>
 
           <div>
@@ -58,7 +58,7 @@
     <p-card class="shadow-lg flex-1 basis-[321px]" [style]="{borderLeft:'4px solid rgb(0, 117, 252)', height: '100%'}">
       <div class="p-4 pt-1">
         <div class="flex items-center justify-center">
-          <p-knob valueTemplate="{value}%" [readonly]="true" size="180" />
+          <p-knob [(ngModel)]="taskMissing" valueColor="DarkBlue" valueTemplate="{value}" [readonly]="true" size="180" />
         </div>
       </div>
 

@@ -59,17 +59,24 @@ export class MenuComponent implements OnInit {
   typeUser: User[] = [];
   loading: boolean = false;
 
+  user: any;
+
+  nameUser!: string;
+
   constructor(private fb: FormBuilder) {}
 
   classError = ['w-full', 'ng-dirty', 'ng-invalid'];
   class = ['w-full'];
 
   ngOnInit() {
+    this.user = JSON.parse(localStorage.getItem('user') || '{}');
+    this.nameUser = this.user.nome || 'Usuário';
+
     this.typeUser = [{ role: 'ADMIN' }, { role: 'USER', disabled: true }];
 
     this.registerForm = this.fb.group({
-      nome: ['', [Validators.required, Validators.minLength(2)]],
-      email: ['', [Validators.required, Validators.email]],
+      nome: [this.user.nome, [Validators.required, Validators.minLength(2)]],
+      email: [this.user.email, [Validators.required, Validators.email]],
       senha: ['', [Validators.required, Validators.minLength(6)]],
       role: [this.typeUser[0], Validators.required],
     });
@@ -127,5 +134,15 @@ export class MenuComponent implements OnInit {
     ];
   }
 
-  onUpdateUser() {}
+  openModalUpdateManager() {
+    if (this.user.role === 'USER') {
+      this.visible = false;
+    } else {
+      this.visible = true;
+    }
+  }
+
+  onUpdateUser() {
+    console.log(this.registerForm.value);
+  }
 }
