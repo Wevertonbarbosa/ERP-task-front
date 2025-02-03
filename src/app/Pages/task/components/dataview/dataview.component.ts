@@ -23,6 +23,8 @@ import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { AddTaskComponent } from '../add-task/add-task.component';
 import { UpdateTaskComponent } from '../update-task/update-task.component';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
+import { TaskService } from '../../../../Service/task.service';
+import { UserGlobalService } from '../../../../Service/user-global.service';
 
 @Component({
   selector: 'app-dataview',
@@ -47,53 +49,67 @@ import { ConfirmPopupModule } from 'primeng/confirmpopup';
   ],
   templateUrl: './dataview.component.html',
   styleUrl: './dataview.component.css',
-  providers: [ConfirmationService, MessageService],
+  providers: [ConfirmationService, MessageService, TaskService],
 })
 export class DataviewComponent implements OnInit {
   sortOptions!: SelectItem[];
   sortOrder!: number;
   sortField!: string;
-  products!: any[];
+  products: any[] = [];
   checked: boolean = false;
+
+  userId!: number;
 
   visible: boolean = false;
   visibleUpdate: boolean = false;
+
+  allProducts: any[] = [];
 
   @ViewChild(AddTaskComponent) addTaskComponent!: AddTaskComponent;
   @ViewChild(UpdateTaskComponent) updateTaskComponent!: UpdateTaskComponent;
 
   constructor(
     private confirmationService: ConfirmationService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private service: TaskService,
+    private serviceUserGlobal: UserGlobalService
   ) {}
 
   ngOnInit() {
-    this.sortOptions = [
-      { label: 'DIARIA', value: '!price' },
-      { label: 'SEMANAL', value: 'price' },
-      { label: 'MENSAL', value: 'price' },
-      { label: 'ESPORÁDICO', value: 'price' },
-    ];
+    this.serviceUserGlobal.user$.subscribe((updatedUser) => {
+      this.userId = updatedUser.usuarioId;
+    });
 
-    this.products = [
-      {
-        titulo: 'Tomar Banho',
-        descricao: 'Tomar banho nesse lindo dia',
-        categoria: 'Fazeres',
-        frequencia: 'SEMANAL',
-        dataInicio: '02/02/2025',
-        dataFim: '10/02/2025',
-        diasSemana: '13208',
-      },
-      // {
-      //   titulo: 'Segundo titulo',
-      //   descricao: 'Comprar comida',
-      //   categoria: 'Comida',
-      //   frequencia: 'DIARIO',
-      //   dataInicio: '02/02/2025',
-      //   dataFim: '10/02/2025',
-      //   diasSemana: '13208',
-      // },
+    try {
+      this.service.getTasks(this.userId).subscribe({
+        next: (value) => {
+          this.allProducts = value;
+          this.products = value.map((task: any) => ({
+            titulo: task.titulo,
+            descricao: task.descricao,
+            categoria: task.categoria,
+            frequencia: task.frequencia,
+            dataInicio: task.dataInicio,
+            dataFim: task.dataFim,
+            diasSemana: '13208',
+          }));
+
+          this.products = [...this.allProducts];
+        },
+        error: (err) => {
+          console.error('Erro para carregar os dados ', err.error);
+        },
+      });
+    } catch (error) {
+      console.error('Error do Try Catch', error);
+    }
+
+    this.sortOptions = [
+      { label: 'DIARIA', value: 'DIARIA' },
+      { label: 'SEMANAL', value: 'SEMANAL' },
+      { label: 'MENSAL', value: 'MENSAL' },
+      { label: 'ESPORÁDICO', value: 'ESPORÁDICO' },
+      { label: 'TODAS', value: 'TODAS' }
     ];
   }
 
@@ -111,14 +127,15 @@ export class DataviewComponent implements OnInit {
   }
 
   onSortChange(event: any) {
-    let value = event.value;
+    const selectedFrequencia = event.value; // Frequência selecionada (DIARIA, SEMANAL, etc.)
 
-    if (value.indexOf('!') === 0) {
-      this.sortOrder = -1;
-      this.sortField = value.substring(1, value.length);
+    // Filtra a lista com base na frequência selecionada
+    if (selectedFrequencia === 'TODAS') {
+      this.products = this.allProducts; // Exibe todas as tarefas, sem filtro
     } else {
-      this.sortOrder = 1;
-      this.sortField = value;
+      this.products = this.allProducts.filter(
+        (task) => task.frequencia === selectedFrequencia
+      );
     }
   }
 

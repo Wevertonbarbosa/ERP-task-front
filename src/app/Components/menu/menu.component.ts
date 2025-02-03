@@ -25,6 +25,10 @@ import { ChipModule } from 'primeng/chip';
 import { InputGlobalComponent } from '../input-global/input-global.component';
 import { InputPasswordGlobalComponent } from '../input-password-global/input-password-global.component';
 import { User } from '../../Interface/user';
+import { MessageService } from 'primeng/api';
+import { ToastGlobalComponent } from '../toast-global/toast-global.component';
+import { UpdateUserService } from '../../Service/update-user.service';
+import { UserGlobalService } from '../../Service/user-global.service';
 
 @Component({
   selector: 'app-menu',
@@ -48,14 +52,17 @@ import { User } from '../../Interface/user';
     DrawerComponent,
     InputGlobalComponent,
     InputPasswordGlobalComponent,
+    ToastGlobalComponent,
   ],
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.css',
+  providers: [UpdateUserService, MessageService],
 })
 export class MenuComponent implements OnInit {
   items: MenuItem[] | undefined;
   visible: boolean = false;
   registerForm!: FormGroup;
+  keyToast: string = 'br';
   typeUser: User[] = [];
   loading: boolean = false;
 
@@ -63,14 +70,22 @@ export class MenuComponent implements OnInit {
 
   nameUser!: string;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private service: UpdateUserService,
+    private messageService: MessageService,
+    private serviceUserGlobal: UserGlobalService
+  ) {}
 
   classError = ['w-full', 'ng-dirty', 'ng-invalid'];
   class = ['w-full'];
 
   ngOnInit() {
     this.user = JSON.parse(localStorage.getItem('user') || '{}');
-    this.nameUser = this.user.nome || 'Usuário';
+
+    this.serviceUserGlobal.user$.subscribe((updatedUser) => {
+      this.nameUser = updatedUser.nome;
+    });
 
     this.typeUser = [{ role: 'ADMIN' }, { role: 'USER', disabled: true }];
 
@@ -143,6 +158,52 @@ export class MenuComponent implements OnInit {
   }
 
   onUpdateUser() {
-    console.log(this.registerForm.value);
+    const valueUser = this.registerForm.get('role')?.value.role;
+    this.registerForm.get('role')?.setValue(valueUser);
+
+    try {
+      this.loading = true;
+      if (this.registerForm.valid) {
+        this.service
+          .updateUser(this.user.usuarioId, this.registerForm.value)
+          .subscribe({
+            next: (value) => {
+              this.serviceUserGlobal.updateUser(value);
+              this.showToasRight(
+                'success',
+                'Usuário Atualizado!',
+                'Seu perfil foi atualizado com sucesso!'
+              );
+              this.registerForm.get('role')?.setValue(this.typeUser[0]);
+              this.loading = false;
+            },
+            error: (err) => {
+              console.error('Erro para atualizar ', err.error);
+              this.showToasRight(
+                'error',
+                'Erro ao atualizar usuário',
+                err.error.nome == undefined
+                  ? 'Estamos ajustando voltamos em breve'
+                  : err.error.nome
+              );
+              this.registerForm.get('role')?.setValue(this.typeUser[0]);
+              this.loading = false;
+            },
+          });
+      }
+    } catch (error) {
+      console.error('Error do Try Catch', error);
+      this.loading = false;
+    }
+  }
+
+  showToasRight(color: string, title: string, msg: string) {
+    this.messageService.add({
+      severity: color,
+      summary: title,
+      detail: msg,
+      key: this.keyToast,
+      life: 4000,
+    });
   }
 }

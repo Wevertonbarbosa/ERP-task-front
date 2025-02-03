@@ -4,7 +4,7 @@
   <div class="w-full py-2">
     <p-card class="shadow-lg rounded-sm">
       <div class="flex items-center gap-3">
-        <h1 class="font-semibold text-2xl"> Olá {{userName}}, seja muito bem-vindo(a)</h1>
+        <h1 class="font-semibold text-2xl"> Olá {{userName }}, seja muito bem-vindo(a)</h1>
         <i class="pi pi-users" style="font-size: 2rem; color: rgb(0, 117, 252);"></i>
       </div>
     </p-card>
@@ -14,13 +14,18 @@
     <p-card class="shadow-lg rounded flex-1 basis-[321px]"
       [style]="{borderLeft:'4px solid rgb(0, 117, 252)', height: '100%'}">
 
-      <div class="w-full flex flex-col">
-
+      <div class="w-full flex flex-col" *ngIf="taskDone !== 0 || taskMissing !== 0">
         <p-chart type="doughnut" [data]="chartData" [options]="chartOptions" width="200" height="200" class="chartPie">
         </p-chart>
-
         <span class="m-2 text-center font-medium italic">Overview das tarefas</span>
       </div>
+
+      <div *ngIf="taskDone === 0 && taskMissing === 0" class="w-full flex items-center justify-center flex-col gap-4 pt-4">
+        <i class="pi pi-table text-7xl text-teal-400"></i>
+        <h2 class="text-lg font-semibold italic text-slate-400">No momento você não possui tarefas</h2>
+      </div>
+
+
     </p-card>
 
     <p-card class="shadow-lg rounded flex-1 basis-[321px]"
@@ -58,7 +63,8 @@
     <p-card class="shadow-lg flex-1 basis-[321px]" [style]="{borderLeft:'4px solid rgb(0, 117, 252)', height: '100%'}">
       <div class="p-4 pt-1">
         <div class="flex items-center justify-center">
-          <p-knob [(ngModel)]="taskMissing" valueColor="DarkBlue" valueTemplate="{value}" [readonly]="true" size="180" />
+          <p-knob [(ngModel)]="taskMissing" valueColor="DarkBlue" valueTemplate="{value}" [readonly]="true"
+            size="180" />
         </div>
       </div>
 

@@ -7,11 +7,9 @@ import { DividerModule } from 'primeng/divider';
 import { KnobModule } from 'primeng/knob';
 import { FinanceComponent } from './components/finance/finance.component';
 import { ListStatusTaskService } from '../../Service/list-status-task.service';
-import {
-  FormsModule,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { UserGlobalService } from '../../Service/user-global.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -34,21 +32,27 @@ import { CommonModule } from '@angular/common';
 export class DashboardComponent implements OnInit {
   chartData: any;
   chartOptions: any;
-  taskDone!: string | number;
-  taskMissing!: string | number;
+  taskDone: string | number = 0;
+  taskMissing: string | number = 0;
   userName!: string;
-  valueKnob!:string;
+  valueKnob!: string;
 
-  constructor(private service: ListStatusTaskService) {}
+  userId!: number;
+
+  constructor(
+    private service: ListStatusTaskService,
+    private serviceUserGlobal: UserGlobalService
+  ) {}
 
   ngOnInit() {
-    const user = JSON.parse(localStorage.getItem('user') || '{}');
-    this.userName = user.nome || 'Usuário';
+    this.serviceUserGlobal.user$.subscribe((updatedUser) => {
+      this.userName = updatedUser.nome;
+      this.userId = updatedUser.usuarioId;
+    });
 
     try {
-      this.service.getListTaskStatusUser(user.usuarioId).subscribe({
+      this.service.getListTaskStatusUser(this.userId).subscribe({
         next: (value) => {
-          console.log('resposta api ', value);
           this.taskDone = value.tarefasConcluidas;
           this.taskMissing = value.tarefasPendentes;
 
@@ -63,15 +67,12 @@ export class DashboardComponent implements OnInit {
             ],
           };
         },
-        error: () => {},
+        error: (err) => {
+          console.error('Erro para login ', err.error);
+        },
       });
-
-      
-
-
     } catch (error) {
-    } finally {
-     
+      console.error('Error do Try Catch', error);
     }
 
     // Configurações do gráfico
