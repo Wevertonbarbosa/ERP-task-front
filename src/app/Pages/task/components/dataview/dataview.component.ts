@@ -56,14 +56,16 @@ export class DataviewComponent implements OnInit {
   sortOrder!: number;
   sortField!: string;
   products: any[] = [];
-  checked: boolean = false;
 
   userId!: number;
+  userRole!: string;
 
   visible: boolean = false;
   visibleUpdate: boolean = false;
 
+
   allProducts: any[] = [];
+  doneTaskCheck: boolean = false;
 
   @ViewChild(AddTaskComponent) addTaskComponent!: AddTaskComponent;
   @ViewChild(UpdateTaskComponent) updateTaskComponent!: UpdateTaskComponent;
@@ -78,20 +80,22 @@ export class DataviewComponent implements OnInit {
   ngOnInit() {
     this.serviceUserGlobal.user$.subscribe((updatedUser) => {
       this.userId = updatedUser.usuarioId;
+      this.userRole = updatedUser.role;
     });
 
     try {
       this.service.getTasks(this.userId).subscribe({
         next: (value) => {
-          this.allProducts = value;
-          this.products = value.map((task: any) => ({
+          this.allProducts = value.map((task: any) => ({
             titulo: task.titulo,
             descricao: task.descricao,
             categoria: task.categoria,
             frequencia: task.frequencia,
-            dataInicio: task.dataInicio,
-            dataFim: task.dataFim,
-            diasSemana: '13208',
+            dataInicio: this.formatDate(task.dataInicio),
+            dataFim: this.formatDate(task.dataFim),
+            diasSemana: task.diasSemana,
+            checked: false,
+            deleteTask: false,
           }));
 
           this.products = [...this.allProducts];
@@ -109,8 +113,16 @@ export class DataviewComponent implements OnInit {
       { label: 'SEMANAL', value: 'SEMANAL' },
       { label: 'MENSAL', value: 'MENSAL' },
       { label: 'ESPORÁDICO', value: 'ESPORÁDICO' },
-      { label: 'TODAS', value: 'TODAS' }
+      { label: 'TODAS', value: 'TODAS' },
     ];
+  }
+
+  formatDate(date: string): string {
+    if (!date) return ''; // Evita erro se a data for nula ou vazia
+
+    const [year, month, day] = date.split('-'); // Divide manualmente
+
+    return `${day}-${month}-${year}`;
   }
 
   openModalAddTask() {
@@ -119,19 +131,20 @@ export class DataviewComponent implements OnInit {
     }
   }
 
-  openModalUpdateTask() {
+  openModalUpdateTask(item: any) {
+   
+ 
     if (this.updateTaskComponent) {
       this.visibleUpdate = true;
-      this.updateTaskComponent.onUpdateTask();
+      this.updateTaskComponent.showDialog(item);
     }
   }
 
   onSortChange(event: any) {
-    const selectedFrequencia = event.value; // Frequência selecionada (DIARIA, SEMANAL, etc.)
+    const selectedFrequencia = event.value;
 
-    // Filtra a lista com base na frequência selecionada
     if (selectedFrequencia === 'TODAS') {
-      this.products = this.allProducts; // Exibe todas as tarefas, sem filtro
+      this.products = [...this.allProducts]; // Exibe todas as tarefas, já formatadas
     } else {
       this.products = this.allProducts.filter(
         (task) => task.frequencia === selectedFrequencia
@@ -139,12 +152,12 @@ export class DataviewComponent implements OnInit {
     }
   }
 
-  confirmTaskDone(event: any) {
+  confirmTaskDone(item: any) {
     this.confirmationService.confirm({
-      target: event.target as EventTarget,
+      target: item.target as EventTarget,
       message: 'Tem certeza que deseja concluír a tarefa?',
       header: 'Concluír tarefa',
-      closable: true,
+      closable: false,
       closeOnEscape: true,
       icon: 'pi pi-exclamation-triangle',
       rejectButtonProps: {
@@ -161,9 +174,10 @@ export class DataviewComponent implements OnInit {
           summary: 'Concluír tarefa',
           detail: 'Tarefa concluída com sucesso',
         });
+        this.doneTaskCheck = true;
       },
       reject: () => {
-        this.checked = false;
+        item.checked = false;
         this.messageService.add({
           severity: 'info',
           summary: 'Tarefa não concluída',
@@ -174,9 +188,9 @@ export class DataviewComponent implements OnInit {
     });
   }
 
-  deleteTask(event: any) {
+  deleteTask(item: any) {
     this.confirmationService.confirm({
-      target: event.target as EventTarget,
+      target: item.target as EventTarget,
       message: 'Você tem certeza que deseja excluir essa tarefa',
       header: 'Deletar tarefa',
       icon: 'pi pi-info-circle',
@@ -190,6 +204,7 @@ export class DataviewComponent implements OnInit {
         severity: 'danger',
       },
       accept: () => {
+        //FUNCAO PARA EXCLUIR TAREFAS
         this.messageService.add({
           severity: 'success',
           summary: 'Tarefa excluída',

@@ -51,6 +51,8 @@ export class UpdateTaskComponent implements OnInit {
   keyToast: string = 'br';
   frequence: Frequence[] = [];
 
+  taskUpdate!: any;
+
   dateStart: Date | undefined;
 
   classError = ['w-full', 'ng-dirty', 'ng-invalid'];
@@ -61,8 +63,6 @@ export class UpdateTaskComponent implements OnInit {
   ngOnInit() {
     this.dateStart = new Date();
     this.dateStart.getDate();
-
-
     this.registerForm = this.fb.group({
       titulo: ['', [Validators.required, Validators.minLength(3)]],
       descricao: ['', [Validators.required, Validators.minLength(8)]],
@@ -75,7 +75,9 @@ export class UpdateTaskComponent implements OnInit {
     });
   }
 
-  onUpdateTask(){
+  showDialog(item: any) {
+    this.taskUpdate = item;
     this.visible = true;
   }
+  onUpdateTask() {}
 }

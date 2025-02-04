@@ -2,12 +2,11 @@
   <p-dataview #dv [value]="products" [sortField]="sortField" [sortOrder]="sortOrder">
     <ng-template #header>
       <div class="flex flex-col md:flex-row md:justify-between">
-        <p-select [options]="sortOptions" placeholder="Frequencia" 
-        (onChange)="onSortChange($event)"
+        <p-select [options]="sortOptions" placeholder="Frequencia" (onChange)="onSortChange($event)"
           styleClass="mb-2 md:mb-0" />
       </div>
     </ng-template>
-    
+
     <ng-template #list let-items>
 
       <p-scrollpanel *ngIf="this.products.length != 0" [style]="{ width: '100%', height: '385px' }">
@@ -49,21 +48,21 @@
 
                   <div class="flex flex-col items-center">
                     <span class="font-semibold text-sm italic">Concluir tarefa</span>
-                    <p-toast />
-                    <p-confirmdialog />
-                    <p-toggleswitch [(ngModel)]="checked" (onChange)="confirmTaskDone($event)">
+
+                    <p-toggleswitch [(ngModel)]="item.checked" (onChange)="confirmTaskDone(item)"
+                      [disabled]="doneTaskCheck">
                       <ng-template #handle let-checked="checked">
                         <i [ngClass]="['!text-xs', 'pi', checked ? 'pi-check' : 'pi-times']"></i>
                       </ng-template>
                     </p-toggleswitch>
                   </div>
 
-                  <div class="flex gap-8">
-                    <i class="pi pi-pencil cursor-pointer text-blue-400 text-xl" (click)="openModalUpdateTask()"></i>
-            
-                    <p-toast />
-                    <p-confirmdialog />
-                    <i (click)="deleteTask($event)" class="pi pi-trash text-red-600 cursor-pointer text-xl"></i>
+                  <div *ngIf="userRole == 'ADMIN'" class="flex gap-8">
+                    <i class="pi pi-pencil cursor-pointer text-blue-400 text-xl"
+                      (click)="openModalUpdateTask(item)"></i>
+
+
+                    <i (click)="deleteTask(item)" class="pi pi-trash text-red-600 cursor-pointer text-xl"></i>
                   </div>
                 </div>
 
@@ -78,6 +77,10 @@
               </div>
             </div>
           </div>
+
+          <p-toast />
+          <p-confirmdialog />
+
         </div>
       </p-scrollpanel>
     </ng-template>
@@ -95,7 +98,7 @@
     <p-divider type="solid" />
   </div>
 
-  <div class="w-full card flex flex-wrap justify-center">
+  <div *ngIf="userRole == 'ADMIN'" class="w-full card flex flex-wrap justify-center">
     <p-button icon="pi pi-plus" [rounded]="true" [text]="true" tooltipPosition="top" pTooltip="Criar uma tarefa"
       [raised]="true" severity="success" (onClick)="openModalAddTask()" />
   </div>
