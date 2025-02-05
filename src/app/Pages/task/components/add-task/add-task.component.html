@@ -86,7 +86,7 @@
 
             <p-floatlabel variant="in">
               <p-datepicker styleClass="width-full" inputId="in_label" formControlName="dataInicio" nome="dataInicio"
-                showIcon iconDisplay="input" readonlyInput [minDate]="dateStart" dateFormat="yy-mm-dd"
+                showIcon iconDisplay="input" readonlyInput [minDate]="dateStart" dateFormat="dd-mm-yy"
                 [class]="(registerForm.controls['dataInicio'].invalid && (registerForm.controls['dataInicio'].touched || registerForm.controls['dataInicio'].dirty))? classError : class" />
               <label for="in_label">Data de início</label>
             </p-floatlabel>
@@ -109,7 +109,7 @@
             <!-- REGRAS PARA SELECIONAR A DATA NO DIA CERTO CONFORME AS REGRAS -->
             <p-floatlabel variant="in">
               <p-datepicker styleClass="width-full" inputId="in_label" formControlName="dataFim" nome="dataFim" showIcon
-                iconDisplay="input" readonlyInput [minDate]="" dateFormat="yy-mm-dd"
+                iconDisplay="input" readonlyInput [minDate]="" dateFormat="dd-mm-yy"
                 [class]="(registerForm.controls['dataFim'].invalid && (registerForm.controls['dataFim'].touched || registerForm.controls['dataFim'].dirty))? classError : class" />
               <label for="in_label">Data de término</label>
             </p-floatlabel>

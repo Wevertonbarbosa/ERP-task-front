@@ -4,15 +4,24 @@ import { environment } from '../../environment/environment';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TaskService {
-
   private readonly api = environment.API;
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-  getTasks(id:number): Observable<any>{
-    return this.http.get<any>(`${this.api}tarefas/${id}`)
+  getTasks(id: number): Observable<any> {
+    return this.http.get<any>(`${this.api}tarefas/${id}`);
   }
 
+  postTask(idCreator: number, idOwner: number, data: any): Observable<any> {
+    return this.http.post<any>(
+      `${this.api}tarefas/${idCreator}/${idOwner}`,
+      data
+    );
+  }
+
+  updateTask(idUser: number, idTask: number, data: any): Observable<any> {
+    return this.http.put<any>(`${this.api}tarefas/${idTask}/${idUser}`, data);
+  }
 }

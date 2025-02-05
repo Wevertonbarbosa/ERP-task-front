@@ -63,7 +63,6 @@ export class DataviewComponent implements OnInit {
   visible: boolean = false;
   visibleUpdate: boolean = false;
 
-
   allProducts: any[] = [];
   doneTaskCheck: boolean = false;
 
@@ -86,7 +85,11 @@ export class DataviewComponent implements OnInit {
     try {
       this.service.getTasks(this.userId).subscribe({
         next: (value) => {
+          console.log(value);
+
           this.allProducts = value.map((task: any) => ({
+            id: task.id,
+            status: task.status,
             titulo: task.titulo,
             descricao: task.descricao,
             categoria: task.categoria,
@@ -132,11 +135,9 @@ export class DataviewComponent implements OnInit {
   }
 
   openModalUpdateTask(item: any) {
-   
- 
     if (this.updateTaskComponent) {
-      this.visibleUpdate = true;
       this.updateTaskComponent.showDialog(item);
+      this.visibleUpdate = true;
     }
   }
 
