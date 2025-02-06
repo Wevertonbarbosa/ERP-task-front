@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { DialogModule } from 'primeng/dialog';
 import {
   FormsModule,
@@ -47,6 +47,7 @@ import { UserGlobalService } from '../../../../Service/user-global.service';
 })
 export class UpdateTaskComponent implements OnInit {
   @Input() visible!: boolean;
+  @Output() refreshList = new EventEmitter<void>();
 
   registerForm!: FormGroup;
   loading: boolean = false;
@@ -95,6 +96,9 @@ export class UpdateTaskComponent implements OnInit {
       diasSemana: [[], []],
     });
   }
+  refreshDataListTask() {
+    this.refreshList.emit();
+  }
 
   showDialog(item: any) {
     this.taskUpdate = { ...item };
@@ -142,6 +146,7 @@ export class UpdateTaskComponent implements OnInit {
                 'Tarefa Atualizada!',
                 'Sua Tarefa foi atualizado com sucesso!'
               );
+              this.refreshDataListTask()
               this.loading = false;
             },
             error: (err) => {

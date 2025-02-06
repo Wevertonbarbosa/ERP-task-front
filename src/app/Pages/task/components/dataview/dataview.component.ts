@@ -82,11 +82,21 @@ export class DataviewComponent implements OnInit {
       this.userRole = updatedUser.role;
     });
 
+    this.getTaskUser();
+
+    this.sortOptions = [
+      { label: 'DIARIA', value: 'DIARIA' },
+      { label: 'SEMANAL', value: 'SEMANAL' },
+      { label: 'MENSAL', value: 'MENSAL' },
+      { label: 'ESPORÁDICO', value: 'ESPORÁDICO' },
+      { label: 'TODAS', value: 'TODAS' },
+    ];
+  }
+
+  getTaskUser() {
     try {
       this.service.getTasks(this.userId).subscribe({
         next: (value) => {
-          console.log(value);
-
           this.allProducts = value.map((task: any) => ({
             id: task.id,
             status: task.status,
@@ -110,14 +120,21 @@ export class DataviewComponent implements OnInit {
     } catch (error) {
       console.error('Error do Try Catch', error);
     }
+  }
 
-    this.sortOptions = [
-      { label: 'DIARIA', value: 'DIARIA' },
-      { label: 'SEMANAL', value: 'SEMANAL' },
-      { label: 'MENSAL', value: 'MENSAL' },
-      { label: 'ESPORÁDICO', value: 'ESPORÁDICO' },
-      { label: 'TODAS', value: 'TODAS' },
-    ];
+  deleteTaskUser(idTask: number) {
+    try {
+      this.service.deleteTask(idTask, this.userId).subscribe({
+        next: (value) => {
+          this.getTaskUser();
+        },
+        error: (err) => {
+          console.error('Erro para deletar tarefa ', err.error);
+        },
+      });
+    } catch (error) {
+      console.error('Error do Try Catch', error);
+    }
   }
 
   formatDate(date: string): string {
@@ -206,6 +223,7 @@ export class DataviewComponent implements OnInit {
       },
       accept: () => {
         //FUNCAO PARA EXCLUIR TAREFAS
+        this.deleteTaskUser(item.id);
         this.messageService.add({
           severity: 'success',
           summary: 'Tarefa excluída',

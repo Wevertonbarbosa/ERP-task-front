@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { DialogModule } from 'primeng/dialog';
 import {
   FormsModule,
@@ -43,6 +43,7 @@ import { MessageService } from 'primeng/api';
 })
 export class AddTaskComponent implements OnInit {
   @Input() visible!: boolean;
+  @Output() refreshList = new EventEmitter<void>();
 
   registerForm!: FormGroup;
   loading: boolean = false;
@@ -89,6 +90,10 @@ export class AddTaskComponent implements OnInit {
     });
   }
 
+  refreshDataListTask() {
+    this.refreshList.emit();
+  }
+
   onAddTask() {
     const formData = { ...this.registerForm.value };
     formData.frequencia = formData.frequencia.choose;
@@ -106,7 +111,8 @@ export class AddTaskComponent implements OnInit {
               'Tarefa cadastrada!',
               'Tarefa foi cadastrada com sucesso!'
             );
-            this.registerForm.reset()
+            this.refreshDataListTask()
+            this.registerForm.reset();
             this.loading = false;
           },
           error: (err) => {

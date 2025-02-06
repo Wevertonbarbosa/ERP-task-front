@@ -104,8 +104,8 @@
   </div>
 
   <!-- MODAL ADD TAREFAS -->
-  <app-add-task [visible]="false"></app-add-task>
+  <app-add-task [visible]="false" (refreshList)="getTaskUser()"></app-add-task>
   <!-- MODAL UPDATE TAREFAS -->
-  <app-update-task [visible]="visibleUpdate"></app-update-task>
+  <app-update-task [visible]="visibleUpdate" (refreshList)="getTaskUser()"></app-update-task>
 
 </div>
