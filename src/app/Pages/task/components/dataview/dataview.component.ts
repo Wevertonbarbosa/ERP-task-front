@@ -23,8 +23,11 @@ import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { AddTaskComponent } from '../add-task/add-task.component';
 import { UpdateTaskComponent } from '../update-task/update-task.component';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
+import { ToggleButtonModule } from 'primeng/togglebutton';
 import { TaskService } from '../../../../Service/task.service';
 import { UserGlobalService } from '../../../../Service/user-global.service';
+import { TaskCheckService } from '../../../../Service/task-check.service';
+import { SignalTask } from '../../../../Interface/signalTask';
 
 @Component({
   selector: 'app-dataview',
@@ -33,6 +36,7 @@ import { UserGlobalService } from '../../../../Service/user-global.service';
     ToggleSwitchModule,
     DividerModule,
     ReactiveFormsModule,
+    ToggleButtonModule,
     TooltipModule,
     FormsModule,
     ConfirmDialogModule,
@@ -49,13 +53,19 @@ import { UserGlobalService } from '../../../../Service/user-global.service';
   ],
   templateUrl: './dataview.component.html',
   styleUrl: './dataview.component.css',
-  providers: [ConfirmationService, MessageService, TaskService],
+  providers: [
+    ConfirmationService,
+    MessageService,
+    TaskService,
+    TaskCheckService,
+  ],
 })
 export class DataviewComponent implements OnInit {
   sortOptions!: SelectItem[];
   sortOrder!: number;
   sortField!: string;
   products: any[] = [];
+  valueSignalDone!: SignalTask[];
 
   userId!: number;
   userRole!: string;
@@ -65,6 +75,7 @@ export class DataviewComponent implements OnInit {
 
   allProducts: any[] = [];
   doneTaskCheck: boolean = false;
+  signalChecked: boolean = false;
 
   @ViewChild(AddTaskComponent) addTaskComponent!: AddTaskComponent;
   @ViewChild(UpdateTaskComponent) updateTaskComponent!: UpdateTaskComponent;
@@ -73,6 +84,7 @@ export class DataviewComponent implements OnInit {
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private service: TaskService,
+    private serviceTaskCheck: TaskCheckService,
     private serviceUserGlobal: UserGlobalService
   ) {}
 
@@ -99,6 +111,7 @@ export class DataviewComponent implements OnInit {
         next: (value) => {
           this.allProducts = value.map((task: any) => ({
             id: task.id,
+            responsavelId: task.responsavelId,
             status: task.status,
             titulo: task.titulo,
             descricao: task.descricao,
@@ -109,6 +122,7 @@ export class DataviewComponent implements OnInit {
             diasSemana: task.diasSemana,
             checked: false,
             deleteTask: false,
+            sinalizadaUsuario: false,
           }));
 
           this.products = [...this.allProducts];
@@ -206,6 +220,67 @@ export class DataviewComponent implements OnInit {
     });
   }
 
+  signalTask(item: any) {
+    this.confirmationService.confirm({
+      target: item.target as EventTarget,
+      message:
+        'Sinalize a tarefa para o mentor responsável aprovar a conclusão da tarefa!',
+      header: 'Sinalizar tarefa como conluída',
+      closable: false,
+      closeOnEscape: true,
+      icon: 'pi pi-exclamation-triangle',
+      rejectButtonProps: {
+        label: 'Cancelar',
+        severity: 'secondary',
+        outlined: true,
+      },
+      acceptButtonProps: {
+        label: 'Sinalizar',
+      },
+      accept: () => {
+        const valueSignalTask = item.sinalizadaUsuario;
+        this.valueSignalDone = [{ sinalizadaUsuario: valueSignalTask }];
+
+        this.postTaskSignalDoneUser(
+          item.id,
+          item.responsavelId,
+          this.valueSignalDone[0]
+        );
+
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Tarefa sinalizada',
+          detail: 'Tarefa sinalizada com sucesso',
+        });
+        this.signalChecked = true;
+      },
+      reject: () => {
+        item.sinalizadaUsuario = false;
+        this.messageService.add({
+          severity: 'info',
+          summary: 'Tarefa não sinalizada',
+          detail: 'Sua tarefa não foi sinalizada',
+          life: 3000,
+        });
+      },
+    });
+  }
+
+  postTaskSignalDoneUser(idTask: number, idUser: number, data: any) {
+    try {
+      this.serviceTaskCheck.postSignalTask(idTask, idUser, data).subscribe({
+        next: (value) => {
+          console.log(value);
+        },
+        error: (err) => {
+          console.error('Error para sinalizar tarefa concluida', err);
+        },
+      });
+    } catch (error) {
+      console.error('Error no Try Catch', error);
+    }
+  }
+
   deleteTask(item: any) {
     this.confirmationService.confirm({
       target: item.target as EventTarget,
@@ -222,7 +297,6 @@ export class DataviewComponent implements OnInit {
         severity: 'danger',
       },
       accept: () => {
-        //FUNCAO PARA EXCLUIR TAREFAS
         this.deleteTaskUser(item.id);
         this.messageService.add({
           severity: 'success',

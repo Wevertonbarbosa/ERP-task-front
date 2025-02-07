@@ -46,9 +46,8 @@
 
                 <div class="flex flex-col items-center justify-evenly gap-2 w-full">
 
-                  <div class="flex flex-col items-center">
+                  <div *ngIf="userRole == 'ADMIN'" class="flex flex-col items-center">
                     <span class="font-semibold text-sm italic">Concluir tarefa</span>
-
                     <p-toggleswitch [(ngModel)]="item.checked" (onChange)="confirmTaskDone(item)"
                       [disabled]="doneTaskCheck">
                       <ng-template #handle let-checked="checked">
@@ -56,6 +55,18 @@
                       </ng-template>
                     </p-toggleswitch>
                   </div>
+
+                  <div *ngIf="userRole == 'USER'" class="flex flex-col items-center justify-evenly gap-2 w-full">
+                    <span class="font-semibold text-sm italic">Sinalizar tarefa</span>
+                    <p-togglebutton [(ngModel)]="item.sinalizadaUsuario" (onChange)="signalTask(item)"
+                      onLabel="Concluída" [disabled]="signalChecked" offLabel="Andamento" onIcon="pi pi-check"
+                      offIcon="pi pi-times" onIcon="pi pi-check" offIcon="pi pi-check" styleClass="w-36"
+                      ariaLabel="Do you confirm" />
+
+                  </div>
+
+
+
 
                   <div *ngIf="userRole == 'ADMIN'" class="flex gap-8">
                     <i class="pi pi-pencil cursor-pointer text-blue-400 text-xl"
