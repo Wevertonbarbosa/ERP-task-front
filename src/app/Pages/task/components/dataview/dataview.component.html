@@ -59,13 +59,19 @@
                   <div *ngIf="userRole == 'USER'" class="flex flex-col items-center justify-evenly gap-2 w-full">
                     <span class="font-semibold text-sm italic">Sinalizar tarefa</span>
                     <p-togglebutton [(ngModel)]="item.sinalizadaUsuario" (onChange)="signalTask(item)"
-                      onLabel="Concluída" [disabled]="signalChecked" offLabel="Andamento" onIcon="pi pi-check"
+                      onLabel="Concluída" [disabled]="item.sinalizadaUsuario" offLabel="Andamento" onIcon="pi pi-check"
                       offIcon="pi pi-times" onIcon="pi pi-check" offIcon="pi pi-check" styleClass="w-36"
                       ariaLabel="Do you confirm" />
 
+                    <div class="flex items-center gap-3">
+                      <span [ngClass]="['italic', 'text-xs', 'font-medium', item.done ?'text-green-400':'text-yellow-500']">
+                        {{item.done?'Tarefa aprovada':'Aguardando aprovação'}}
+                      </span>
+                      <i [ngClass]="['!text-xs', 'pi', item.done ? 'pi-check-circle':'pi-clock']"></i>
+                    </div>
+
+
                   </div>
-
-
 
 
                   <div *ngIf="userRole == 'ADMIN'" class="flex gap-8">

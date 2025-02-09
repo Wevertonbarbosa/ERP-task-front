@@ -4,19 +4,20 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TaskCheckService {
-
   private readonly api = environment.API;
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
+  getTaskSignal(idUser: number): Observable<any> {
+    return this.http.get<any>(`${this.api}tarefas-data/tarefa-sinalizada/${idUser}`);
+  }
 
-   postSignalTask(idTask: number, idUser: number, data: any): Observable<any> {
-      return this.http.post<any>(
-        `${this.api}tarefas-data/${idTask}/sinalizar/${idUser}`,
-        data
-      );
-    }
-
+  postSignalTask(idTask: number, idUser: number, data: any): Observable<any> {
+    return this.http.post<any>(
+      `${this.api}tarefas-data/${idTask}/sinalizar/${idUser}`,
+      data
+    );
+  }
 }

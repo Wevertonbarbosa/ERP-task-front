@@ -66,6 +66,7 @@ export class DataviewComponent implements OnInit {
   sortField!: string;
   products: any[] = [];
   valueSignalDone!: SignalTask[];
+  statusSignalTaks: any[] = [];
 
   userId!: number;
   userRole!: string;
@@ -109,23 +110,38 @@ export class DataviewComponent implements OnInit {
     try {
       this.service.getTasks(this.userId).subscribe({
         next: (value) => {
-          this.allProducts = value.map((task: any) => ({
-            id: task.id,
-            responsavelId: task.responsavelId,
-            status: task.status,
-            titulo: task.titulo,
-            descricao: task.descricao,
-            categoria: task.categoria,
-            frequencia: task.frequencia,
-            dataInicio: this.formatDate(task.dataInicio),
-            dataFim: this.formatDate(task.dataFim),
-            diasSemana: task.diasSemana,
-            checked: false,
-            deleteTask: false,
-            sinalizadaUsuario: false,
-          }));
+          this.serviceTaskCheck.getTaskSignal(this.userId).subscribe({
+            next: (signalTasks) => {
+              const signalMap = new Map(
+                signalTasks.map((task: any) => [
+                  task.tarefa,
+                  task.sinalizadaUsuario,
+                ])
+              );
+              const doneMap = new Map(
+                signalTasks.map((task: any) => [task.tarefa, task.concluida])
+              );
 
-          this.products = [...this.allProducts];
+              this.allProducts = value.map((task: any) => ({
+                id: task.id,
+                responsavelId: task.responsavelId,
+                status: task.status,
+                titulo: task.titulo,
+                descricao: task.descricao,
+                categoria: task.categoria,
+                frequencia: task.frequencia,
+                dataInicio: this.formatDate(task.dataInicio),
+                dataFim: this.formatDate(task.dataFim),
+                diasSemana: task.diasSemana,
+                checked: false,
+                deleteTask: false,
+                sinalizadaUsuario: signalMap.get(task.id) ?? false,
+                done: doneMap.get(task.id) ?? false,
+              }));
+
+              this.products = [...this.allProducts];
+            },
+          });
         },
         error: (err) => {
           console.error('Erro para carregar os dados ', err.error);
@@ -252,7 +268,6 @@ export class DataviewComponent implements OnInit {
           summary: 'Tarefa sinalizada',
           detail: 'Tarefa sinalizada com sucesso',
         });
-        this.signalChecked = true;
       },
       reject: () => {
         item.sinalizadaUsuario = false;
