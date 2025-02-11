@@ -22,6 +22,10 @@ import { MessageService } from 'primeng/api';
 import { InputGlobalComponent } from '../../Components/input-global/input-global.component';
 import { ToastGlobalComponent } from '../../Components/toast-global/toast-global.component';
 import { Frequence } from '../../Interface/frequence';
+import { UserService } from '../../Service/user.service';
+import { UserGlobalService } from '../../Service/user-global.service';
+import { ListMentee } from '../../Interface/list-mentee';
+import { TaskService } from '../../Service/task.service';
 
 @Component({
   selector: 'app-mentee-task',
@@ -45,22 +49,42 @@ import { Frequence } from '../../Interface/frequence';
   ],
   templateUrl: './mentee-task.component.html',
   styleUrl: './mentee-task.component.css',
-  providers: [MessageService]
+  providers: [MessageService, UserService, TaskService],
 })
 export class MenteeTaskComponent implements OnInit {
   registerForm!: FormGroup;
+  userId!: number;
+  idMentee!: number;
+  userMentee: any[] = [];
 
   loading: boolean = false;
   keyToast: string = 'br';
 
   frequence: Frequence[] = [];
   dateStart: Date | undefined;
+  dateEndMin!: Date | undefined;
+
+  nameMentee: ListMentee[] = [];
+  selectedMentee: string = ''; // Começa vazio
+  isMenteeSelected: boolean = false;
 
   classError = ['w-full', 'ng-dirty', 'ng-invalid'];
   class = ['w-full'];
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private service: UserService,
+    private serviceTask: TaskService,
+    private messageService: MessageService,
+    private serviceUserGlobal: UserGlobalService
+  ) {}
   ngOnInit() {
+    this.selectedMentee = 'Mentorado';
+
+    this.serviceUserGlobal.user$.subscribe((updatedUser) => {
+      this.userId = updatedUser.usuarioId;
+    });
+
     this.dateStart = new Date();
     this.dateStart.getDate();
 
@@ -70,6 +94,8 @@ export class MenteeTaskComponent implements OnInit {
       { choose: 'MENSAL' },
       { choose: 'ESPORADICA' },
     ];
+
+    this.getMentee();
 
     this.registerForm = this.fb.group({
       titulo: ['', [Validators.required, Validators.minLength(3)]],
@@ -81,7 +107,126 @@ export class MenteeTaskComponent implements OnInit {
       // PRECISO IR PENSANDO EM COMO VOU ENVIAR ESSE
       diasSemana: [[], []],
     });
+
+    this.registerForm
+      .get('dataInicio')
+      ?.valueChanges.subscribe((newStartDate) => {
+        this.onStartDateChange(newStartDate);
+      });
   }
 
-  onAddTaskMentee() {}
+  getMentee() {
+    try {
+      this.service.getMeentFromAdmin(this.userId).subscribe({
+        next: (value) => {
+          console.log(value);
+          this.userMentee = value.map((data: any) => ({
+            id: data.usuarioId,
+            email: data.email,
+            nome: data.nome,
+            role: data.role,
+            tarefasConcluidas: data.tarefasConcluidas,
+            tarefasPendentes: data.tarefasPendentes,
+          }));
+
+          this.nameMentee = value.map((data: any) => ({
+            mentee: data.nome,
+            id: data.usuarioId,
+          }));
+        },
+        error: (err) => {
+          console.error('Erro para carregar os dados ', err.error);
+        },
+      });
+    } catch (error) {
+      console.error('Error do Try Catch', error);
+    }
+  }
+
+  onStartDateChange(newStartDate: Date) {
+    if (newStartDate) {
+      this.dateEndMin = newStartDate; // Atualiza a data mínima para dataFim
+  
+      // Se a dataFim for menor que a nova dataInicio, resetamos o campo
+      const currentEndDate = this.registerForm.get('dataFim')?.value;
+      if (currentEndDate && currentEndDate < newStartDate) {
+        this.registerForm.get('dataFim')?.setValue(null);
+      }
+    }
+  }
+
+  onMenteeSelect(value: any) {
+    this.idMentee = value.id;
+    if (value) {
+      this.selectedMentee = value.mentee;
+      this.isMenteeSelected = true;
+    } else {
+      this.selectedMentee = 'Mentorado';
+      this.isMenteeSelected = false;
+    }
+  }
+
+  onAddTaskMentee() {
+    const formData = { ...this.registerForm.value };
+    formData.frequencia = formData.frequencia.choose;
+    formData.dataInicio = this.formatDate(formData.dataInicio);
+    formData.dataFim = this.formatDate(formData.dataFim);
+
+    console.log(formData);
+
+    try {
+      this.loading = true;
+      if (this.registerForm.valid) {
+        this.serviceTask
+          .postTask(this.userId, this.idMentee, formData)
+          .subscribe({
+            next: (value) => {
+              console.log(value);
+              this.showToasRight(
+                'success',
+                'Tarefa cadastrada!',
+                'Tarefa foi cadastrada com sucesso!'
+              );
+
+              this.registerForm.reset();
+              this.loading = false;
+            },
+            error: (err) => {
+              console.error('Erro para registrar tarefa ', err.error);
+              this.showToasRight(
+                'error',
+                'Erro ao cadastrar tarefa',
+                err.error.nome == undefined
+                  ? 'Estamos ajustando voltamos em breve'
+                  : err.error.nome
+              );
+              this.loading = false;
+            },
+          });
+      }
+    } catch (error) {
+      console.error('Error do Try Catch', error);
+      this.loading = false;
+    }
+  }
+
+  formatDate(date: Date): string {
+    if (!date) return ''; // Caso esteja vazio
+
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // +1 porque Janeiro é 0
+    const day = String(date.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+  }
+
+  showToasRight(color: string, title: string, msg: string) {
+    this.messageService.add({
+      severity: color,
+      summary: title,
+      detail: msg,
+      key: this.keyToast,
+      life: 4000,
+    });
+  }
 }

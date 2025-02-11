@@ -8,8 +8,8 @@
       <p-card header="Lista de tarefas dos mentorados">
         <div class="w-full flex justify-end py-4">
           <div class="w-72">
-            <p-select class="w-full" [options]="" name="" [checkmark]="true" optionLabel="" [showClear]="true"
-              placeholder="Mentorado" />
+            <p-select class="w-full" [options]="nameMentee" name="selectedUser" [checkmark]="true" optionLabel="mentee"
+              [showClear]="true" placeholder="Mentorado" (onChange)="onMenteeSelect($event.value)" />
           </div>
         </div>
 
@@ -46,6 +46,13 @@
                   <span class="font-bold sm:ml-8">{{option.categoria }}</span>
                   <span class="font-normal text-xs sm:ml-8"><b class="italic">Início:</b> {{option.dataInicio }} <b
                       class="italic">até </b> {{option.dataFim}}</span>
+                </div>
+
+
+                <div class="">
+                  <span [ngClass]="['italic', 'text-xs', 'font-medium', option.done ?'text-green-400':'text-yellow-500']">
+                    {{option.done?'Tarefa aprovada':'Aguardando aprovação'}}
+                  </span>
                 </div>
 
               </div>
