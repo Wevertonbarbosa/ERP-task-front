@@ -11,13 +11,26 @@ export class TaskCheckService {
   constructor(private http: HttpClient) {}
 
   getTaskSignal(idUser: number): Observable<any> {
-    return this.http.get<any>(`${this.api}tarefas-data/tarefa-sinalizada/${idUser}`);
+    return this.http.get<any>(
+      `${this.api}tarefas-data/tarefa-sinalizada/${idUser}`
+    );
   }
 
   postSignalTask(idTask: number, idUser: number, data: any): Observable<any> {
     return this.http.post<any>(
       `${this.api}tarefas-data/${idTask}/sinalizar/${idUser}`,
       data
+    );
+  }
+
+  putDoneCheckMentee(
+    idTaskCheck: number,
+    idAdmin: number,
+    data: boolean
+  ): Observable<any> {
+    return this.http.put<any>(
+      `${this.api}tarefas-data/${idTaskCheck}/confirmar/${idAdmin}/${data}`,
+      null
     );
   }
 }

@@ -5,19 +5,38 @@ import { OrderListModule } from 'primeng/orderlist';
 import { SelectModule } from 'primeng/select';
 import { Select } from 'primeng/select';
 import { CommonModule } from '@angular/common';
+import { ToastModule } from 'primeng/toast';
 import { Tag } from 'primeng/tag';
 import { UserService } from '../../Service/user.service';
 import { UserGlobalService } from '../../Service/user-global.service';
 import { ListMentee } from '../../Interface/list-mentee';
 import { TaskService } from '../../Service/task.service';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { TaskCheckService } from '../../Service/task-check.service';
+import { ToggleButtonModule } from 'primeng/togglebutton';
+import {
+  FormsModule,
+  Validators,
+  FormGroup,
+  FormBuilder,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { ConfirmationService, MessageService } from 'primeng/api';
+
+import { ToggleSwitchModule } from 'primeng/toggleswitch';
 
 @Component({
   selector: 'app-list-mentee-task',
   imports: [
     MenuComponent,
+    ToggleSwitchModule,
+    ToastModule,
+    ConfirmDialogModule,
+    FormsModule,
+    ReactiveFormsModule,
     CardModule,
     OrderListModule,
+    ToggleButtonModule,
     Tag,
     CommonModule,
     SelectModule,
@@ -25,7 +44,13 @@ import { TaskCheckService } from '../../Service/task-check.service';
   ],
   templateUrl: './list-mentee-task.component.html',
   styleUrl: './list-mentee-task.component.css',
-  providers: [UserService, TaskService, TaskCheckService],
+  providers: [
+    UserService,
+    TaskService,
+    TaskCheckService,
+    ConfirmationService,
+    MessageService,
+  ],
 })
 export class ListMenteeTaskComponent implements OnInit {
   products!: any[];
@@ -35,7 +60,9 @@ export class ListMenteeTaskComponent implements OnInit {
 
   constructor(
     private service: UserService,
+    private confirmationService: ConfirmationService,
     private serviceTask: TaskService,
+    private messageService: MessageService,
     private serviceTaskCheck: TaskCheckService,
     private serviceUserGlobal: UserGlobalService
   ) {}
@@ -77,8 +104,6 @@ export class ListMenteeTaskComponent implements OnInit {
 
   onMenteeSelect(value: any) {
     if (value != null) {
-      console.log(value.id);
-
       this.getTaskMentee(value.id);
     } else {
     }
@@ -98,12 +123,18 @@ export class ListMenteeTaskComponent implements OnInit {
                   task.sinalizadaUsuario,
                 ])
               );
+
               const doneMap = new Map(
                 signalTasks.map((task: any) => [task.tarefa, task.concluida])
               );
 
+              const idTarefaCheckMap = new Map(
+                signalTasks.map((task: any) => [task.tarefa, task.id])
+              );
+
               this.products = value.map((task: any) => ({
                 id: task.id,
+                idTarefaCheck: idTarefaCheckMap.get(task.id),
                 responsavelId: task.responsavelId,
                 status: task.status,
                 titulo: task.titulo,
@@ -131,10 +162,65 @@ export class ListMenteeTaskComponent implements OnInit {
   }
 
   formatDate(date: string): string {
-    if (!date) return ''; 
+    if (!date) return '';
 
-    const [year, month, day] = date.split('-'); 
+    const [year, month, day] = date.split('-');
 
     return `${day}-${month}-${year}`;
+  }
+
+  doneTaskMentee(item: any) {
+    console.log(item);
+
+    this.confirmationService.confirm({
+      target: item.target as EventTarget,
+      message: 'Aprovar tarefa como concluída do mentorado?',
+      header: 'Concluir tarefa',
+      closable: false,
+      closeOnEscape: true,
+      icon: 'pi pi-check-square',
+      rejectButtonProps: {
+        label: 'Cancelar',
+        severity: 'secondary',
+        outlined: true,
+      },
+      acceptButtonProps: {
+        label: 'Concluir',
+      },
+      accept: () => {
+        this.putTaskDone(item.idTarefaCheck, item.done);
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Tarefa concluída',
+          detail: 'Tarefa concluída com sucesso',
+        });
+      },
+      reject: () => {
+        item.done = false;
+        this.messageService.add({
+          severity: 'info',
+          summary: 'Tarefa não concluída',
+          detail: 'Tarefa não foi concluída',
+          life: 3000,
+        });
+      },
+    });
+  }
+
+  putTaskDone(idTaskCheck: number, data: boolean) {
+    try {
+      this.serviceTaskCheck
+        .putDoneCheckMentee(idTaskCheck, this.userId, data)
+        .subscribe({
+          next: (value) => {
+            console.log(value);
+          },
+          error: (err) => {
+            console.error('Erro para concluir tarefa ', err.error);
+          },
+        });
+    } catch (error) {
+      console.error('Error do Try Catch', error);
+    }
   }
 }

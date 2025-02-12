@@ -240,8 +240,8 @@ export class DataviewComponent implements OnInit {
     this.confirmationService.confirm({
       target: item.target as EventTarget,
       message:
-        'Sinalize a tarefa para o mentor responsável aprovar a conclusão da tarefa!',
-      header: 'Sinalizar tarefa como conluída',
+        'Sinalizar tarefa para o mentor responsável aprovar a conclusão da tarefa!',
+      header: 'Sinalizar tarefa como concluída',
       closable: false,
       closeOnEscape: true,
       icon: 'pi pi-exclamation-triangle',

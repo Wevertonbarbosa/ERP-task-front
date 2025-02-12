@@ -49,11 +49,35 @@
                 </div>
 
 
-                <div class="">
-                  <span [ngClass]="['italic', 'text-xs', 'font-medium', option.done ?'text-green-400':'text-yellow-500']">
-                    {{option.done?'Tarefa aprovada':'Aguardando aprovação'}}
-                  </span>
+                <div class="flex-1 flex justify-center">
+                  <div class="flex flex-col">
+                    <span class="text-sm font-medium text-center">Mentorado</span>
+                    <span
+                      [ngClass]="['italic', 'text-xs', 'font-medium', option.sinalizadaUsuario ?'text-green-400':'text-yellow-500']">
+                      {{option.sinalizadaUsuario?'Sinalizada como concluída':'Tarefa em andamento'}}
+                    </span>
+                  </div>
+
                 </div>
+
+                <div class="flex flex-col">
+                  <span class="text-sm font-medium text-center">Concluir tarefa</span>
+                  <div class="flex justify-center flex-col">
+
+                    <p-togglebutton [(ngModel)]="option.done" (onChange)="doneTaskMentee(option)" onLabel="Concluída"
+                      [disabled]="option.done == true || option.sinalizadaUsuario == false" offLabel="Andamento"
+                      styleClass="w-36" ariaLabel="Do you confirm" />
+
+                    <span
+                      [ngClass]="['text-xs', 'font-semibold', 'italic', 'text-center', option.done == true || option.sinalizadaUsuario == false ? 'text-red-700':'text-green-600']">
+                      {{option.done == true || option.sinalizadaUsuario == false? 'Bloqueado':'Liberado'}}
+                      <i
+                        [ngClass]="['text-xs','ps-1', option.done == true || option.sinalizadaUsuario == false? 'pi pi-unlock':'pi pi-lock-open']"></i>
+                    </span>
+                  </div>
+
+                </div>
+
 
               </div>
 
@@ -63,6 +87,8 @@
 
           </p-orderlist>
 
+          <p-toast />
+          <p-confirmdialog />
 
         </div>
 
