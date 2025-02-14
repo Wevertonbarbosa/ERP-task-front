@@ -72,13 +72,11 @@
           <p-button label="Confirmar" type="submit" [loading]="loading" [rounded]="true" size="large" [raised]="true"
             class="w-full" styleClass="width-full" [disabled]="registerForm.invalid"></p-button>
         </div>
-
-        <app-toast-global [key]="keyToast">
-        </app-toast-global>
       </form>
-
     </div>
   </p-dialog>
-
+  
+  <app-toast-global [key]="keyToast">
+  </app-toast-global>
 
 </div>

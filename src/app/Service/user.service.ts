@@ -4,17 +4,21 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UserService {
-
   private readonly api = environment.API;
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-
-  getMeentFromAdmin(idAdmin:number): Observable<any>{
-    return this.http.get<any>(`${this.api}api/${idAdmin}/mentorados`)
+  getMeentFromAdmin(idAdmin: number): Observable<any> {
+    return this.http.get<any>(`${this.api}api/${idAdmin}/mentorados`);
   }
 
+  postNewMentee(idAdmin: number, data: any): Observable<any> {
+    return this.http.post<any>(`${this.api}api/${idAdmin}/mentorados`, data);
+  }
 
+  deleteMentee(id: number): Observable<any> {
+    return this.http.delete(`${this.api}api/${id}`);
+  }
 }

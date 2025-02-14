@@ -6,17 +6,18 @@
 
     <div class="w-full">
       <p-card header="Mentorados">
-        <p-dataview #dv [value]="products" [sortField]="sortField" [sortOrder]="sortOrder">
+        <p-dataview #dv [value]="userMenteeFiltered" [sortField]="sortField" [sortOrder]="sortOrder">
           <ng-template #header>
             <div class="flex flex-col md:flex-row md:justify-between">
-              <p-select [options]="sortOptions" placeholder="Nome" (onChange)="onSortChange($event)" class="w-60" />
+              <p-select [options]="nameMentee" name="selectedUser" [checkmark]="true" optionLabel="mentee"
+                [showClear]="true" placeholder="Mentorado" (onChange)="onMenteeSelect($event)" class="w-60" />
             </div>
           </ng-template>
 
           <ng-template #list let-items>
 
-            <p-scrollpanel *ngIf="this.products.length != 0" [style]="{ width: '100%', height: '385px' }">
-              <div *ngIf="this.products.length != 0" class="grid grid-cols-12 gap-4 grid-nogutter">
+            <p-scrollpanel *ngIf="this.userMentee.length != 0" [style]="{ width: '100%', height: '385px' }">
+              <div *ngIf="this.userMentee.length != 0" class="grid grid-cols-12 gap-4 grid-nogutter">
 
                 <div class="col-span-12" *ngFor="let item of items; let first = first">
 
@@ -50,13 +51,19 @@
 
                     <div class="w-full">
                       <div class="relative">
-                        <app-speed-dial-button></app-speed-dial-button>
+                        <p-speeddial [model]="menu" direction="left" [tooltipOptions]="{ tooltipPosition: 'top' }"
+                          (onClick)="valueUserMentee(item)"
+                          [style]="{ position: 'absolute', top: 'calc(50% - 1rem)', right: 0, left: 0 }" />
                       </div>
                     </div>
 
                   </div>
 
                 </div>
+
+
+
+
 
               </div>
             </p-scrollpanel>
@@ -83,11 +90,16 @@
 
   </div>
 
+  <p-toast />
+  <p-confirmdialog />
 
 
-  <app-add-mentee [visible]="visible"></app-add-mentee>
 
-  <!-- <app-add-payment [visible]="visiblePayment"></app-add-payment> -->
+  <app-update-mentee [userSelected]="userMenteeSelected" (menteeUpdated)="getMentee()">
+  </app-update-mentee>
+  <app-add-payment [visible]="visiblePayment"></app-add-payment>
+  <app-add-mentee (menteeUpdated)="getMentee()"></app-add-mentee>
+
 
 
 </div>

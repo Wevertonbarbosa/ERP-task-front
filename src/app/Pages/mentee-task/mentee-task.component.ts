@@ -119,7 +119,6 @@ export class MenteeTaskComponent implements OnInit {
     try {
       this.service.getMeentFromAdmin(this.userId).subscribe({
         next: (value) => {
-          console.log(value);
           this.userMentee = value.map((data: any) => ({
             id: data.usuarioId,
             email: data.email,
@@ -146,7 +145,7 @@ export class MenteeTaskComponent implements OnInit {
   onStartDateChange(newStartDate: Date) {
     if (newStartDate) {
       this.dateEndMin = newStartDate; // Atualiza a data mínima para dataFim
-  
+
       // Se a dataFim for menor que a nova dataInicio, resetamos o campo
       const currentEndDate = this.registerForm.get('dataFim')?.value;
       if (currentEndDate && currentEndDate < newStartDate) {
@@ -156,10 +155,10 @@ export class MenteeTaskComponent implements OnInit {
   }
 
   onMenteeSelect(value: any) {
-    this.idMentee = value.id;
     if (value) {
       this.selectedMentee = value.mentee;
       this.isMenteeSelected = true;
+      this.idMentee = value.id;
     } else {
       this.selectedMentee = 'Mentorado';
       this.isMenteeSelected = false;
@@ -172,8 +171,6 @@ export class MenteeTaskComponent implements OnInit {
     formData.dataInicio = this.formatDate(formData.dataInicio);
     formData.dataFim = this.formatDate(formData.dataFim);
 
-    console.log(formData);
-
     try {
       this.loading = true;
       if (this.registerForm.valid) {
@@ -181,7 +178,6 @@ export class MenteeTaskComponent implements OnInit {
           .postTask(this.userId, this.idMentee, formData)
           .subscribe({
             next: (value) => {
-              console.log(value);
               this.showToasRight(
                 'success',
                 'Tarefa cadastrada!',
