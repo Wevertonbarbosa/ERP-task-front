@@ -12,6 +12,7 @@ import { ReportExpenseComponent } from './Pages/report-expense/report-expense.co
 import { MenteeComponent } from './Pages/mentee/mentee.component';
 import { MenteeTaskComponent } from './Pages/mentee-task/mentee-task.component';
 import { ListMenteeTaskComponent } from './Pages/list-mentee-task/list-mentee-task.component';
+import { authUserGuard } from './Guard/auth-user.guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -23,13 +24,41 @@ export const routes: Routes = [
     component: RedefinirComponent,
     canActivate: [authGuard],
   },
-  { path: 'dashboard', component: DashboardComponent },
-  { path: 'tarefas', component: TaskComponent },
-  { path: 'gerenciar-tarefas', component: ManagerTaskComponent },
-  { path: 'gastos', component: ExpensesComponent },
-  { path: 'relatorio-gastos', component: ReportExpenseComponent },
-  { path: 'mentoria', component: MenteeComponent },
-  { path: 'tarefas-mentorados', component: MenteeTaskComponent },
-  { path: 'lista-tarefas-mentorados', component: ListMenteeTaskComponent },
+  {
+    path: 'dashboard',
+    component: DashboardComponent,
+    canActivate: [authUserGuard],
+  },
+  { path: 'tarefas', component: TaskComponent, canActivate: [authUserGuard] },
+  {
+    path: 'gerenciar-tarefas',
+    component: ManagerTaskComponent,
+    canActivate: [authUserGuard],
+  },
+  {
+    path: 'gastos',
+    component: ExpensesComponent,
+    canActivate: [authUserGuard],
+  },
+  {
+    path: 'relatorio-gastos',
+    component: ReportExpenseComponent,
+    canActivate: [authUserGuard],
+  },
+  {
+    path: 'mentoria',
+    component: MenteeComponent,
+    canActivate: [authUserGuard],
+  },
+  {
+    path: 'tarefas-mentorados',
+    component: MenteeTaskComponent,
+    canActivate: [authUserGuard],
+  },
+  {
+    path: 'lista-tarefas-mentorados',
+    component: ListMenteeTaskComponent,
+    canActivate: [authUserGuard],
+  },
   { path: '**', redirectTo: '/login' },
 ];

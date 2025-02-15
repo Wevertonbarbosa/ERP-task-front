@@ -20,7 +20,8 @@
         <span class="m-2 text-center font-medium italic">Overview das tarefas</span>
       </div>
 
-      <div *ngIf="taskDone === 0 && taskMissing === 0" class="w-full flex items-center justify-center flex-col gap-4 pt-4">
+      <div *ngIf="taskDone === 0 && taskMissing === 0"
+        class="w-full flex items-center justify-center flex-col gap-4 pt-4">
         <i class="pi pi-table text-7xl text-teal-400"></i>
         <h2 class="text-lg font-semibold italic text-slate-400">No momento você não possui tarefas</h2>
       </div>
@@ -53,7 +54,10 @@
 
           <div class="w-full flex flex-col items-center gap-2 justify-start">
             <h2 class="italic font-normal text-lg">Aproveitamento</h2>
-            <span class="text-4xl font-semibold">20<b class="text-base">%mês</b></span>
+            <span class="text-4xl font-semibold">
+              {{ taskPerformance | number:'1.0-0' }}
+              <b class="text-base">%mês</b>
+            </span>
           </div>
         </div>
       </div>

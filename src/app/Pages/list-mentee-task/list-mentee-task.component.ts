@@ -115,8 +115,6 @@ export class ListMenteeTaskComponent implements OnInit {
         next: (value) => {
           this.serviceTaskCheck.getTaskSignal(id).subscribe({
             next: (signalTasks) => {
-              console.log(signalTasks);
-
               const signalMap = new Map(
                 signalTasks.map((task: any) => [
                   task.tarefa,
@@ -170,8 +168,7 @@ export class ListMenteeTaskComponent implements OnInit {
   }
 
   doneTaskMentee(item: any) {
-    console.log(item);
-
+  
     this.confirmationService.confirm({
       target: item.target as EventTarget,
       message: 'Aprovar tarefa como concluída do mentorado?',
@@ -213,7 +210,7 @@ export class ListMenteeTaskComponent implements OnInit {
         .putDoneCheckMentee(idTaskCheck, this.userId, data)
         .subscribe({
           next: (value) => {
-            console.log(value);
+            // console.log(value);
           },
           error: (err) => {
             console.error('Erro para concluir tarefa ', err.error);

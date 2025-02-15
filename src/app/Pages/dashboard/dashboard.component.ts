@@ -32,8 +32,9 @@ import { UserGlobalService } from '../../Service/user-global.service';
 export class DashboardComponent implements OnInit {
   chartData: any;
   chartOptions: any;
-  taskDone: string | number = 0;
-  taskMissing: string | number = 0;
+  taskDone: number = 0;
+  taskMissing: number = 0;
+  taskPerformance: number = 0;
   userName!: string;
   valueKnob!: string;
 
@@ -53,8 +54,14 @@ export class DashboardComponent implements OnInit {
     try {
       this.service.getListTaskStatusUser(this.userId).subscribe({
         next: (value) => {
+          console.log(value);
+
           this.taskDone = value.tarefasConcluidas;
           this.taskMissing = value.tarefasPendentes;
+
+          const totalTasks = this.taskDone + this.taskMissing;
+          this.taskPerformance =
+            totalTasks > 0 ? (this.taskDone / totalTasks) * 100 : 0;
 
           this.chartData = {
             labels: ['Concluídas', 'Pendentes'],

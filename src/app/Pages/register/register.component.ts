@@ -19,6 +19,7 @@ import { CadastroService } from '../../Service/cadastro.service';
 
 import { MessageService } from 'primeng/api';
 import { ToastGlobalComponent } from '../../Components/toast-global/toast-global.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -48,7 +49,8 @@ export class RegisterComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private service: CadastroService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private route: Router
   ) {}
 
   classError = ['w-full', 'ng-dirty', 'ng-invalid'];
@@ -79,7 +81,12 @@ export class RegisterComponent implements OnInit {
               'Usuário cadastrado!',
               'Seu cadastro foi realizado com sucesso!'
             );
-            this.loading = false;
+            this.registerForm.get('role')?.setValue(this.typeUser[0]);
+            setTimeout(() => {
+              this.registerForm.reset();
+              this.loading = false;
+              this.route.navigate(['login']);
+            }, 3000);
           },
           error: (err) => {
             console.error('Erro para registrar ', err.error);

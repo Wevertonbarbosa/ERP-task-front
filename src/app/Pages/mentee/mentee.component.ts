@@ -33,6 +33,7 @@ import { AddPaymentComponent } from './components/add-payment/add-payment.compon
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastGlobalComponent } from '../../Components/toast-global/toast-global.component';
 import { ToastModule } from 'primeng/toast';
+import { ListStatusTaskService } from '../../Service/list-status-task.service';
 
 @Component({
   selector: 'app-mentee',
@@ -70,18 +71,21 @@ export class MenteeComponent implements OnInit {
   sortOrder!: number;
   sortField!: string;
 
+  taskDone: number = 0;
+  taskMissing: number = 0;
+  taskPerformance: number = 0;
+
   userId!: number;
 
   nameMentee: ListMentee[] = [];
   userMentee: any[] = [];
+
   userMenteeFiltered: any[] = [];
 
   visible: boolean = false;
 
   visiblePayment: boolean = false;
-  visibleUpdateMenteeMap: { [key: number]: boolean } = {}; // Controla a visibilidade por ID
 
-  value: number = 60;
 
   @ViewChild(AddMenteeComponent) addMenteeComponent!: AddMenteeComponent;
   @ViewChild(AddPaymentComponent) addPaymentComponent!: AddPaymentComponent;
@@ -90,6 +94,7 @@ export class MenteeComponent implements OnInit {
 
   constructor(
     private service: UserService,
+
     private serviceUserGlobal: UserGlobalService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService
@@ -214,6 +219,10 @@ export class MenteeComponent implements OnInit {
             role: data.role,
             tarefasConcluidas: data.tarefasConcluidas,
             tarefasPendentes: data.tarefasPendentes,
+            aproveitamento: this.calcularAproveitamento(
+              data.tarefasConcluidas,
+              data.tarefasPendentes
+            ),
           }));
 
           this.nameMentee = value.map((data: any) => ({
@@ -230,5 +239,15 @@ export class MenteeComponent implements OnInit {
     } catch (error) {
       console.error('Error do Try Catch', error);
     }
+  }
+
+  calcularAproveitamento(
+    tarefasConcluidas: number,
+    tarefasPendentes: number
+  ): number {
+    const totalTasks = tarefasConcluidas + tarefasPendentes;
+    return totalTasks > 0
+      ? Math.round((tarefasConcluidas / totalTasks) * 100)
+      : 0;
   }
 }
