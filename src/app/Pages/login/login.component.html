@@ -1,58 +1,92 @@
 <div class="flex justify-center items-center min-h-screen bg-gray-100">
-  <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-    <h2 class="text-3xl font-bold text-center text-blue-600 mb-6">Happy Do</h2>
 
-    <form [formGroup]="registerForm" (ngSubmit)="onLogin()">
+  <div class="bg-white p-8 px-5 rounded-lg shadow-lg w-full max-w-4xl flex">
+    <div class="w-full">
+      <h2 class="text-3xl font-bold text-center text-blue-600 mb-6">Happy Do</h2>
 
-      <div class="mb-4">
-        <app-input-global [control]="registerForm.get('email')" id="email" label="E-mail" typeInput="email"
-          [class]="(registerForm.controls['email'].invalid && (registerForm.controls['email'].touched || registerForm.controls['email'].dirty))? classError : class"></app-input-global>
+      <form [formGroup]="registerForm" (ngSubmit)="onLogin()">
 
-        <div
-          *ngIf="(registerForm.controls['email'].invalid && (registerForm.controls['email'].touched || registerForm.controls['email'].dirty))">
+        <div class="mb-4">
+          <app-input-global [control]="registerForm.get('email')" id="email" label="E-mail" typeInput="email"
+            [class]="(registerForm.controls['email'].invalid && (registerForm.controls['email'].touched || registerForm.controls['email'].dirty))? classError : class"></app-input-global>
 
-          <span class="text-xs text-red-600 font-semibold"
-            *ngIf="registerForm.controls['email'].errors?.['required']">E-mail precisa ser preenchido!</span>
+          <div
+            *ngIf="(registerForm.controls['email'].invalid && (registerForm.controls['email'].touched || registerForm.controls['email'].dirty))">
 
-          <span class="text-xs text-red-600 font-semibold"
-            *ngIf="registerForm.controls['email'].errors?.['email']">E-mail com formato inválido</span>
-        </div>
-      </div>
+            <span class="text-xs text-red-600 font-semibold"
+              *ngIf="registerForm.controls['email'].errors?.['required']">E-mail precisa ser preenchido!</span>
 
-      <div class="mb-4">
-        <app-input-password-global [control]="registerForm.get('senha')!" id="senha" name="senha" placeholder="Senha"
-          [class]="(registerForm.controls['senha'].invalid && (registerForm.controls['senha'].touched || registerForm.controls['senha'].dirty))? classError : class">
-        </app-input-password-global>
-
-        <div
-          *ngIf="(registerForm.controls['senha'].invalid && (registerForm.controls['senha'].touched || registerForm.controls['senha'].dirty))">
-
-          <span class="text-xs text-red-600 font-semibold"
-            *ngIf="registerForm.controls['senha'].errors?.['required']">Senha precisa ser preenchido!</span>
-
-          <span class="text-xs text-red-600 font-semibold"
-            *ngIf="registerForm.controls['senha'].errors?.['minlength']">Senha precisa ser maior que 6
-            caracteres!</span>
+            <span class="text-xs text-red-600 font-semibold"
+              *ngIf="registerForm.controls['email'].errors?.['email']">E-mail com formato inválido</span>
+          </div>
         </div>
 
+        <div class="mb-4">
+          <app-input-password-global [control]="registerForm.get('senha')!" id="senha" name="senha" placeholder="Senha"
+            [class]="(registerForm.controls['senha'].invalid && (registerForm.controls['senha'].touched || registerForm.controls['senha'].dirty))? classError : class">
+          </app-input-password-global>
+
+          <div
+            *ngIf="(registerForm.controls['senha'].invalid && (registerForm.controls['senha'].touched || registerForm.controls['senha'].dirty))">
+
+            <span class="text-xs text-red-600 font-semibold"
+              *ngIf="registerForm.controls['senha'].errors?.['required']">Senha precisa ser preenchido!</span>
+
+            <span class="text-xs text-red-600 font-semibold"
+              *ngIf="registerForm.controls['senha'].errors?.['minlength']">Senha precisa ser maior que 6
+              caracteres!</span>
+          </div>
+
+        </div>
+
+        <p class="text-center mb-4">
+          <a href="/check-email" class="text-blue-600 font-medium">Esqueceu sua senha?</a>
+        </p>
+
+        <!-- Botão de Login -->
+        <div class="flex justify-center content-center">
+          <p-button label="Confirmar" type="submit" [loading]="loading" [rounded]="true" size="large" [raised]="true"
+            class="w-full" styleClass="width-full" [disabled]="registerForm.invalid"></p-button>
+        </div>
+        <p class="text-center text-sm mt-4 font-normal">
+          Não possui uma conta?
+          <a href="/register" class="text-blue-600 font-medium">Crie sua conta</a>
+        </p>
+
+      </form>
+    </div>
+
+    <div class="">
+      <p-divider layout="vertical" class="!hidden md:!flex"><b>OR</b></p-divider>
+
+      <p-divider layout="vertical" class="!flex md:!hidden" align="center"><b>OU</b></p-divider>
+    </div>
+
+
+    <div class="w-full">
+
+      <div class="w-full flex flex-col h-full">
+        <h2 class="text-2xl font-bold text-center text-blue-600 mb-6">Login Mentorado</h2>
+
+        <div class="w-full flex flex-col h-full gap-4">
+
+          <app-login-mentee></app-login-mentee>
+
+
+        </div>
+
       </div>
 
-      <p class="text-center mb-4">
-        <a href="/check-email" class="text-blue-600 font-medium">Esqueceu sua senha?</a>
-      </p>
 
-      <!-- Botão de Login -->
-      <div class="flex justify-center content-center">
-        <p-button label="Confirmar" type="submit" [loading]="loading" [rounded]="true" size="large" [raised]="true" class="w-full" styleClass="width-full" 
-        [disabled]="registerForm.invalid"></p-button>
-      </div>
-      <p class="text-center text-sm mt-4 font-normal">
-        Não possui uma conta?
-        <a href="/register" class="text-blue-600 font-medium">Crie sua conta</a>
-      </p>
 
-      <app-toast-global [key]="keyToast">
-      </app-toast-global>
-    </form>
+    </div>
+
+
+
+
   </div>
+
+
+  <app-toast-global [key]="keyToast">
+  </app-toast-global>
 </div>

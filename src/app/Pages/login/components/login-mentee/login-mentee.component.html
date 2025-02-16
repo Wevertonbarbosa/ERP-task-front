@@ -1,0 +1,29 @@
+<form class="pt-7" [formGroup]="registerForm" (ngSubmit)="onLoginMentee()">
+
+  <div class="mb-7">
+    <app-input-global [control]="registerForm.get('email')" id="" label="E-mail" typeInput="email"
+      [class]="(registerForm.controls['email'].invalid && (registerForm.controls['email'].touched || registerForm.controls['email'].dirty))? classError : class">
+    </app-input-global>
+
+    <div
+      *ngIf="(registerForm.controls['email'].invalid && (registerForm.controls['email'].touched || registerForm.controls['email'].dirty))">
+
+      <span class="text-xs text-red-600 font-semibold"
+        *ngIf="registerForm.controls['email'].errors?.['required']">E-mail precisa ser preenchido!</span>
+
+      <span class="text-xs text-red-600 font-semibold" *ngIf="registerForm.controls['email'].errors?.['email']">E-mail
+        com formato inválido</span>
+    </div>
+
+  </div>
+
+
+  <div class="flex justify-center content-center">
+    <p-button label="Confirmar" type="submit" [loading]="loading" [rounded]="true" size="large" [raised]="true"
+      class="w-full" styleClass="width-full" [disabled]="registerForm.invalid"></p-button>
+  </div>
+
+  <app-toast-global [key]="keyToast">
+  </app-toast-global>
+
+</form>

@@ -22,6 +22,7 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { ButtonModule } from 'primeng/button';
 
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
 
@@ -31,6 +32,7 @@ import { ToggleSwitchModule } from 'primeng/toggleswitch';
     MenuComponent,
     ToggleSwitchModule,
     ToastModule,
+    ButtonModule,
     ConfirmDialogModule,
     FormsModule,
     ReactiveFormsModule,
@@ -113,6 +115,8 @@ export class ListMenteeTaskComponent implements OnInit {
     try {
       this.serviceTask.getTasks(id).subscribe({
         next: (value) => {
+          //NO MOMENTO EM QUE EXCLUI A TAREFA A LISTA NÃO ATUALIZA
+
           this.serviceTaskCheck.getTaskSignal(id).subscribe({
             next: (signalTasks) => {
               const signalMap = new Map(
@@ -168,7 +172,6 @@ export class ListMenteeTaskComponent implements OnInit {
   }
 
   doneTaskMentee(item: any) {
-  
     this.confirmationService.confirm({
       target: item.target as EventTarget,
       message: 'Aprovar tarefa como concluída do mentorado?',
@@ -216,6 +219,56 @@ export class ListMenteeTaskComponent implements OnInit {
             console.error('Erro para concluir tarefa ', err.error);
           },
         });
+    } catch (error) {
+      console.error('Error do Try Catch', error);
+    }
+  }
+
+  deleteTaskMentee(item: any) {
+    //NO MOMENTO EM QUE EXCLUI A TAREFA A LISTA NÃO ATUALIZA
+    this.confirmationService.confirm({
+      target: item.target as EventTarget,
+      message: 'Deseja realmente excluir essa tarefa?',
+      header: 'Excluir tarefa',
+      closable: false,
+      closeOnEscape: true,
+      icon: 'pi pi-trash',
+      rejectButtonProps: {
+        label: 'Cancelar',
+        severity: 'secondary',
+        outlined: true,
+      },
+      acceptButtonProps: {
+        label: 'Excluir',
+        severity: 'danger',
+      },
+      accept: () => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Tarefa Excluida',
+          detail: 'Tarefa excluída com sucesso',
+        });
+        this.deleteTaskUserMentee(item.id);
+      },
+      reject: () => {
+        this.messageService.add({
+          severity: 'info',
+          summary: 'Tarefa não foi excluída',
+          detail: 'Tarefa do mentorado não foi excluída',
+          life: 3000,
+        });
+      },
+    });
+  }
+
+  deleteTaskUserMentee(idTask: number) {
+    try {
+      this.serviceTask.deleteTask(idTask, this.userId).subscribe({
+        next: (value) => {},
+        error: (err) => {
+          console.error('Erro para excluir tarefa ', err.error);
+        },
+      });
     } catch (error) {
       console.error('Error do Try Catch', error);
     }

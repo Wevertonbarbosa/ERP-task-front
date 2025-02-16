@@ -55,6 +55,11 @@
         <p-chip [label]="nameUser" image="https://primefaces.org/cdn/primeng/images/demo/avatar/walter.jpg"
           alt="Avatar User" class="cursor-pointer" (click)="openModalUpdateManager()" />
 
+        <div>
+          <p-button pTooltip="Sair" icon="pi pi pi-sign-out" [rounded]="true" severity="danger" [outlined]="true" (onClick)="logoutUser()" />
+        </div>
+
+
         <p-drawer [(visible)]="visible" [closable]="false" position="right">
           <ng-template #header>
             <div class="flex flex-col w-full">
@@ -149,8 +154,9 @@
 
           <ng-template #footer>
             <div class="flex items-center gap-2">
-              <button pButton label="Account" icon="pi pi-user" class="w-full" disabled outlined></button>
-              <button pButton label="Logout" icon="pi pi-sign-out" class="w-full" severity="danger" text></button>
+              <button pButton label="Entrar" icon="pi pi-user" class="w-full" disabled outlined></button>
+              <button pButton label="Sair" (click)="logoutUser()" icon="pi pi-sign-out" class="w-full" severity="danger"
+                text></button>
             </div>
           </ng-template>
         </p-drawer>

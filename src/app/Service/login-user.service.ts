@@ -5,13 +5,17 @@ import { LoginUser } from '../Interface/loginUser';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class LoginUserService {
   private readonly api = environment.API;
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-   postLogin(data: LoginUser): Observable<any> {
-      return this.http.post<LoginUser>(`${this.api}api/login`, data);
-    }
+  postLogin(data: LoginUser): Observable<any> {
+    return this.http.post<LoginUser>(`${this.api}api/login`, data);
+  }
+
+  postLoginMentee(data: string): Observable<any> {
+    return this.http.post<any>(`${this.api}api/login/mentorado`, data);
+  }
 }

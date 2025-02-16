@@ -17,7 +17,7 @@ import {
 import { DrawerModule } from 'primeng/drawer';
 import { ButtonModule } from 'primeng/button';
 import { DrawerComponent } from '../drawer/drawer.component';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { SelectModule } from 'primeng/select';
 import { Select } from 'primeng/select';
 import { DividerModule } from 'primeng/divider';
@@ -29,6 +29,7 @@ import { MessageService } from 'primeng/api';
 import { ToastGlobalComponent } from '../toast-global/toast-global.component';
 import { UpdateUserService } from '../../Service/update-user.service';
 import { UserGlobalService } from '../../Service/user-global.service';
+import { Tooltip } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-menu',
@@ -36,6 +37,7 @@ import { UserGlobalService } from '../../Service/user-global.service';
     MenubarModule,
     Select,
     ChipModule,
+    Tooltip,
     RouterModule,
     SelectModule,
     DividerModule,
@@ -74,7 +76,8 @@ export class MenuComponent implements OnInit {
     private fb: FormBuilder,
     private service: UpdateUserService,
     private messageService: MessageService,
-    private serviceUserGlobal: UserGlobalService
+    private serviceUserGlobal: UserGlobalService,
+    private route: Router
   ) {}
 
   classError = ['w-full', 'ng-dirty', 'ng-invalid'];
@@ -129,24 +132,20 @@ export class MenuComponent implements OnInit {
           },
         ],
       },
-      {
+    ];
+    if (this.user.role === 'ADMIN') {
+      this.items.push({
         label: 'Mentoria',
         items: [
+          { label: 'Mentorados', url: '/mentoria' },
           {
-            label: 'Mentorados',
-            url: '/mentoria',
-          },
-          {
-            label: 'Cadastro de tarefas mentorados ',
+            label: 'Cadastro de tarefas mentorados',
             url: '/tarefas-mentorados',
           },
-          {
-            label: 'Tarefas dos mentorados',
-            url: '/lista-tarefas-mentorados',
-          },
+          { label: 'Tarefas dos mentorados', url: '/lista-tarefas-mentorados' },
         ],
-      },
-    ];
+      });
+    }
   }
 
   openModalUpdateManager() {
@@ -205,5 +204,10 @@ export class MenuComponent implements OnInit {
       key: this.keyToast,
       life: 4000,
     });
+  }
+
+  logoutUser() {
+    localStorage.clear();
+    this.route.navigate(['login']);
   }
 }
