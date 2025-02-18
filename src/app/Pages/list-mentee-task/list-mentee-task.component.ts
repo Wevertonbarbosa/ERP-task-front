@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CardModule } from 'primeng/card';
 import { MenuComponent } from '../../Components/menu/menu.component';
 import { OrderListModule } from 'primeng/orderlist';
@@ -25,6 +25,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
+import { UpdateTaskMenteeComponent } from './components/update-task-mentee/update-task-mentee.component';
 
 @Component({
   selector: 'app-list-mentee-task',
@@ -43,6 +44,7 @@ import { ToggleSwitchModule } from 'primeng/toggleswitch';
     CommonModule,
     SelectModule,
     Select,
+    UpdateTaskMenteeComponent,
   ],
   templateUrl: './list-mentee-task.component.html',
   styleUrl: './list-mentee-task.component.css',
@@ -59,6 +61,9 @@ export class ListMenteeTaskComponent implements OnInit {
   userId!: number;
   userMentee: any[] = [];
   nameMentee: ListMentee[] = [];
+
+  @ViewChild(UpdateTaskMenteeComponent)
+  updateTaskMenteeComponent!: UpdateTaskMenteeComponent;
 
   constructor(
     private service: UserService,
@@ -108,6 +113,7 @@ export class ListMenteeTaskComponent implements OnInit {
     if (value != null) {
       this.getTaskMentee(value.id);
     } else {
+      this.products = [];
     }
   }
 
@@ -115,8 +121,6 @@ export class ListMenteeTaskComponent implements OnInit {
     try {
       this.serviceTask.getTasks(id).subscribe({
         next: (value) => {
-          //NO MOMENTO EM QUE EXCLUI A TAREFA A LISTA NÃO ATUALIZA
-
           this.serviceTaskCheck.getTaskSignal(id).subscribe({
             next: (signalTasks) => {
               const signalMap = new Map(
@@ -225,7 +229,6 @@ export class ListMenteeTaskComponent implements OnInit {
   }
 
   deleteTaskMentee(item: any) {
-    //NO MOMENTO EM QUE EXCLUI A TAREFA A LISTA NÃO ATUALIZA
     this.confirmationService.confirm({
       target: item.target as EventTarget,
       message: 'Deseja realmente excluir essa tarefa?',
@@ -248,7 +251,7 @@ export class ListMenteeTaskComponent implements OnInit {
           summary: 'Tarefa Excluida',
           detail: 'Tarefa excluída com sucesso',
         });
-        this.deleteTaskUserMentee(item.id);
+        this.deleteTaskUserMentee(item.id, item.responsavelId);
       },
       reject: () => {
         this.messageService.add({
@@ -261,10 +264,12 @@ export class ListMenteeTaskComponent implements OnInit {
     });
   }
 
-  deleteTaskUserMentee(idTask: number) {
+  deleteTaskUserMentee(idTask: number, idUserMentee: number) {
     try {
       this.serviceTask.deleteTask(idTask, this.userId).subscribe({
-        next: (value) => {},
+        next: (value) => {
+          this.getTaskMentee(idUserMentee);
+        },
         error: (err) => {
           console.error('Erro para excluir tarefa ', err.error);
         },
@@ -272,5 +277,15 @@ export class ListMenteeTaskComponent implements OnInit {
     } catch (error) {
       console.error('Error do Try Catch', error);
     }
+  }
+
+  updateTaskMentee(item: any) {
+    if (this.updateTaskMenteeComponent) {
+      this.updateTaskMenteeComponent.showDialogUpdateMentee(item);
+    }
+  }
+
+  putTaskUpdateMentee(item: any) {
+    this.getTaskMentee(item);
   }
 }

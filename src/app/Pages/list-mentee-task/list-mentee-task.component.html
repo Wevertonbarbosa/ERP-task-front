@@ -79,7 +79,13 @@
                 </div>
 
                 <div>
-                  <p-button icon="pi pi-times" [rounded]="true" [text]="true" [raised]="true" severity="danger" (onClick)="deleteTaskMentee(option)" />
+                  <p-button icon="pi pi-times" [rounded]="true" [text]="true" [raised]="true" severity="danger"
+                    (onClick)="deleteTaskMentee(option)" />
+
+                  <p-button icon="pi pi-file-edit" [rounded]="true" [text]="true" [raised]="true" severity="success"
+                    [disabled]="option.done == true || option.sinalizadaUsuario == true"
+                    (onClick)="updateTaskMentee(option)" />
+
                 </div>
 
               </div>
@@ -101,5 +107,6 @@
     </div>
   </div>
 
+  <app-update-task-mentee (refreshList)="putTaskUpdateMentee($event)"></app-update-task-mentee>
 
 </div>
