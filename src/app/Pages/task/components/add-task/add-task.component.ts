@@ -20,11 +20,14 @@ import { Frequence } from '../../../../Interface/frequence';
 import { UserGlobalService } from '../../../../Service/user-global.service';
 import { TaskService } from '../../../../Service/task.service';
 import { MessageService } from 'primeng/api';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { DaysList } from '../../../../Interface/daysList';
 
 @Component({
   selector: 'app-add-task',
   imports: [
     DialogModule,
+    MultiSelectModule,
     ButtonModule,
     Select,
     FloatLabel,
@@ -49,7 +52,10 @@ export class AddTaskComponent implements OnInit {
   loading: boolean = false;
   keyToast: string = 'br';
   frequence: Frequence[] = [];
+  days: DaysList[] = [];
   userId!: number;
+
+  daysWeekDisabled = false;
 
   dateStart: Date | undefined;
 
@@ -78,6 +84,16 @@ export class AddTaskComponent implements OnInit {
       { choose: 'ESPORADICA' },
     ];
 
+    this.days = [
+      { day: 'Segunda' },
+      { day: 'Terça' },
+      { day: 'Quarta' },
+      { day: 'Quinta' },
+      { day: 'Sexta' },
+      { day: 'Sabado' },
+      { day: 'Domingo' },
+    ];
+
     this.registerForm = this.fb.group({
       titulo: ['', [Validators.required, Validators.minLength(3)]],
       descricao: ['', [Validators.required, Validators.minLength(8)]],
@@ -85,8 +101,7 @@ export class AddTaskComponent implements OnInit {
       frequencia: ['', [Validators.required]],
       dataInicio: ['', [Validators.required]],
       dataFim: ['', [Validators.required]],
-      // PRECISO IR PENSANDO EM COMO VOU ENVIAR ESSE
-      diasSemana: [[], []],
+      diasSemana: [[]],
     });
   }
 
@@ -99,19 +114,19 @@ export class AddTaskComponent implements OnInit {
     formData.frequencia = formData.frequencia.choose;
     formData.dataInicio = this.formatDate(formData.dataInicio);
     formData.dataFim = this.formatDate(formData.dataFim);
+    formData.diasSemana = formData.diasSemana.map((d: DaysList) => d.day);
 
     try {
       this.loading = true;
       if (this.registerForm.valid) {
         this.service.postTask(this.userId, this.userId, formData).subscribe({
           next: (value) => {
-            console.log(value);
             this.showToasRight(
               'success',
               'Tarefa cadastrada!',
               'Tarefa foi cadastrada com sucesso!'
             );
-            this.refreshDataListTask()
+            this.refreshDataListTask();
             this.registerForm.reset();
             this.loading = false;
           },
@@ -145,7 +160,7 @@ export class AddTaskComponent implements OnInit {
   }
 
   formatDate(date: Date): string {
-    if (!date) return ''; // Caso esteja vazio
+    if (!date) return '';
 
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0'); // +1 porque Janeiro é 0
@@ -156,5 +171,18 @@ export class AddTaskComponent implements OnInit {
 
   showDialog() {
     this.visible = true;
+  }
+
+  onSelectedFrequence(item: any) {
+    if (item.value != null && item.value.choose == 'SEMANAL') {
+      this.daysWeekDisabled = true;
+
+      this.registerForm.get('diasSemana')?.setValidators([Validators.required]);
+      this.registerForm.get('diasSemana')?.updateValueAndValidity();
+    } else {
+      this.daysWeekDisabled = false;
+      this.registerForm.get('diasSemana')?.clearValidators();
+      this.registerForm.get('diasSemana')?.updateValueAndValidity();
+    }
   }
 }

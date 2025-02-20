@@ -29,11 +29,14 @@ import { ToastGlobalComponent } from '../../../../Components/toast-global/toast-
 import { TaskService } from '../../../../Service/task.service';
 import { Frequence } from '../../../../Interface/frequence';
 import { UserGlobalService } from '../../../../Service/user-global.service';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { DaysList } from '../../../../Interface/daysList';
 
 @Component({
   selector: 'app-update-task-mentee',
   imports: [
     InputGlobalComponent,
+    MultiSelectModule,
     ToastModule,
     ButtonModule,
     ConfirmDialogModule,
@@ -59,7 +62,10 @@ export class UpdateTaskMenteeComponent implements OnInit {
   loading: boolean = false;
   keyToast: string = 'br';
   frequence: Frequence[] = [];
+  days: DaysList[] = [];
   userId!: number;
+
+  daysWeekDisabled = false;
 
   dateStart: Date | undefined;
   dateEndMin!: Date | undefined;
@@ -81,6 +87,16 @@ export class UpdateTaskMenteeComponent implements OnInit {
       this.userId = updatedUser.usuarioId;
     });
 
+    this.days = [
+      { day: 'Segunda' },
+      { day: 'Terça' },
+      { day: 'Quarta' },
+      { day: 'Quinta' },
+      { day: 'Sexta' },
+      { day: 'Sabado' },
+      { day: 'Domingo' },
+    ];
+
     this.frequence = [
       { choose: 'DIARIA' },
       { choose: 'SEMANAL' },
@@ -96,7 +112,6 @@ export class UpdateTaskMenteeComponent implements OnInit {
       frequencia: ['', [Validators.required]],
       dataInicio: ['', [Validators.required]],
       dataFim: ['', [Validators.required]],
-      // PRECISO IR PENSANDO EM COMO VOU ENVIAR ESSE
       diasSemana: [[], []],
     });
   }
@@ -125,6 +140,23 @@ export class UpdateTaskMenteeComponent implements OnInit {
         ?.setValue(this.parseDate(item.dataInicio));
       this.registerForm.get('dataFim')?.setValue(this.parseDate(item.dataFim));
 
+      if (item.frequencia === 'SEMANAL' && item.diasSemana.length != 0) {
+        let valueData = this.days.filter((d) =>
+          item.diasSemana.includes(d.day)
+        );
+        this.registerForm.get('diasSemana')?.setValue(valueData);
+        this.registerForm
+          .get('diasSemana')
+          ?.setValidators([Validators.required]);
+        this.registerForm.get('diasSemana')?.updateValueAndValidity();
+        this.daysWeekDisabled = true;
+      } else {
+        this.registerForm.get('diasSemana')?.setValue([]);
+        this.registerForm.get('diasSemana')?.clearValidators();
+        this.registerForm.get('diasSemana')?.updateValueAndValidity();
+        this.daysWeekDisabled = false;
+      }
+
       this.cd.detectChanges();
     }
   }
@@ -135,6 +167,12 @@ export class UpdateTaskMenteeComponent implements OnInit {
     formData.frequencia = formData.frequencia.choose;
     formData.dataInicio = this.formatDate(formData.dataInicio);
     formData.dataFim = this.formatDate(formData.dataFim);
+
+    if (formData.frequencia === 'SEMANAL' && formData.diasSemana.length != 0) {
+      formData.diasSemana = formData.diasSemana.map((d: DaysList) => d.day);
+    } else {
+      formData.diasSemana = [];
+    }
 
     try {
       this.loading = true;
@@ -197,5 +235,18 @@ export class UpdateTaskMenteeComponent implements OnInit {
       key: this.keyToast,
       life: 4000,
     });
+  }
+
+  onSelectedFrequence(item: any) {
+    if (item.value != null && item.value.choose == 'SEMANAL') {
+      this.daysWeekDisabled = true;
+      this.registerForm.get('diasSemana')?.setValidators([Validators.required]);
+      this.registerForm.get('diasSemana')?.updateValueAndValidity();
+    } else {
+      this.daysWeekDisabled = false;
+      this.registerForm.get('diasSemana')?.clearValidators();
+      this.registerForm.get('diasSemana')?.updateValueAndValidity();
+      this.registerForm.get('diasSemana')?.setValue([]);
+    }
   }
 }

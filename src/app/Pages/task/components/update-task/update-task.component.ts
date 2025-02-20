@@ -22,11 +22,14 @@ import { ToastModule } from 'primeng/toast';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { TaskService } from '../../../../Service/task.service';
 import { UserGlobalService } from '../../../../Service/user-global.service';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { DaysList } from '../../../../Interface/daysList';
 
 @Component({
   selector: 'app-update-task',
   imports: [
     DialogModule,
+    MultiSelectModule,
     ButtonModule,
     Select,
     FloatLabel,
@@ -53,8 +56,10 @@ export class UpdateTaskComponent implements OnInit {
   loading: boolean = false;
   keyToast: string = 'br';
   frequence: Frequence[] = [];
+  days: DaysList[] = [];
   idUser!: number;
 
+  daysWeekDisabled = false;
   taskUpdate!: any;
 
   dateStart: Date | undefined;
@@ -77,6 +82,16 @@ export class UpdateTaskComponent implements OnInit {
     this.dateStart = new Date();
     this.dateStart.getDate();
 
+    this.days = [
+      { day: 'Segunda' },
+      { day: 'Terça' },
+      { day: 'Quarta' },
+      { day: 'Quinta' },
+      { day: 'Sexta' },
+      { day: 'Sabado' },
+      { day: 'Domingo' },
+    ];
+
     this.frequence = [
       { choose: 'DIARIA' },
       { choose: 'SEMANAL' },
@@ -92,7 +107,6 @@ export class UpdateTaskComponent implements OnInit {
       frequencia: ['', [Validators.required]],
       dataInicio: ['', [Validators.required]],
       dataFim: ['', [Validators.required]],
-      // PRECISO IR PENSANDO EM COMO VOU ENVIAR ESSE
       diasSemana: [[], []],
     });
   }
@@ -102,6 +116,7 @@ export class UpdateTaskComponent implements OnInit {
 
   showDialog(item: any) {
     this.taskUpdate = { ...item };
+
     this.visible = true;
 
     if (item) {
@@ -113,19 +128,35 @@ export class UpdateTaskComponent implements OnInit {
         (f) => f.choose === item.frequencia
       );
       this.registerForm.get('frequencia')?.setValue(selectedFrequency || null);
-
       this.registerForm
         .get('dataInicio')
         ?.setValue(this.parseDate(item.dataInicio));
       this.registerForm.get('dataFim')?.setValue(this.parseDate(item.dataFim));
+
+      if (item.frequencia === 'SEMANAL' && item.diasSemana.length != 0) {
+        let valueData = this.days.filter((d) =>
+          item.diasSemana.includes(d.day)
+        );
+        this.registerForm.get('diasSemana')?.setValue(valueData);
+        this.registerForm
+          .get('diasSemana')
+          ?.setValidators([Validators.required]);
+        this.registerForm.get('diasSemana')?.updateValueAndValidity();
+        this.daysWeekDisabled = true;
+      } else {
+        this.registerForm.get('diasSemana')?.setValue([]);
+        this.registerForm.get('diasSemana')?.clearValidators();
+        this.registerForm.get('diasSemana')?.updateValueAndValidity();
+        this.daysWeekDisabled = false;
+      }
     }
   }
 
   parseDate(dateString: string): Date {
     if (!dateString) return new Date();
 
-    const parts = dateString.split('-'); // Divide "01-02-2025" em ["01", "02", "2025"]
-    return new Date(Number(parts[2]), Number(parts[1]) - 1, Number(parts[0])); // Ano, Mês (0-indexado), Dia
+    const parts = dateString.split('-'); 
+    return new Date(Number(parts[2]), Number(parts[1]) - 1, Number(parts[0]));
   }
   onUpdateTask() {
     const formData = { ...this.registerForm.value };
@@ -133,6 +164,12 @@ export class UpdateTaskComponent implements OnInit {
     formData.frequencia = formData.frequencia.choose;
     formData.dataInicio = this.formatDate(formData.dataInicio);
     formData.dataFim = this.formatDate(formData.dataFim);
+
+    if (formData.frequencia === 'SEMANAL' && formData.diasSemana.length != 0) {
+      formData.diasSemana = formData.diasSemana.map((d: DaysList) => d.day);
+    } else {
+      formData.diasSemana = [];
+    }
 
     try {
       this.loading = true;
@@ -146,7 +183,7 @@ export class UpdateTaskComponent implements OnInit {
                 'Tarefa Atualizada!',
                 'Sua Tarefa foi atualizado com sucesso!'
               );
-              this.refreshDataListTask()
+              this.refreshDataListTask();
               this.loading = false;
             },
             error: (err) => {
@@ -170,7 +207,7 @@ export class UpdateTaskComponent implements OnInit {
   }
 
   formatDate(date: Date): string {
-    if (!date) return ''; // Caso esteja vazio
+    if (!date) return '';
 
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0'); // +1 porque Janeiro é 0
@@ -187,5 +224,18 @@ export class UpdateTaskComponent implements OnInit {
       key: this.keyToast,
       life: 4000,
     });
+  }
+
+  onSelectedFrequence(item: any) {
+    if (item.value != null && item.value.choose == 'SEMANAL') {
+      this.daysWeekDisabled = true;
+      this.registerForm.get('diasSemana')?.setValidators([Validators.required]);
+      this.registerForm.get('diasSemana')?.updateValueAndValidity();
+    } else {
+      this.daysWeekDisabled = false;
+      this.registerForm.get('diasSemana')?.clearValidators();
+      this.registerForm.get('diasSemana')?.updateValueAndValidity();
+      this.registerForm.get('diasSemana')?.setValue([]);
+    }
   }
 }

@@ -26,11 +26,14 @@ import { UserService } from '../../Service/user.service';
 import { UserGlobalService } from '../../Service/user-global.service';
 import { ListMentee } from '../../Interface/list-mentee';
 import { TaskService } from '../../Service/task.service';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { DaysList } from '../../Interface/daysList';
 
 @Component({
   selector: 'app-mentee-task',
   imports: [
     MenuComponent,
+    MultiSelectModule,
     AvatarModule,
     DividerModule,
     FloatLabel,
@@ -61,6 +64,8 @@ export class MenteeTaskComponent implements OnInit {
   keyToast: string = 'br';
 
   frequence: Frequence[] = [];
+  days: DaysList[] = [];
+  daysWeekDisabled = false;
   dateStart: Date | undefined;
   dateEndMin!: Date | undefined;
 
@@ -88,6 +93,16 @@ export class MenteeTaskComponent implements OnInit {
     this.dateStart = new Date();
     this.dateStart.getDate();
 
+    this.days = [
+      { day: 'Segunda' },
+      { day: 'Terça' },
+      { day: 'Quarta' },
+      { day: 'Quinta' },
+      { day: 'Sexta' },
+      { day: 'Sabado' },
+      { day: 'Domingo' },
+    ];
+
     this.frequence = [
       { choose: 'DIARIA' },
       { choose: 'SEMANAL' },
@@ -104,7 +119,6 @@ export class MenteeTaskComponent implements OnInit {
       frequencia: ['', [Validators.required]],
       dataInicio: ['', [Validators.required]],
       dataFim: ['', [Validators.required]],
-      // PRECISO IR PENSANDO EM COMO VOU ENVIAR ESSE
       diasSemana: [[], []],
     });
 
@@ -170,6 +184,8 @@ export class MenteeTaskComponent implements OnInit {
     formData.frequencia = formData.frequencia.choose;
     formData.dataInicio = this.formatDate(formData.dataInicio);
     formData.dataFim = this.formatDate(formData.dataFim);
+    formData.diasSemana = formData.diasSemana.map((d: DaysList) => d.day);
+
 
     try {
       this.loading = true;
@@ -224,5 +240,18 @@ export class MenteeTaskComponent implements OnInit {
       key: this.keyToast,
       life: 4000,
     });
+  }
+
+  onSelectedFrequence(item: any) {
+    if (item.value != null && item.value.choose == 'SEMANAL') {
+      this.daysWeekDisabled = true;
+
+      this.registerForm.get('diasSemana')?.setValidators([Validators.required]);
+      this.registerForm.get('diasSemana')?.updateValueAndValidity();
+    } else {
+      this.daysWeekDisabled = false;
+      this.registerForm.get('diasSemana')?.clearValidators();
+      this.registerForm.get('diasSemana')?.updateValueAndValidity();
+    }
   }
 }
