@@ -105,10 +105,10 @@
 
           <div class="w-full">
 
-            <!-- REGRAS PARA SELECIONAR A DATA NO DIA CERTO CONFORME AS REGRAS -->
+            
             <p-floatlabel variant="in">
               <p-datepicker styleClass="width-full" inputId="in_label" formControlName="dataFim" nome="dataFim" showIcon
-                iconDisplay="input" readonlyInput [minDate]="" dateFormat="dd-mm-yy"
+                iconDisplay="input" readonlyInput [minDate]="dateEndMin" dateFormat="dd-mm-yy"
                 [class]="(registerForm.controls['dataFim'].invalid && (registerForm.controls['dataFim'].touched || registerForm.controls['dataFim'].dirty))? classError : class" />
               <label for="in_label">Data de término</label>
             </p-floatlabel>

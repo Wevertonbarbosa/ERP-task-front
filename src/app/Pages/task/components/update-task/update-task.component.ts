@@ -79,9 +79,6 @@ export class UpdateTaskComponent implements OnInit {
       this.idUser = updatedTask.usuarioId;
     });
 
-    this.dateStart = new Date();
-    this.dateStart.getDate();
-
     this.days = [
       { day: 'Segunda' },
       { day: 'Terça' },
@@ -131,6 +128,8 @@ export class UpdateTaskComponent implements OnInit {
       this.registerForm
         .get('dataInicio')
         ?.setValue(this.parseDate(item.dataInicio));
+      this.dateStart = this.parseDate(item.dataInicio);
+
       this.registerForm.get('dataFim')?.setValue(this.parseDate(item.dataFim));
 
       if (item.frequencia === 'SEMANAL' && item.diasSemana.length != 0) {
@@ -155,7 +154,7 @@ export class UpdateTaskComponent implements OnInit {
   parseDate(dateString: string): Date {
     if (!dateString) return new Date();
 
-    const parts = dateString.split('-'); 
+    const parts = dateString.split('-');
     return new Date(Number(parts[2]), Number(parts[1]) - 1, Number(parts[0]));
   }
   onUpdateTask() {

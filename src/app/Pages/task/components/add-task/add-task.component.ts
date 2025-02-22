@@ -58,6 +58,7 @@ export class AddTaskComponent implements OnInit {
   daysWeekDisabled = false;
 
   dateStart: Date | undefined;
+  dateEndMin!: Date | undefined;
 
   classError = ['w-full', 'ng-dirty', 'ng-invalid'];
   class = ['w-full'];
@@ -103,10 +104,28 @@ export class AddTaskComponent implements OnInit {
       dataFim: ['', [Validators.required]],
       diasSemana: [[]],
     });
+
+    this.registerForm
+      .get('dataInicio')
+      ?.valueChanges.subscribe((newStartDate) => {
+        this.onStartDateChange(newStartDate);
+      });
   }
 
   refreshDataListTask() {
     this.refreshList.emit();
+  }
+
+  onStartDateChange(newStartDate: Date) {
+    if (newStartDate) {
+      this.dateEndMin = newStartDate; // Atualiza a data mínima para dataFim
+
+      // Se a dataFim for menor que a nova dataInicio, resetamos o campo
+      const currentEndDate = this.registerForm.get('dataFim')?.value;
+      if (currentEndDate && currentEndDate < newStartDate) {
+        this.registerForm.get('dataFim')?.setValue(null);
+      }
+    }
   }
 
   onAddTask() {
