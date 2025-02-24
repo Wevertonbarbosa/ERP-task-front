@@ -12,15 +12,15 @@
         <p-fieldset legend="Valor da Mesada" class="">
           <div class="m-4">
 
-            <app-input-global [control]="registerForm.get('mesada')" name="mesada" id="mesada" label="R$"
-              [class]="(registerForm.controls['mesada'].invalid && (registerForm.controls['mesada'].touched || registerForm.controls['mesada'].dirty))? classError : class"
-              typeInput="text"></app-input-global>
+            <p-inputnumber formControlName="valor" name="valor" id="valor" inputId="currency-br" mode="currency"
+              currency="BRL" locale="pt-BR" placeholder="Valor"
+              [class]="(registerForm.controls['valor'].invalid && (registerForm.controls['valor'].touched || registerForm.controls['valor'].dirty))? classError : class" />
 
             <div
-              *ngIf="(registerForm.controls['mesada'].invalid && (registerForm.controls['mesada'].touched || registerForm.controls['mesada'].dirty))">
+              *ngIf="(registerForm.controls['valor'].invalid && (registerForm.controls['valor'].touched || registerForm.controls['valor'].dirty))">
 
               <span class="text-xs text-red-600 font-semibold"
-                *ngIf="registerForm.controls['mesada'].errors?.['required']">O valor da mesada precisa ser
+                *ngIf="registerForm.controls['valor'].errors?.['required']">O valor da mesada precisa ser
                 preenchido!</span>
             </div>
           </div>
@@ -32,13 +32,13 @@
           </div>
         </p-fieldset>
 
-        <app-toast-global [key]="keyToast">
-        </app-toast-global>
-      </form>
 
+      </form>
 
     </div>
   </p-dialog>
 
+  <app-toast-global [key]="keyToast">
+  </app-toast-global>
 
 </div>

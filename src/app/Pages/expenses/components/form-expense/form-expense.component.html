@@ -41,24 +41,42 @@
 
     </div>
 
-    <div class="w-full mb-4">
-      <app-input-global [control]="registerForm.get('valor')" id="valor" label="R$: 00,00" typeInput="text"
-        [class]="(registerForm.controls['valor'].invalid && (registerForm.controls['valor'].touched || registerForm.controls['valor'].dirty))? classError : class"></app-input-global>
+    <div class="flex w-full gap-2">
 
+      <div class="w-full mb-4">
 
-      <div
-        *ngIf="(registerForm.controls['valor'].invalid && (registerForm.controls['valor'].touched || registerForm.controls['valor'].dirty))">
+        <p-inputnumber formControlName="valor" name="valor" id="valor" inputId="currency-br" mode="currency"
+          currency="BRL" locale="pt-BR" placeholder="Valor"
+          [class]="(registerForm.controls['valor'].invalid && (registerForm.controls['valor'].touched || registerForm.controls['valor'].dirty))? classError : class" />
 
-        <span class="text-xs text-red-600 font-semibold"
-          *ngIf="registerForm.controls['valor'].errors?.['required']">Valor precisa ser preenchido!</span>
+        <div
+          *ngIf="(registerForm.controls['valor'].invalid && (registerForm.controls['valor'].touched || registerForm.controls['valor'].dirty))">
+
+          <span class="text-xs text-red-600 font-semibold"
+            *ngIf="registerForm.controls['valor'].errors?.['required']">Valor precisa ser preenchido!</span>
+
+        </div>
+
 
 
       </div>
 
+      <div class="w-full">
+        <app-input-global [control]="registerForm.get('produto')" id="produto" label="Produto" typeInput="text"
+          [class]="(registerForm.controls['produto'].invalid && (registerForm.controls['produto'].touched || registerForm.controls['produto'].dirty))? classError : class"></app-input-global>
 
 
+        <div
+          *ngIf="(registerForm.controls['produto'].invalid && (registerForm.controls['produto'].touched || registerForm.controls['produto'].dirty))">
+
+          <span class="text-xs text-red-600 font-semibold"
+            *ngIf="registerForm.controls['produto'].errors?.['required']">Produto precisa ser preenchido!</span>
+
+
+        </div>
+
+      </div>
     </div>
-
 
 
     <div class="w-full py-2">

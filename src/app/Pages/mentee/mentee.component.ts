@@ -84,9 +84,6 @@ export class MenteeComponent implements OnInit {
 
   visible: boolean = false;
 
-  visiblePayment: boolean = false;
-
-
   @ViewChild(AddMenteeComponent) addMenteeComponent!: AddMenteeComponent;
   @ViewChild(AddPaymentComponent) addPaymentComponent!: AddPaymentComponent;
   @ViewChild(UpdateMenteeComponent)
@@ -212,11 +209,14 @@ export class MenteeComponent implements OnInit {
     try {
       this.service.getMeentFromAdmin(this.userId).subscribe({
         next: (value) => {
+          console.log(value);
+
           this.userMentee = value.map((data: any) => ({
             id: data.usuarioId,
             email: data.email,
             nome: data.nome,
             role: data.role,
+            saldo: data.saldoTotal,
             tarefasConcluidas: data.tarefasConcluidas,
             tarefasPendentes: data.tarefasPendentes,
             aproveitamento: this.calcularAproveitamento(
@@ -239,6 +239,13 @@ export class MenteeComponent implements OnInit {
     } catch (error) {
       console.error('Error do Try Catch', error);
     }
+  }
+
+  formatValueCurrencyBR(valor: number): string {
+    return valor.toLocaleString('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+    });
   }
 
   calcularAproveitamento(

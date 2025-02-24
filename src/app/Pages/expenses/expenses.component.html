@@ -10,22 +10,22 @@
         </div>
         <p-divider />
         <div class="w-full text-white text-center">
-          <span class="text-center italic font-bold text-2xl">
-            R$: 2.000,00
+          <span class="text-2xl text-white italic font-semibold">
+            {{formatValueCurrencyBR(valueExpenseTotal)}}
           </span>
         </div>
 
       </p-card>
 
-      <p-card class="w-full" [style]="{background: 'yellow'}">
+      <p-card class="w-full" [style]="{background: 'blue'}">
         <div class="w-full flex items-center justify-between">
-          <h2 class="text-xl font-semibold italic">Gastos não essenciais</h2>
-          <i class="pi pi-info-circle text-xl"></i>
+          <h2 class="text-xl font-semibold italic text-white">Gastos não essenciais</h2>
+          <i class="pi pi-info-circle text-xl text-white"></i>
         </div>
         <p-divider />
         <div class="w-full text-center">
-          <span class="text-center italic font-bold text-2xl">
-            R$: 500,00
+          <span class="text-2xl text-white italic font-semibold">
+            {{formatValueCurrencyBR(totalValueNo_essential)}}
           </span>
         </div>
 
@@ -38,8 +38,8 @@
         </div>
         <p-divider />
         <div class="w-full text-center text-white">
-          <span class="text-center italic font-bold text-2xl">
-            R$: 700,00
+          <span class="text-2xl text-white italic font-semibold">
+            {{formatValueCurrencyBR(totalValueEssential)}}
           </span>
         </div>
 
@@ -53,8 +53,8 @@
         </div>
         <p-divider />
         <div class="w-full text-center text-white">
-          <span class="text-center italic font-bold text-2xl">
-            R$: 700,00
+          <span class="text-2xl text-white italic font-semibold">
+            {{formatValueCurrencyBR(totalBalance)}}
           </span>
         </div>
 
@@ -65,7 +65,7 @@
   </div>
 
 
-  <div class="w-full py-3 flex gap-3 justify-center">
+  <div class="w-full p-3 flex flex-col gap-3 justify-center">
 
     <div class="w-full">
       <p-card class="w-full h-full">
@@ -94,28 +94,43 @@
 
               <div class="w-full">
                 <div class="card">
-                  <p-table [value]="products" scrollHeight="220px">
+                  <p-table [value]="listEssentialExpenses" stripedRows scrollHeight="220px">
                     <ng-template #caption>
                       <div class="flex items-center justify-between">
                         <span class="text-xl font-bold">Gastos essenciais</span>
-                        <p-button icon="pi pi-refresh" rounded raised />
+                        <p-button (onClick)="reloadTableData()" [loading]="loading" icon="pi pi-refresh" rounded
+                          raised />
                       </div>
                     </ng-template>
                     <ng-template #header>
                       <tr>
-                        <th>Code</th>
+                        <th>ID</th>
                         <th>Produto</th>
+                        <th>Descrição</th>
                         <th>Categoria</th>
+                        <th>Registro do gasto</th>
                         <th>Preço</th>
                       </tr>
                     </ng-template>
                     <ng-template #body let-product>
                       <tr>
-                        <td>{{ product.code }}</td>
-                        <td>{{ product.produto }}</td>
-                        <td>{{ product.category }}</td>
-                        <td>{{ product.preco }}</td>
+                        <td class="text-sm">{{ product.id }}</td>
+                        <td class="text-sm">{{ product.produto }}</td>
+                        <td class="text-sm">{{ product.descricao }}</td>
+                        <td class="text-sm">{{ product.categoria }}</td>
+                        <td class="text-sm">{{ product.dataGasto }}</td>
+                        <td class="text-sm">{{ formatValueCurrencyBR(product.valor)}}</td>
+                        <td class="text-sm">
+                          <p-button icon="pi pi-times" [loading]="loadingDelete" (onClick)="deleteExpense(product)"
+                            [rounded]="true" severity="danger" />
+                        </td>
                       </tr>
+                    </ng-template>
+
+                    <ng-template #emptymessage>
+                      <div class="w-full flex justify-center p-4">
+                        <h2 class="text-lg font-semibold italic">Sem registro de dados na tabela</h2>
+                      </div>
                     </ng-template>
                   </p-table>
                 </div>
@@ -127,28 +142,45 @@
 
               <div class="w-full">
                 <div class="card">
-                  <p-table [value]="products" scrollHeight="220px">
+                  <p-table [value]="listEssentialExpensesNo" stripedRows scrollHeight="220px">
                     <ng-template #caption>
                       <div class="flex items-center justify-between">
                         <span class="text-xl font-bold">Gastos não essenciais</span>
-                        <p-button icon="pi pi-refresh" rounded raised />
+                        <p-button icon="pi pi-refresh" (onClick)="reloadTableData()" [loading]="loading" rounded
+                          raised />
                       </div>
                     </ng-template>
                     <ng-template #header>
                       <tr>
-                        <th>Code</th>
+                        <th>ID</th>
                         <th>Produto</th>
+                        <th>Descrição</th>
                         <th>Categoria</th>
+                        <th>Registro do gasto</th>
                         <th>Preço</th>
                       </tr>
                     </ng-template>
                     <ng-template #body let-product>
                       <tr>
-                        <td>{{ product.code }}</td>
-                        <td>{{ product.produto }}</td>
-                        <td>{{ product.category }}</td>
-                        <td>{{ product.preco }}</td>
+                        <td class="text-sm">{{ product.id }}</td>
+                        <td class="text-sm">{{ product.produto }}</td>
+                        <td class="text-sm">{{ product.descricao }}</td>
+                        <td class="text-sm">{{ product.categoria }}</td>
+                        <td class="text-sm">{{ product.dataGasto }}</td>
+                        <td class="text-sm">{{ formatValueCurrencyBR(product.valor) }}</td>
+                        <td class="text-sm">
+                          <p-button icon="pi pi-times" [loading]="loadingDelete" (onClick)="deleteExpense(product)"
+                            [rounded]="true" severity="danger" />
+                        </td>
+
+
                       </tr>
+                    </ng-template>
+
+                    <ng-template #emptymessage>
+                      <div class="w-full flex justify-center p-4">
+                        <h2 class="text-lg font-semibold italic">Sem registro de dados na tabela</h2>
+                      </div>
                     </ng-template>
                   </p-table>
                 </div>
@@ -163,8 +195,12 @@
 
     </div>
 
+    <p-toast />
+    <p-confirmdialog />
+
+
     <div class="w-full">
-      <app-form-expense></app-form-expense>
+      <app-form-expense (refreshList)="reloadTableData()"></app-form-expense>
     </div>
 
 

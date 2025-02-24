@@ -42,8 +42,11 @@
                       <div>
                         <p-divider />
                       </div>
-                      <div>
-                        <span class="font-semibold text-base italic">R$: 500,00</span>
+                      <div class="flex flex-col">
+                        <span class="text-lg">Saldo disponível: </span>
+                        <span class="font-semibold text-base italic">
+                          {{formatValueCurrencyBR(item.saldo)}}
+                        </span>
                       </div>
 
                     </div>
@@ -94,7 +97,7 @@
 
   <app-update-mentee [userSelected]="userMenteeSelected" (menteeUpdated)="getMentee()">
   </app-update-mentee>
-  <app-add-payment [visible]="visiblePayment"></app-add-payment>
+  <app-add-payment [userSelected]="userMenteeSelected" (menteeUpdated)="getMentee()"></app-add-payment>
   <app-add-mentee (menteeUpdated)="getMentee()"></app-add-mentee>
 
 
