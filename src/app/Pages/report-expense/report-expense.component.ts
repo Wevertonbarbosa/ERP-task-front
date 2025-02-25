@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { MenuComponent } from '../../Components/menu/menu.component';
 import { CardModule } from 'primeng/card';
 import { OrderListModule } from 'primeng/orderlist';
@@ -14,6 +14,8 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { ReportMonth } from '../../Interface/reportMonth';
+import { UserGlobalService } from '../../Service/user-global.service';
+import { ExpensesService } from '../../Service/expenses.service';
 
 @Component({
   selector: 'app-report-expense',
@@ -30,18 +32,28 @@ import { ReportMonth } from '../../Interface/reportMonth';
   ],
   templateUrl: './report-expense.component.html',
   styleUrl: './report-expense.component.css',
+  providers: [ExpensesService],
 })
 export class ReportExpenseComponent implements OnInit {
   registerForm!: FormGroup;
-  products!: any[];
+  expenses!: any[];
   chooseMonth: ReportMonth[] = [];
+  userId!: number;
+  service = inject(ExpensesService);
 
   classError = ['w-full', 'ng-dirty', 'ng-invalid'];
   class = ['w-full'];
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private serviceUserGlobal: UserGlobalService
+  ) {}
 
   ngOnInit() {
+    this.serviceUserGlobal.user$.subscribe((updatedUser) => {
+      this.userId = updatedUser.usuarioId;
+    });
+
     this.chooseMonth = [
       { mes: 'Janeiro' },
       { mes: 'Fevereiro' },
@@ -56,12 +68,12 @@ export class ReportExpenseComponent implements OnInit {
       { mes: 'Novembro' },
       { mes: 'Dezembro' },
     ];
-    
+
     this.registerForm = this.fb.group({
       mes: ['', [Validators.required]],
     });
 
-    this.products = [
+    this.expenses = [
       {
         titulo: 'Aluguel',
         valor: 1000,
@@ -69,9 +81,39 @@ export class ReportExpenseComponent implements OnInit {
         categoria: 'Essencial',
       },
     ];
+
+    this.getExpensesUser();
   }
 
+  getExpensesUser() {
+    try {
+      this.service.getListExpensesUser(this.userId).subscribe({
+        next: (value) => {
+          this.expenses = value.map((expense: any) => ({
+            id: expense.id,
+            titulo: expense.titulo,
+            descricao: expense.descricao,
+            categoria: expense.categoria,
+            produto: expense.produto,
+            valor: expense.valor,
+            dataGasto: expense.dataGasto,
+          }));
+        },
+        error: (err) => {
+          console.error('Erro para carregar os dados ', err.error);
+        },
+      });
+    } catch (error) {
+      console.error('Error do Try Catch', error);
+    }
+  }
 
+  formatValueCurrencyBR(valor: number): string {
+    return valor.toLocaleString('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+    });
+  }
 
-  onMonth(){}
+  onMonth() {}
 }

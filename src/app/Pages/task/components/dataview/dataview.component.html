@@ -48,12 +48,14 @@
 
                   <div *ngIf="userRole == 'ADMIN'" class="flex flex-col items-center">
                     <span class="font-semibold text-sm italic">Concluir tarefa</span>
-                    <p-toggleswitch [(ngModel)]="item.checked" (onChange)="confirmTaskDone(item)"
-                      [disabled]="doneTaskCheck">
+                    <p-toggleswitch [(ngModel)]="item.taskConfirmadaAdmin" (onChange)="confirmTaskDone(item)"
+                      [disabled]="item.done">
                       <ng-template #handle let-checked="checked">
                         <i [ngClass]="['!text-xs', 'pi', checked ? 'pi-check' : 'pi-times']"></i>
                       </ng-template>
                     </p-toggleswitch>
+                    <span class="text-sm font-medium italic">{{item.done? "Tarefa Concluída":"Tarefa em
+                      Andamento"}}</span>
                   </div>
 
                   <div *ngIf="userRole == 'USER'" class="flex flex-col items-center justify-evenly gap-2 w-full">
@@ -64,7 +66,8 @@
                       ariaLabel="Do you confirm" />
 
                     <div class="flex items-center gap-3">
-                      <span [ngClass]="['italic', 'text-xs', 'font-medium', item.done ?'text-green-400':'text-yellow-500']">
+                      <span
+                        [ngClass]="['italic', 'text-xs', 'font-medium', item.done ?'text-green-400':'text-yellow-500']">
                         {{item.done?'Tarefa aprovada pelo mentor':'Aguardando aprovação'}}
                       </span>
                       <i [ngClass]="['!text-xs', 'pi', item.done ? 'pi-check-circle':'pi-clock']"></i>
@@ -74,12 +77,13 @@
                   </div>
 
 
-                  <div *ngIf="userRole == 'ADMIN'" class="flex gap-8">
-                    <i class="pi pi-pencil cursor-pointer text-blue-400 text-xl"
-                      (click)="openModalUpdateTask(item)"></i>
+                  <div *ngIf="userRole == 'ADMIN'" class="flex gap-5">
+                    <p-button pTooltip="Editar tarefa" icon="pi pi-pencil" (onClick)="openModalUpdateTask(item)" [rounded]="true"
+                      severity="info" [disabled]="item.done" />
+
+                    <p-button pTooltip="Excluir tarefa" icon="pi pi-trash" (onClick)="deleteTask(item)" [rounded]="true" severity="danger" />
 
 
-                    <i (click)="deleteTask(item)" class="pi pi-trash text-red-600 cursor-pointer text-xl"></i>
                   </div>
                 </div>
 

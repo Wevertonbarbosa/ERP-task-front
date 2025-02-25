@@ -10,6 +10,8 @@ export class ExpensesService {
   private readonly api = environment.API;
   constructor(private http: HttpClient) {}
 
+
+  //retorno de array de gasto do usuario
   getListExpensesUser(userId: number): Observable<any> {
     return this.http.get<any>(`${this.api}gasto/${userId}/gastos`);
   }

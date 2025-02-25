@@ -112,6 +112,8 @@ export class DataviewComponent implements OnInit {
         next: (value) => {
           this.serviceTaskCheck.getTaskSignal(this.userId).subscribe({
             next: (signalTasks) => {
+              console.log(signalTasks);
+
               const signalMap = new Map(
                 signalTasks.map((task: any) => [
                   task.tarefa,
@@ -128,6 +130,7 @@ export class DataviewComponent implements OnInit {
                 status: task.status,
                 titulo: task.titulo,
                 descricao: task.descricao,
+                taskConfirmadaAdmin: false,
                 categoria: task.categoria,
                 frequencia: task.frequencia,
                 dataInicio: this.formatDate(task.dataInicio),
@@ -138,6 +141,9 @@ export class DataviewComponent implements OnInit {
                 sinalizadaUsuario: signalMap.get(task.id) ?? false,
                 done: doneMap.get(task.id) ?? false,
               }));
+
+              
+              
 
               this.products = [...this.allProducts];
             },
@@ -201,6 +207,8 @@ export class DataviewComponent implements OnInit {
   }
 
   confirmTaskDone(item: any) {
+    console.log(item);
+    
     this.confirmationService.confirm({
       target: item.target as EventTarget,
       message: 'Tem certeza que deseja concluír a tarefa?',
@@ -222,7 +230,13 @@ export class DataviewComponent implements OnInit {
           summary: 'Concluír tarefa',
           detail: 'Tarefa concluída com sucesso',
         });
-        this.doneTaskCheck = true;
+
+        this.postCheckTaskUserAdmin(
+          item.id,
+          item.responsavelId,
+          item.taskConfirmadaAdmin
+        );
+        item.taskConfirmadaAdmin = true;
       },
       reject: () => {
         item.checked = false;
@@ -232,6 +246,7 @@ export class DataviewComponent implements OnInit {
           detail: 'Sua tarefa não foi concluída',
           life: 3000,
         });
+        item.taskConfirmadaAdmin = false;
       },
     });
   }
@@ -281,12 +296,25 @@ export class DataviewComponent implements OnInit {
     });
   }
 
+  postCheckTaskUserAdmin(idTask: number, idAdmin: number, data: boolean) {
+    try {
+      this.serviceTaskCheck
+        .postAdminCheckTask(idTask, idAdmin, data)
+        .subscribe({
+          next: (value) => {},
+          error: (err) => {
+            console.error('Error para sinalizar tarefa concluida', err);
+          },
+        });
+    } catch (error) {
+      console.error('Error no Try Catch', error);
+    }
+  }
+
   postTaskSignalDoneUser(idTask: number, idUser: number, data: any) {
     try {
       this.serviceTaskCheck.postSignalTask(idTask, idUser, data).subscribe({
-        next: (value) => {
-          console.log(value);
-        },
+        next: (value) => {},
         error: (err) => {
           console.error('Error para sinalizar tarefa concluida', err);
         },

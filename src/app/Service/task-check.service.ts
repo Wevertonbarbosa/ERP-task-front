@@ -33,4 +33,15 @@ export class TaskCheckService {
       null
     );
   }
+
+  postAdminCheckTask(
+    idTask: number,
+    idAdmin: number,
+    data: boolean
+  ): Observable<any> {
+    return this.http.post<any>(
+      `${this.api}tarefas-data/${idTask}/concluir/${idAdmin}/${data}`,
+      null
+    );
+  }
 }

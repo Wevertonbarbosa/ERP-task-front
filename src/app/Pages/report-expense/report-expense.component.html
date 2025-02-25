@@ -5,9 +5,9 @@
   <div class="w-full flex justify-center p-2 gap-2">
 
     <div class="w-full">
-      <p-card header="Gestão das tarefas">
+      <p-card header="Gestão das finanças">
 
-        <p-orderlist [value]="products" [responsive]="true" filterBy="titulo" filterPlaceholder="Titulo"
+        <p-orderlist [value]="expenses" [responsive]="true" filterBy="titulo" filterPlaceholder="Titulo"
           scrollHeight="26rem">
 
           <ng-template let-option let-selected="selected" #item>
@@ -35,7 +35,7 @@
               <div class="flex flex-col">
                 <span class="sm:ml-8">Categoria: <b class="italic">{{option.categoria}}</b></span>
                 <span class="text-base italic font-medium text-right sm:ml-8">
-                  R$: {{option.valor}}
+                  {{formatValueCurrencyBR(option.valor) }}
                 </span>
               </div>
 
