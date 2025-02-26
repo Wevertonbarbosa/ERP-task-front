@@ -107,7 +107,8 @@
 
             <p-floatlabel variant="in">
               <p-datepicker styleClass="width-full" inputId="in_label" formControlName="dataFim" nome="dataFim" showIcon
-                iconDisplay="input" readonlyInput [minDate]="registerForm.get('dataInicio')?.value || null"
+                iconDisplay="input" readonlyInput 
+                [minDate]="registerForm.get('dataInicio')?.value || null"
                 dateFormat="dd-mm-yy"
                 [class]="(registerForm.controls['dataFim'].invalid && (registerForm.controls['dataFim'].touched || registerForm.controls['dataFim'].dirty))? classError : class" />
               <label for="in_label">Data de término</label>

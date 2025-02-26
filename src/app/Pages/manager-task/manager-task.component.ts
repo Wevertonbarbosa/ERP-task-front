@@ -18,6 +18,7 @@ import { DividerModule } from 'primeng/divider';
 import { TaskService } from '../../Service/task.service';
 import { UserGlobalService } from '../../Service/user-global.service';
 import { ReportTaskGlobalComponent } from './components/report-task-global/report-task-global.component';
+import { ReportTaskMonthComponent } from './components/report-task-month/report-task-month.component';
 
 @Component({
   selector: 'app-manager-task',
@@ -34,6 +35,7 @@ import { ReportTaskGlobalComponent } from './components/report-task-global/repor
     ReactiveFormsModule,
     CommonModule,
     ReportTaskGlobalComponent,
+    ReportTaskMonthComponent,
   ],
   templateUrl: './manager-task.component.html',
   styleUrl: './manager-task.component.css',
@@ -44,18 +46,35 @@ export class ManagerTaskComponent implements OnInit {
   startDate: any;
   endDate: any;
   userId!: number;
+  registerForm!: FormGroup;
+  loading: boolean = false;
+
+  dateStartSelected!: string;
+  dateEndSelected!: string;
+
+  classError = ['w-full', 'ng-dirty', 'ng-invalid'];
+  class = ['w-full'];
 
   @ViewChild(ReportTaskGlobalComponent)
   reportExpenseComponent!: ReportTaskGlobalComponent;
 
+  @ViewChild(ReportTaskMonthComponent)
+  reportTaskMonthComponent!: ReportTaskMonthComponent;
+
   constructor(
     private service: TaskService,
-    private serviceUserGlobal: UserGlobalService
+    private serviceUserGlobal: UserGlobalService,
+    private fb: FormBuilder
   ) {}
 
   ngOnInit() {
     this.serviceUserGlobal.user$.subscribe((updatedUser) => {
       this.userId = updatedUser.usuarioId;
+    });
+
+    this.registerForm = this.fb.group({
+      dataInicio: ['', [Validators.required]],
+      dataFim: ['', [Validators.required]],
     });
 
     this.getTaskUser();
@@ -97,7 +116,38 @@ export class ManagerTaskComponent implements OnInit {
     return `${day}-${month}-${year}`;
   }
 
-  testPDF() {
+  downloadGlobalPDF() {
     this.reportExpenseComponent.reportPDFTask();
+  }
+
+  downloadMonthPDF(){
+    
+  }
+
+  onReportTaskMonth() {
+    const formData = { ...this.registerForm.value };
+    formData.dataInicio = this.formatDateForReport(formData.dataInicio);
+    formData.dataFim = this.formatDateForReport(formData.dataFim);
+
+    this.dateStartSelected = formData.dataInicio;
+    this.dateEndSelected = formData.dataFim;
+
+
+    this.reportTaskMonthComponent.showDialog()
+    this.reportTaskMonthComponent.getTaskUser()
+
+
+    
+    // this.reportTaskMonthComponent.reportPDFTask()
+
+  }
+
+  formatDateForReport(date: Date): string {
+    if (!date) return '';
+
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // +1 porque Janeiro é 0
+
+    return `${month}-${year}`;
   }
 }

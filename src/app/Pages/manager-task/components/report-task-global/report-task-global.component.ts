@@ -57,8 +57,6 @@ export class ReportTaskGlobalComponent implements OnInit {
     try {
       this.service.getListTaskStatusUser(this.userId).subscribe({
         next: (value) => {
-          console.log(value);
-
           this.taskDone = value.tarefasConcluidas;
           this.taskMissing = value.tarefasPendentes;
 
@@ -114,7 +112,7 @@ export class ReportTaskGlobalComponent implements OnInit {
 
       pdf.html(this.el.nativeElement, {
         callback: (pdf) => {
-          pdf.save('pdfTask.pdf');
+          pdf.save('relatorioGlobalTarefas.pdf');
         },
       });
     }, 100);

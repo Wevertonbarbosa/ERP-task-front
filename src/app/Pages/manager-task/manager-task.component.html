@@ -63,40 +63,71 @@
 
         <div class="w-full flex items-center justify-center pt-4">
           <p-button label="Baixar relatório global" class="w-3/4" [rounded]="true" styleClass="width-full"
-            [raised]="true" icon="pi pi-download" (onClick)="testPDF()" />
+            [raised]="true" icon="pi pi-download" (onClick)="downloadGlobalPDF()" />
         </div>
 
-        <div class="w-full flex items-center justify-center pt-5">
 
-          <p-floatlabel variant="on">
-            <p-datepicker [(ngModel)]="startDate" showIcon iconDisplay="input" view="month" dateFormat="mm/yy"
-              inputId="on_label" [readonlyInput]="true" />
-            <label for="on_label">De</label>
-          </p-floatlabel>
+        <form [formGroup]="registerForm" (ngSubmit)="onReportTaskMonth()">
+          <div class="w-full flex justify-center pt-5">
 
-          <div class="p-2">
-            <p-divider align="center" type="solid">
-              <b>Data</b>
-            </p-divider>
+            <div class="w-full">
+              <p-floatlabel variant="on">
+                <p-datepicker showIcon iconDisplay="input" view="month" dateFormat="mm/yy" formControlName="dataInicio"
+                  styleClass="width-full" name="dataInicio" inputId="on_label" [readonlyInput]="true"
+                  [class]="(registerForm.controls['dataInicio'].invalid && (registerForm.controls['dataInicio'].touched || registerForm.controls['dataInicio'].dirty))? classError : class" />
+                <label for="on_label">De</label>
+              </p-floatlabel>
+
+              <div
+                *ngIf="(registerForm.controls['dataInicio'].invalid && (registerForm.controls['dataInicio'].touched || registerForm.controls['dataInicio'].dirty))">
+
+                <span class="text-xs text-red-600 font-semibold"
+                  *ngIf="registerForm.controls['dataInicio'].errors?.['required']">Data de início precisa ser
+                  preenchido!</span>
+
+              </div>
+
+            </div>
+
+            <div class="p-2 py-0">
+              <p-divider class="my-2" align="center" type="solid">
+                <b>Data</b>
+              </p-divider>
+            </div>
+
+            <div class="w-full">
+              <p-floatlabel variant="on">
+                <p-datepicker showIcon iconDisplay="input" view="month" dateFormat="mm/yy" inputId="on_label"
+                  formControlName="dataFim" styleClass="width-full" name="dataFim" [readonlyInput]="true"
+                  [minDate]="registerForm.get('dataInicio')?.value || null"
+                  [class]="(registerForm.controls['dataFim'].invalid && (registerForm.controls['dataFim'].touched || registerForm.controls['dataFim'].dirty))? classError : class" />
+                <label for="on_label">até</label>
+              </p-floatlabel>
+
+              <div
+                *ngIf="(registerForm.controls['dataFim'].invalid && (registerForm.controls['dataFim'].touched || registerForm.controls['dataFim'].dirty))">
+
+
+                <span class="text-xs text-red-600 font-semibold"
+                  *ngIf="registerForm.controls['dataFim'].errors?.['required']">Data de término precisa ser
+                  preenchido!</span>
+
+              </div>
+
+            </div>
+
           </div>
 
-          <p-floatlabel variant="on">
-            <p-datepicker [(ngModel)]="endDate" showIcon iconDisplay="input" view="month" dateFormat="mm/yy"
-              inputId="on_label" [readonlyInput]="true" />
-            <label for="on_label">até</label>
-          </p-floatlabel>
+          <p-divider />
 
-        </div>
-
-        <p-divider />
-
-        <div class="w-full flex items-center justify-center py-4">
-          <p-button label="Baixar relatório por período" [disabled]="true" class="w-3/4" [rounded]="true"
-            styleClass="width-full" [raised]="true" icon="pi pi-download" />
-        </div>
+          <div class="w-full flex items-center justify-center py-4">
+            <p-button label="Baixar relatório por período" type="submit" class="w-3/4" [loading]="loading"
+              [rounded]="true" [disabled]="registerForm.invalid" styleClass="width-full" [raised]="true"
+              icon="pi pi-download" />
+          </div>
 
 
-
+        </form>
       </p-card>
 
 
@@ -111,5 +142,10 @@
 
   <div class="pb-3 flex justify-center w-full">
     <app-report-task-global></app-report-task-global>
+  </div>
+
+  <!-- RELATORIO POR PERIODO -->
+  <div class="pb-3 flex justify-center w-full">
+    <app-report-task-month [dateStart]="dateStartSelected" [dateEnd]="dateEndSelected"></app-report-task-month>
   </div>
 </div>
