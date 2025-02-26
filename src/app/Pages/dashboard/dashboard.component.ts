@@ -54,6 +54,7 @@ export class DashboardComponent implements OnInit {
     try {
       this.service.getListTaskStatusUser(this.userId).subscribe({
         next: (value) => {
+          console.log(value);
           
 
           this.taskDone = value.tarefasConcluidas;

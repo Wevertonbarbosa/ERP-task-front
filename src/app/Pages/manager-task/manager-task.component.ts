@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MenuComponent } from '../../Components/menu/menu.component';
 import { CardModule } from 'primeng/card';
 import { OrderListModule } from 'primeng/orderlist';
@@ -17,6 +17,7 @@ import { FloatLabel } from 'primeng/floatlabel';
 import { DividerModule } from 'primeng/divider';
 import { TaskService } from '../../Service/task.service';
 import { UserGlobalService } from '../../Service/user-global.service';
+import { ReportTaskGlobalComponent } from './components/report-task-global/report-task-global.component';
 
 @Component({
   selector: 'app-manager-task',
@@ -32,6 +33,7 @@ import { UserGlobalService } from '../../Service/user-global.service';
     FormsModule,
     ReactiveFormsModule,
     CommonModule,
+    ReportTaskGlobalComponent,
   ],
   templateUrl: './manager-task.component.html',
   styleUrl: './manager-task.component.css',
@@ -42,6 +44,9 @@ export class ManagerTaskComponent implements OnInit {
   startDate: any;
   endDate: any;
   userId!: number;
+
+  @ViewChild(ReportTaskGlobalComponent)
+  reportExpenseComponent!: ReportTaskGlobalComponent;
 
   constructor(
     private service: TaskService,
@@ -90,5 +95,9 @@ export class ManagerTaskComponent implements OnInit {
     const [year, month, day] = date.split('-'); // Divide manualmente
 
     return `${day}-${month}-${year}`;
+  }
+
+  testPDF() {
+    this.reportExpenseComponent.reportPDFTask();
   }
 }
