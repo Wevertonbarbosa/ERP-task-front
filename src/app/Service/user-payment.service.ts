@@ -13,4 +13,8 @@ export class UserPaymentService {
   postNewPayment(idUser: number, data: any): Observable<any> {
     return this.http.post<any>(`${this.api}mesada/${idUser}`, data);
   }
+
+  getTotalPayment(idUser: number): Observable<any>{
+    return this.http.get<any>(`${this.api}mesada/saldo/${idUser}`)
+  }
 }

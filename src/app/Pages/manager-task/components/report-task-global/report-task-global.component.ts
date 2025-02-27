@@ -1,5 +1,5 @@
 import { jsPDF } from 'jspdf';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { ChartModule } from 'primeng/chart';
 import { CardModule } from 'primeng/card';
 import { DividerModule } from 'primeng/divider';
@@ -9,10 +9,17 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TaskService } from '../../../../Service/task.service';
 
+import { DialogModule } from 'primeng/dialog';
+import { ButtonModule } from 'primeng/button';
+import { TooltipModule } from 'primeng/tooltip';
+
 @Component({
   selector: 'app-report-task-global',
   imports: [
     CardModule,
+    DialogModule,
+    ButtonModule,
+    TooltipModule,
     ChartModule,
     FormsModule,
     ReactiveFormsModule,
@@ -25,6 +32,9 @@ import { TaskService } from '../../../../Service/task.service';
 })
 export class ReportTaskGlobalComponent implements OnInit {
   @ViewChild('content', { static: false, read: ElementRef }) el!: ElementRef;
+
+
+  visible = false;
 
   userName!: string;
   userId!: number;
@@ -51,6 +61,10 @@ export class ReportTaskGlobalComponent implements OnInit {
 
     this.getOverviewTask();
     this.getTaskUser();
+  }
+
+  showDialog() {
+    this.visible = true;
   }
 
   getOverviewTask() {

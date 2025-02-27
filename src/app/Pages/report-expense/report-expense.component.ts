@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ViewChild } from '@angular/core';
 import { MenuComponent } from '../../Components/menu/menu.component';
 import { CardModule } from 'primeng/card';
 import { OrderListModule } from 'primeng/orderlist';
@@ -16,6 +16,7 @@ import {
 import { ReportMonth } from '../../Interface/reportMonth';
 import { UserGlobalService } from '../../Service/user-global.service';
 import { ExpensesService } from '../../Service/expenses.service';
+import { ReportMonthExpenseComponent } from './components/report-month-expense/report-month-expense.component';
 
 @Component({
   selector: 'app-report-expense',
@@ -29,16 +30,22 @@ import { ExpensesService } from '../../Service/expenses.service';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    ReportMonthExpenseComponent,
   ],
   templateUrl: './report-expense.component.html',
   styleUrl: './report-expense.component.css',
   providers: [ExpensesService],
 })
 export class ReportExpenseComponent implements OnInit {
+  @ViewChild(ReportMonthExpenseComponent)
+  reportMonthExpenseComponent!: ReportMonthExpenseComponent;
+
   registerForm!: FormGroup;
   expenses!: any[];
   chooseMonth: ReportMonth[] = [];
   userId!: number;
+  monthSelected!: string;
+
   service = inject(ExpensesService);
 
   classError = ['w-full', 'ng-dirty', 'ng-invalid'];
@@ -115,5 +122,13 @@ export class ReportExpenseComponent implements OnInit {
     });
   }
 
-  onMonth() {}
+  onMonth() {
+    const formData = { ...this.registerForm.value };
+    this.monthSelected = formData.mes.mes;
+
+    this.reportMonthExpenseComponent.getExpensesUser();
+    this.reportMonthExpenseComponent.showDialog();
+
+    this.registerForm.reset();
+  }
 }

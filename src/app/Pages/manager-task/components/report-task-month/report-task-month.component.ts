@@ -60,8 +60,6 @@ export class ReportTaskMonthComponent implements OnInit {
       this.userId = updatedUser.usuarioId;
     });
 
-    // this.getOverviewTask();
-    // this.getTaskUser();
   }
 
   getTaskUser() {

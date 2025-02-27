@@ -92,8 +92,8 @@
           <p-divider />
 
           <div class="w-full py-5 flex justify-center">
-            <p-button label="Baixar relatório mensal" [disabled]="true" class="w-3/4" [rounded]="true"
-              styleClass="width-full" [raised]="true" icon="pi pi-download" />
+            <p-button label="Baixar relatório mensal" type="submit" [disabled]="registerForm.invalid" class="w-3/4"
+              [rounded]="true" styleClass="width-full" [raised]="true" icon="pi pi-download" />
           </div>
 
 
@@ -101,8 +101,10 @@
       </p-card>
     </div>
 
-
-
-
   </div>
+
+  <div class="p-3">
+    <app-report-month-expense [month]="monthSelected"></app-report-month-expense>
+  </div>
+
 </div>

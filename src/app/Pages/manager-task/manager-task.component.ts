@@ -109,19 +109,15 @@ export class ManagerTaskComponent implements OnInit {
   }
 
   formatDate(date: string): string {
-    if (!date) return ''; // Evita erro se a data for nula ou vazia
+    if (!date) return ''; 
 
-    const [year, month, day] = date.split('-'); // Divide manualmente
+    const [year, month, day] = date.split('-');
 
     return `${day}-${month}-${year}`;
   }
 
   downloadGlobalPDF() {
-    this.reportExpenseComponent.reportPDFTask();
-  }
-
-  downloadMonthPDF(){
-    
+    this.reportExpenseComponent.showDialog();
   }
 
   onReportTaskMonth() {
@@ -132,21 +128,17 @@ export class ManagerTaskComponent implements OnInit {
     this.dateStartSelected = formData.dataInicio;
     this.dateEndSelected = formData.dataFim;
 
+    this.reportTaskMonthComponent.getTaskUser();
+    this.reportTaskMonthComponent.showDialog();
 
-    this.reportTaskMonthComponent.showDialog()
-    this.reportTaskMonthComponent.getTaskUser()
-
-
-    
-    // this.reportTaskMonthComponent.reportPDFTask()
-
+    this.registerForm.reset();
   }
 
   formatDateForReport(date: Date): string {
     if (!date) return '';
 
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // +1 porque Janeiro é 0
+    const month = String(date.getMonth() + 1).padStart(2, '0');
 
     return `${month}-${year}`;
   }
