@@ -2,7 +2,7 @@
   <app-menu></app-menu>
 
 
-  <div class="w-full flex justify-center p-2 gap-2">
+  <div class="w-full flex justify-center p-2 gap-2 containerMain">
 
     <div class="w-full">
       <p-card header="Gestão das finanças">
@@ -13,9 +13,9 @@
           <ng-template let-option let-selected="selected" #item>
 
 
-            <div class="flex flex-wrap p-1 items-center gap-4 w-full">
+            <div class="flex flex-wrap p-1 items-center gap-4 w-full containerContent">
 
-              <div class="">
+              <div class="removeDiv">
                 <i class="block xl:block mx-auto rounded-border w-full pi pi-check-square text-2xl text-green-800"
                   alt="Tarefas"></i>
 
@@ -23,7 +23,7 @@
 
 
               <div class="flex-1 flex flex-col">
-                <span class="font-medium text-sm">{{ option.titulo }}</span>
+                <span class="font-medium text-sm fontResponsiveSmall">{{ option.titulo }}</span>
                 <span [ngClass]="{
                           'text-sm': true,
                           'text-surface-500': !selected,
@@ -33,8 +33,8 @@
               </div>
 
               <div class="flex flex-col">
-                <span class="sm:ml-8">Categoria: <b class="italic">{{option.categoria}}</b></span>
-                <span class="text-base italic font-medium text-right sm:ml-8">
+                <span class="sm:ml-8 fontResponsiveSmall">Categoria: <b class="italic">{{option.categoria}}</b></span>
+                <span class="text-base italic font-medium text-right sm:ml-8 fontResponsiveSmall">
                   {{formatValueCurrencyBR(option.valor) }}
                 </span>
               </div>
@@ -92,7 +92,7 @@
           <p-divider />
 
           <div class="w-full py-5 flex justify-center">
-            <p-button label="Baixar relatório mensal" type="submit" [disabled]="registerForm.invalid" class="w-3/4"
+            <p-button label="Baixar relatório mensal" type="submit" [disabled]="registerForm.invalid" class="w-3/4 widthFullBtn"
               [rounded]="true" styleClass="width-full" [raised]="true" icon="pi pi-download" />
           </div>
 

@@ -96,6 +96,12 @@ export class ExpensesComponent implements OnInit {
     try {
       this.service.getResultTotalExpenseCategory(this.userId).subscribe({
         next: (value) => {
+          if (value === null) {
+            this.totalValueEssential = 0;
+            this.totalValueNo_essential = 0;
+            return;
+          }
+
           this.totalValueEssential = value.totalEssencial;
           this.totalValueNo_essential = value.totalNaoEssencial;
         },

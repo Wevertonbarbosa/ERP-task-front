@@ -5,12 +5,12 @@
 
     <p-divider />
 
-    <div class="w-full p-4">
+    <div class="w-full p-4 removePaddingAndMargin">
 
       <form [formGroup]="registerForm" (ngSubmit)="onAddPayment()">
 
         <p-fieldset legend="Valor da Mesada" class="">
-          <div class="m-4">
+          <div class="m-4 removePaddingAndMargin">
 
             <p-inputnumber formControlName="valor" name="valor" id="valor" inputId="currency-br" mode="currency"
               currency="BRL" locale="pt-BR" placeholder="Valor"
@@ -28,7 +28,7 @@
 
           <div class="flex justify-center content-center py-7">
             <p-button label="Confirmar" type="submit" [loading]="loading" [rounded]="true" size="large" [raised]="true"
-              class="w-4/5" styleClass="width-full" [disabled]="registerForm.invalid"></p-button>
+              class="w-4/5 widthFullBtn" styleClass="width-full" [disabled]="registerForm.invalid"></p-button>
           </div>
         </p-fieldset>
 

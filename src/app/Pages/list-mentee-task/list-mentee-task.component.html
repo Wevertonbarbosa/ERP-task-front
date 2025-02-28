@@ -22,9 +22,9 @@
             <ng-template let-option let-selected="selected" #item>
 
 
-              <div class="flex flex-wrap p-1 items-center gap-4 w-full">
+              <div class="flex flex-wrap p-1 items-center gap-4 w-full containerContentItem">
 
-                <div class="md:w-20 relative">
+                <div class="md:w-20 relative containerTagFrequence">
                   <i class="block xl:block mx-auto rounded-border w-full pi pi-th-large text-2xl text-amber-300"
                     alt="Tarefas"></i>
                   <p-tag [value]="option.frequencia" [severity]="(option)" class="absolute" [style.left.px]="20"
@@ -43,7 +43,7 @@
                 </div>
 
                 <div class="flex flex-col">
-                  <span class="font-bold sm:ml-8">{{option.categoria }}</span>
+                  <span class="font-bold sm:ml-8 fontResponsiveSmall">{{option.categoria }}</span>
                   <span class="font-normal text-xs sm:ml-8"><b class="italic">Início:</b> {{option.dataInicio }} <b
                       class="italic">até </b> {{option.dataFim}}</span>
                 </div>
@@ -51,7 +51,7 @@
 
                 <div class="flex-1 flex justify-center">
                   <div class="flex flex-col">
-                    <span class="text-sm font-medium text-center">Mentorado</span>
+                    <span class="text-sm font-medium text-center fontResponsiveSmall">Mentorado</span>
                     <span
                       [ngClass]="['italic', 'text-xs', 'font-medium', option.sinalizadaUsuario ?'text-green-400':'text-yellow-500']">
                       {{option.sinalizadaUsuario?'Sinalizada como concluída':'Tarefa em andamento'}}
@@ -61,7 +61,7 @@
                 </div>
 
                 <div class="flex flex-col">
-                  <span class="text-sm font-medium text-center">Concluir tarefa</span>
+                  <span class="text-sm font-medium text-center fontResponsiveSmall">Concluir tarefa</span>
                   <div class="flex justify-center flex-col">
 
                     <p-togglebutton [(ngModel)]="option.done" (onChange)="doneTaskMentee(option)" onLabel="Concluída"
@@ -78,7 +78,7 @@
 
                 </div>
 
-                <div>
+                <div class="containerBtnsAction">
                   <p-button icon="pi pi-times" [rounded]="true" [text]="true" [raised]="true" severity="danger"
                     (onClick)="deleteTaskMentee(option)" />
 
@@ -96,7 +96,10 @@
 
           </p-orderlist>
 
-          <p-toast />
+          <p-toast
+            [breakpoints]="{'768px': {width: '60%', right: '0', left: '0'}, '425px': {width: '90%', right: '0', left: '0'} }"
+            [showTransformOptions]="'translateY(100%)'" [showTransitionOptions]="'1000ms'"
+            [hideTransitionOptions]="'1000ms'" [showTransformOptions]="'translateX(100%)'" />
           <p-confirmdialog />
 
         </div>

@@ -1,7 +1,7 @@
 <p-card class="w-full" header="Registro de gastos">
   <form [formGroup]="registerForm" (ngSubmit)="onExpense()">
 
-    <div class="w-full flex pt-3 gap-3">
+    <div class="w-full flex pt-3 gap-3 flexColumnContainer">
 
       <div class="mb-4 w-full">
         <app-input-global [control]="registerForm.get('titulo')" id="titulo" label="Título" typeInput="text"
@@ -20,7 +20,7 @@
         </div>
       </div>
 
-      <div class="mb-4 w-1/2">
+      <div class="mb-4 w-1/2 widthInputFull">
 
         <div class="card flex justify-center">
           <p-select [options]="typeCategory" formControlName="categoria" optionDisabled="disabled" [checkmark]="true"
@@ -41,7 +41,7 @@
 
     </div>
 
-    <div class="flex w-full gap-2">
+    <div class="flex w-full gap-2 flexColumnContainer">
 
       <div class="w-full mb-4">
 
@@ -61,7 +61,7 @@
 
       </div>
 
-      <div class="w-full">
+      <div class="w-full marginButtomInput">
         <app-input-global [control]="registerForm.get('produto')" id="produto" label="Produto" typeInput="text"
           [class]="(registerForm.controls['produto'].invalid && (registerForm.controls['produto'].touched || registerForm.controls['produto'].dirty))? classError : class"></app-input-global>
 

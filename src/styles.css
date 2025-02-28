@@ -16,6 +16,10 @@
   width: 100%;
 }
 
+.p-listbox-option{
+  overflow: auto;
+}
+
 .p-orderlist-list-container{
   width: 100% !important;
 }
@@ -23,6 +27,10 @@
   display: none !important;
 }
 
+.p-scrollpanel-content-container{
+  overflow-y: hidden;
+  overflow-x: scroll;
+}
 
 .tag-manager-list{
   padding: 1px !important;

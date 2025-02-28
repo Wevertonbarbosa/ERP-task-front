@@ -15,6 +15,7 @@ import {
 import { MessageService } from 'primeng/api';
 import { RedefinirSenhaService } from '../../Service/redefinir-senha.service';
 import { ToastGlobalComponent } from '../../Components/toast-global/toast-global.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-redefinir',
@@ -43,7 +44,8 @@ export class RedefinirComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private messageService: MessageService,
-    private service: RedefinirSenhaService
+    private service: RedefinirSenhaService,
+    private route: Router
   ) {}
 
   ngOnInit() {
@@ -70,9 +72,13 @@ export class RedefinirComponent implements OnInit {
                 'Senha redefinida com sucesso!',
                 `Sua senha agora foi redefinida e atualizada.`
               );
-              this.loading = false;
-              //EMAIL SERÁ USADO PARA UMA FORMA DE GUARDA A ROTA REDEFINIR, PROTECAO
-              localStorage.removeItem('emailUser')
+
+              localStorage.removeItem('emailUser');
+              setTimeout(() => {
+                this.loading = false;
+                //EMAIL SERÁ USADO PARA UMA FORMA DE GUARDA A ROTA REDEFINIR, PROTECAO
+                this.route.navigate(['login']);
+              }, 3000);
             },
             error: (err) => {
               console.error('Erro para redefinir senha ', err);

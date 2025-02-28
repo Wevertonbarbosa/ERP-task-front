@@ -30,7 +30,6 @@
               <p-tab value="2">
                 <i class="pi pi-money-bill"></i>
                 <span class="font-bold whitespace-nowrap">Não essenciais</span>
-
               </p-tab>
               <ng-template #nexticon>
                 <i class="pi pi-plus"></i>
@@ -43,15 +42,14 @@
                 <div class="w-full pt-5">
                   <p-card class="w-full shadow-lg rounded-sm" [style]="{background: 'lightgreen',}">
                     <div class="w-full flex items-center justify-between">
-                      <h1 class="font-semibold text-2xl text-white">Seus total de gastos</h1>
+                      <h1 class="font-semibold text-2xl text-white whitespace-nowrap">Seus total de gastos</h1>
                       <i class="pi pi-dollar text-white text-4xl"></i>
                     </div>
 
                     <div class="w-full flex justify-center p-3">
-                      <span class="text-4xl text-white italic font-semibold">
+                      <span class="text-4xl text-white italic font-semibold whitespace-nowrap">
                         {{formatValueCurrencyBR(valueExpenseTotal)}}
                       </span>
-
                     </div>
 
                   </p-card>
@@ -59,13 +57,12 @@
               </p-tabpanel>
 
               <p-tabpanel value="1">
-
                 <div>
                   <div class="card">
                     <p-table [value]="listEssentialExpenses" [autoLayout]="true" scrollHeight="220px">
                       <ng-template #caption>
                         <div class="flex items-center justify-between">
-                          <span class="text-xl font-bold">Gastos essenciais</span>
+                          <span class="text-xl font-bold whitespace-nowrap">Gastos essenciais</span>
                           <p-button icon="pi pi-refresh" (onClick)="reloadTableData()" [loading]="loading" rounded
                             raised />
                         </div>
@@ -73,22 +70,20 @@
 
                       <ng-template #header>
                         <tr>
-                          <th class="text-sm">ID</th>
-                          <th class="text-sm">Produto</th>
-                          <th class="text-sm">Categoria</th>
-                          <th class="text-sm">Registro do gasto</th>
-                          <th class="text-sm">Preço</th>
-
-
+                          <th class="text-sm whitespace-nowrap">ID</th>
+                          <th class="text-sm whitespace-nowrap">Produto</th>
+                          <th class="text-sm whitespace-nowrap">Categoria</th>
+                          <th class="text-sm whitespace-nowrap">Registro do gasto</th>
+                          <th class="text-sm whitespace-nowrap">Preço</th>
                         </tr>
                       </ng-template>
                       <ng-template #body let-product>
                         <tr>
-                          <td class="text-sm p-2">{{ product.id }}</td>
+                          <td class="text-sm p-2 whitespace-nowrap">{{ product.id }}</td>
                           <td class="text-sm p-2 whitespace-nowrap">{{ product.produto }}</td>
-                          <td class="text-sm p-2">{{ product.categoria }}</td>
-                          <td class="text-sm p-2">{{ formatDate(product.dataGasto)}}</td>
-                          <td class="text-sm p-2">{{ formatValueCurrencyBR(product.valor)}}</td>
+                          <td class="text-sm p-2 whitespace-nowrap">{{ product.categoria }}</td>
+                          <td class="text-sm p-2 whitespace-nowrap">{{ formatDate(product.dataGasto)}}</td>
+                          <td class="text-sm p-2 whitespace-nowrap">{{ formatValueCurrencyBR(product.valor)}}</td>
                         </tr>
                       </ng-template>
 
@@ -101,7 +96,6 @@
                     </p-table>
                   </div>
                 </div>
-
               </p-tabpanel>
 
               <p-tabpanel value="2">
@@ -109,7 +103,7 @@
                   <p-table [value]="listEssentialExpensesNo" [autoLayout]="true" scrollHeight="220px">
                     <ng-template #caption>
                       <div class="flex items-center justify-between">
-                        <span class="text-xl font-bold">Gastos não essenciais</span>
+                        <span class="text-xl font-bold whitespace-nowrap">Gastos não essenciais</span>
                         <p-button icon="pi pi-refresh" (onClick)="reloadTableData()" [loading]="loading" rounded
                           raised />
                       </div>
@@ -117,20 +111,20 @@
 
                     <ng-template #header>
                       <tr>
-                        <th class="text-sm">ID</th>
-                        <th class="text-sm">Produto</th>
-                        <th class="text-sm">Categoria</th>
-                        <th class="text-sm">Registro do gasto</th>
-                        <th class="text-sm">Preço</th>
+                        <th class="text-sm whitespace-nowrap">ID</th>
+                        <th class="text-sm whitespace-nowrap">Produto</th>
+                        <th class="text-sm whitespace-nowrap">Categoria</th>
+                        <th class="text-sm whitespace-nowrap">Registro do gasto</th>
+                        <th class="text-sm whitespace-nowrap">Preço</th>
                       </tr>
                     </ng-template>
                     <ng-template #body let-product>
                       <tr>
-                        <td class="text-sm p-2">{{ product.id }}</td>
+                        <td class="text-sm p-2 whitespace-nowrap">{{ product.id }}</td>
                         <td class="text-sm p-2 whitespace-nowrap">{{ product.produto }}</td>
-                        <td class="text-sm p-2">{{ product.categoria }}</td>
-                        <td class="text-sm p-2">{{ formatDate(product.dataGasto)}}</td>
-                        <td class="text-sm p-2">{{ formatValueCurrencyBR(product.valor)}}</td>
+                        <td class="text-sm p-2 whitespace-nowrap">{{ product.categoria }}</td>
+                        <td class="text-sm p-2 whitespace-nowrap">{{ formatDate(product.dataGasto)}}</td>
+                        <td class="text-sm p-2 whitespace-nowrap">{{ formatValueCurrencyBR(product.valor)}}</td>
                       </tr>
                     </ng-template>
 
@@ -148,7 +142,6 @@
         </div>
       </p-card>
     </div>
-
 
   </div>
 

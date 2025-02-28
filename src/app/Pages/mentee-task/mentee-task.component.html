@@ -4,7 +4,7 @@
   <div class="w-full p-2">
     <div class="w-full">
       <p-card header="Tarefas para mentorados">
-        <div class="w-full flex justify-end">
+        <div class="w-full flex justify-end paddingSelect">
           <div class="w-72">
             <p-select class="w-full" [options]="nameMentee" name="selectedUser" [checkmark]="true" optionLabel="mentee"
               [showClear]="true" placeholder="Mentorado" (onChange)="onMenteeSelect($event.value)" />
@@ -19,7 +19,7 @@
             </div>
           </ng-template>
 
-          <div class="w-full p-4">
+          <div class="w-full p-4 removePadding">
             <form [formGroup]="registerForm" (ngSubmit)="onAddTaskMentee()">
 
               <div class="mb-4">
@@ -58,7 +58,7 @@
               </div>
 
 
-              <div class="w-full flex gap-2 mb-4">
+              <div class="w-full flex gap-2 mb-4 containerFlexColumn">
 
                 <div class="w-full">
                   <p-select [options]="this.frequence" formControlName="frequencia" name="frequencia" [checkmark]="true" (onChange)="onSelectedFrequence($event)"
@@ -97,7 +97,7 @@
 
               </div>
 
-              <div class="w-full flex mb-4">
+              <div class="w-full flex mb-4 containerFlexColumn">
 
                 <div class="w-full">
 
@@ -124,7 +124,7 @@
 
                 <div class="w-full">
 
-                  <!-- REGRAS PARA SELECIONAR A DATA NO DIA CERTO CONFORME AS REGRAS -->
+                 
                   <p-floatlabel variant="in">
                     <p-datepicker styleClass="width-full" inputId="in_label" formControlName="dataFim" nome="dataFim"
                       dateFormat="dd-mm-yy" showIcon iconDisplay="input" readonlyInput [minDate]="dateEndMin"
@@ -178,21 +178,21 @@
 
               <div class="flex justify-center content-center">
                 <p-button label="Confirmar" type="submit" [loading]="loading" [rounded]="true" size="large"
-                  [raised]="true" class="w-3/6" styleClass="width-full"
+                  [raised]="true" class="w-3/6 widthBtnFull" styleClass="width-full"
                   [disabled]="registerForm.invalid || !isMenteeSelected"></p-button>
               </div>
 
-              <app-toast-global [key]="keyToast">
-              </app-toast-global>
-
+              
             </form>
-
+            
           </div>
-
+          
         </p-fieldset>
-
+        
       </p-card>
     </div>
   </div>
-
+  <app-toast-global [key]="keyToast">
+  </app-toast-global>
+  
 </div>

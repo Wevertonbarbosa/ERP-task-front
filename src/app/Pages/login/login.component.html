@@ -1,21 +1,20 @@
-<div class="flex justify-center items-center min-h-screen bg-gray-100">
+<div class="flex justify-center items-center min-h-screen bg-gray-100 p-4">
+  <div class="bg-white p-6 md:p-8 rounded-lg shadow-lg w-full max-w-4xl flex flex-col md:flex-row gap-6">
 
-  <div class="bg-white p-8 px-5 rounded-lg shadow-lg w-full max-w-4xl flex">
+    <!-- Coluna do formulário -->
     <div class="w-full">
       <h2 class="text-3xl font-bold text-center text-blue-600 mb-6">Happy Do</h2>
 
       <form [formGroup]="registerForm" (ngSubmit)="onLogin()">
-
         <div class="mb-4">
           <app-input-global [control]="registerForm.get('email')" id="email" label="E-mail" typeInput="email"
-            [class]="(registerForm.controls['email'].invalid && (registerForm.controls['email'].touched || registerForm.controls['email'].dirty))? classError : class"></app-input-global>
+            [class]="(registerForm.controls['email'].invalid && (registerForm.controls['email'].touched || registerForm.controls['email'].dirty))? classError : class">
+          </app-input-global>
 
           <div
-            *ngIf="(registerForm.controls['email'].invalid && (registerForm.controls['email'].touched || registerForm.controls['email'].dirty))">
-
+            *ngIf="registerForm.controls['email'].invalid && (registerForm.controls['email'].touched || registerForm.controls['email'].dirty)">
             <span class="text-xs text-red-600 font-semibold"
               *ngIf="registerForm.controls['email'].errors?.['required']">E-mail precisa ser preenchido!</span>
-
             <span class="text-xs text-red-600 font-semibold"
               *ngIf="registerForm.controls['email'].errors?.['email']">E-mail com formato inválido</span>
           </div>
@@ -27,16 +26,13 @@
           </app-input-password-global>
 
           <div
-            *ngIf="(registerForm.controls['senha'].invalid && (registerForm.controls['senha'].touched || registerForm.controls['senha'].dirty))">
-
+            *ngIf="registerForm.controls['senha'].invalid && (registerForm.controls['senha'].touched || registerForm.controls['senha'].dirty)">
             <span class="text-xs text-red-600 font-semibold"
-              *ngIf="registerForm.controls['senha'].errors?.['required']">Senha precisa ser preenchido!</span>
-
+              *ngIf="registerForm.controls['senha'].errors?.['required']">Senha precisa ser preenchida!</span>
             <span class="text-xs text-red-600 font-semibold"
-              *ngIf="registerForm.controls['senha'].errors?.['minlength']">Senha precisa ser maior que 6
+              *ngIf="registerForm.controls['senha'].errors?.['minlength']">Senha precisa ter mais de 6
               caracteres!</span>
           </div>
-
         </div>
 
         <p class="text-center mb-4">
@@ -44,49 +40,35 @@
         </p>
 
         <!-- Botão de Login -->
-        <div class="flex justify-center content-center">
+        <div class="flex justify-center">
           <p-button label="Confirmar" type="submit" [loading]="loading" [rounded]="true" size="large" [raised]="true"
-            class="w-full" styleClass="width-full" [disabled]="registerForm.invalid"></p-button>
+            styleClass="width-full" class="w-full" [disabled]="registerForm.invalid">
+          </p-button>
         </div>
-        <p class="text-center text-sm mt-4 font-normal">
+
+        <p class="text-center text-sm mt-4">
           Não possui uma conta?
           <a href="/register" class="text-blue-600 font-medium">Crie sua conta</a>
         </p>
-
       </form>
     </div>
 
-    <div class="">
-      <p-divider layout="vertical" class="!hidden md:!flex"><b>OR</b></p-divider>
-
-      <p-divider layout="vertical" class="!flex md:!hidden" align="center"><b>OU</b></p-divider>
+    <!-- Divisor Responsivo -->
+    <div class="flex items-center">
+      <p-divider layout="vertical" class="hidden md:flex"><b>OR</b></p-divider>
+      <p-divider layout="horizontal" class="flex md:hidden"><b>OU</b></p-divider>
     </div>
 
-
+    <!-- Coluna do login do Mentorado -->
     <div class="w-full">
-
-      <div class="w-full flex flex-col h-full">
+      <div class="flex flex-col h-full">
         <h2 class="text-2xl font-bold text-center text-blue-600 mb-6">Login Mentorado</h2>
-
         <div class="w-full flex flex-col h-full gap-4">
-
           <app-login-mentee></app-login-mentee>
-
-
         </div>
-
       </div>
-
-
-
     </div>
-
-
-
-
   </div>
 
-
-  <app-toast-global [key]="keyToast">
-  </app-toast-global>
+  <app-toast-global [key]="keyToast"></app-toast-global>
 </div>

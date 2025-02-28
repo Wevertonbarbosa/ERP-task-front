@@ -66,13 +66,11 @@ export class CheckEmailComponent implements OnInit {
             this.loading = false;
           },
           error: (err) => {
-            console.error('Erro para login ', err);
+            console.error('Erro para login ', err.error);
             this.showToasRight(
               'info',
               'Verificação em andamento',
-              err.error == undefined
-                ? 'Estamos ajustando voltamos em breve'
-                : err.error.message
+              'Usuário não encontrado, verifique se seu email está correto!'
             );
 
             this.loading = false;
