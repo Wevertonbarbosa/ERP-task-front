@@ -216,9 +216,7 @@ export class ListMenteeTaskComponent implements OnInit {
       this.serviceTaskCheck
         .putDoneCheckMentee(idTaskCheck, this.userId, data)
         .subscribe({
-          next: (value) => {
-            // console.log(value);
-          },
+          next: (value) => {},
           error: (err) => {
             console.error('Erro para concluir tarefa ', err.error);
           },

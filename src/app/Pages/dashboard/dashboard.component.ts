@@ -83,7 +83,7 @@ export class DashboardComponent implements OnInit {
       console.error('Error do Try Catch', error);
     }
 
-    // Configurações do gráfico
+
     this.chartOptions = {
       responsive: true,
       plugins: {

@@ -3,7 +3,7 @@
     <h2 class="text-3xl font-bold text-center text-blue-600 mb-6">Redefinir Senha</h2>
 
     <form [formGroup]="registerForm" (ngSubmit)="onUpdatePassword()" class="space-y-4">
-      <!-- Email -->
+   
       <div>
         <app-input-global [control]="registerForm.get('email')" id="email" label="E-mail" typeInput="email"
           [class]="(registerForm.controls['email'].invalid && (registerForm.controls['email'].touched || registerForm.controls['email'].dirty))? classError : class"></app-input-global>
@@ -19,7 +19,6 @@
         </div>
       </div>
 
-      <!-- Nova Senha -->
       <div class="w-full">
         <app-input-password-global [control]="registerForm.get('novaSenha')!" 
           placeholder="Nova Senha" id="novaSenha"
@@ -41,7 +40,6 @@
       </div>
 
 
-      <!-- Botão de Redefinir -->
       <div class="pt-4">
         <p-button label="Confirmar" type="submit" [loading]="loading" [rounded]="true" size="large" [raised]="true"
           class="w-full" styleClass="width-full" [disabled]="registerForm.invalid"></p-button>

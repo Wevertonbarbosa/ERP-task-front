@@ -174,9 +174,8 @@ export class DataviewComponent implements OnInit {
   }
 
   formatDate(date: string): string {
-    if (!date) return ''; // Evita erro se a data for nula ou vazia
-
-    const [year, month, day] = date.split('-'); // Divide manualmente
+    if (!date) return ''; 
+    const [year, month, day] = date.split('-'); 
 
     return `${day}-${month}-${year}`;
   }
@@ -198,7 +197,7 @@ export class DataviewComponent implements OnInit {
     const selectedFrequencia = event.value;
 
     if (selectedFrequencia === 'TODAS') {
-      this.products = [...this.allProducts]; // Exibe todas as tarefas, já formatadas
+      this.products = [...this.allProducts]; 
     } else {
       this.products = this.allProducts.filter(
         (task) => task.frequencia === selectedFrequencia

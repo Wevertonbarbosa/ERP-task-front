@@ -145,9 +145,9 @@
       [raised]="true" severity="success" (onClick)="openModalAddTask()" />
   </div>
 
-  <!-- MODAL ADD TAREFAS -->
+
   <app-add-task [visible]="false" (refreshList)="getTaskUser()"></app-add-task>
-  <!-- MODAL UPDATE TAREFAS -->
+ 
   <app-update-task [visible]="visibleUpdate" (refreshList)="getTaskUser()"></app-update-task>
 
 </div>

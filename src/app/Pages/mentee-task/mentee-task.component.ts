@@ -158,9 +158,9 @@ export class MenteeTaskComponent implements OnInit {
 
   onStartDateChange(newStartDate: Date) {
     if (newStartDate) {
-      this.dateEndMin = newStartDate; // Atualiza a data mínima para dataFim
+      this.dateEndMin = newStartDate; 
 
-      // Se a dataFim for menor que a nova dataInicio, resetamos o campo
+      
       const currentEndDate = this.registerForm.get('dataFim')?.value;
       if (currentEndDate && currentEndDate < newStartDate) {
         this.registerForm.get('dataFim')?.setValue(null);
@@ -223,10 +223,9 @@ export class MenteeTaskComponent implements OnInit {
   }
 
   formatDate(date: Date): string {
-    if (!date) return ''; // Caso esteja vazio
-
+    if (!date) return ''; 
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // +1 porque Janeiro é 0
+    const month = String(date.getMonth() + 1).padStart(2, '0'); 
     const day = String(date.getDate()).padStart(2, '0');
 
     return `${year}-${month}-${day}`;

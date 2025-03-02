@@ -93,7 +93,7 @@ export class ReportMonthExpenseComponent implements OnInit {
     try {
       this.service.getListExpensesUser(this.userId).subscribe({
         next: (value) => {
-          console.log(value);
+        
           this.expenses = value.map((expense: any) => ({
             id: expense.id,
             titulo: expense.titulo,
@@ -114,25 +114,28 @@ export class ReportMonthExpenseComponent implements OnInit {
           const currentYear = new Date().getFullYear();
 
           const filteredExpenses = this.expenses.filter((expense) => {
-            const expenseDate = new Date(expense.dataGasto);
+            
+            const [year, month, day] = expense.dataGasto.split('-').map(Number);
+            const expenseDate = new Date(year, month - 1, day);
+
             return (
               expenseDate.getMonth() + 1 === monthNumber &&
               expenseDate.getFullYear() === currentYear
             );
           });
 
-          // Atualiza os gastos apenas com os do mês selecionado
+          
           this.expenses = filteredExpenses;
 
           this.qtExpensesMonth = this.expenses.length;
 
-          // Soma os valores dos gastos do mês selecionado
+          
           this.totalExpense = this.expenses.reduce(
             (sum, expense) => sum + expense.valor,
             0
           );
 
-          // Garante que os valores são armazenados corretamente e, se não houver gastos, mantém o valor 0
+          
           this.totalValueExpenseCategory = {
             ESSENCIAL:
               filteredExpenses
@@ -152,6 +155,7 @@ export class ReportMonthExpenseComponent implements OnInit {
       console.error('Error do Try Catch', error);
     }
   }
+
 
   getMonthNumber(monthName: string): number {
     const months = [

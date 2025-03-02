@@ -82,7 +82,7 @@
             <form [formGroup]="registerForm" (ngSubmit)="onUpdateUser()" class="space-y-4 py-1">
 
 
-              <!-- Campo de Nome -->
+          
               <div>
                 <app-input-global [control]="registerForm.get('nome')" name="nome" id="nome" label="Nome Completo"
                   [class]="(registerForm.controls['nome'].invalid && (registerForm.controls['nome'].touched || registerForm.controls['nome'].dirty))? classError : class"
@@ -100,7 +100,7 @@
                 </div>
               </div>
 
-              <!-- Campo de Email -->
+              
               <div>
                 <app-input-global [control]="registerForm.get('email')!" name="email" id="email" label="E-mail"
                   typeInput="email"
@@ -117,7 +117,7 @@
                 </div>
 
               </div>
-              <!-- Campo de Senha -->
+              
               <div class="w-full">
                 <app-input-password-global [control]="registerForm.get('senha')!" id="senha" name="senha"
                   placeholder="Senha"
@@ -143,7 +143,7 @@
               </div>
 
 
-              <!-- Botão de Registro -->
+              
               <div class="flex justify-center content-center">
                 <p-button label="Atualizar" [loading]="loading" type="submit" [disabled]="registerForm.invalid"
                   [rounded]="true" size="large" [raised]="true" class="w-full" styleClass="width-full"></p-button>

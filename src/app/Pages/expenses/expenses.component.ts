@@ -44,6 +44,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 })
 export class ExpensesComponent implements OnInit {
   userId!: number;
+  userRole!: string;
   loading: boolean = false;
   loadingDelete: boolean = false;
 
@@ -66,7 +67,10 @@ export class ExpensesComponent implements OnInit {
   ngOnInit() {
     this.serviceUserGlobal.user$.subscribe((updatedUser) => {
       this.userId = updatedUser.usuarioId;
+      this.userRole = updatedUser.role
     });
+    
+    
 
     this.getTotalExpensesUser();
     this.getUserById();

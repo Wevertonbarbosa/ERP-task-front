@@ -6,7 +6,7 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class UserGlobalService {
   private userSubject = new BehaviorSubject<any>(this.getUserFromStorage());
-  user$ = this.userSubject.asObservable(); // Observável para escutar mudanças
+  user$ = this.userSubject.asObservable(); 
 
   constructor() {}
 
@@ -16,7 +16,7 @@ export class UserGlobalService {
   }
 
   updateUser(newUser: any) {
-    localStorage.setItem('user', JSON.stringify(newUser)); // Atualiza o localStorage
-    this.userSubject.next(newUser); // Notifica os componentes da mudança
+    localStorage.setItem('user', JSON.stringify(newUser)); 
+    this.userSubject.next(newUser); 
   }
 }

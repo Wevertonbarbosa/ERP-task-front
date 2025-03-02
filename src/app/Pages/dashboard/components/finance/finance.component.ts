@@ -147,24 +147,21 @@ export class FinanceComponent implements OnInit {
             return;
           }
 
-          // Criando um array com os meses desejados (Janeiro a Junho)
           const meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'];
-          const dadosEssenciais = new Array(6).fill(0); // Inicializa com 0
-          const dadosNaoEssenciais = new Array(6).fill(0); // Inicializa com 0
+          const dadosEssenciais = new Array(6).fill(0);
+          const dadosNaoEssenciais = new Array(6).fill(0);
 
-          // Percorre os valores retornados pela API e os posiciona corretamente
           value.forEach((total: any) => {
-            const mes = parseInt(total.mesAno.split('-')[1]); // Extrai o número do mês (ex: "2025-02" -> 2)
+            const mes = parseInt(total.mesAno.split('-')[1]);
             if (mes >= 1 && mes <= 6) {
-              // Considera apenas de Jan (1) a Jun (6)
-              const index = mes - 1; // Ajusta para a posição correta no array (0 a 5)
+              const index = mes - 1;
               dadosEssenciais[index] = total.totalEssencial;
               dadosNaoEssenciais[index] = total.totalNaoEssencial;
             }
           });
 
           this.chartData = {
-            labels: meses, // Apenas Jan até Jun
+            labels: meses, 
             datasets: [
               {
                 label: 'Gastos essenciais',
@@ -199,11 +196,11 @@ export class FinanceComponent implements OnInit {
     const firstSixMonths = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'];
 
     this.chartData = {
-      labels: firstSixMonths, // Apenas Janeiro a Junho
+      labels: firstSixMonths, 
       datasets: [
         {
           label: 'Gastos essenciais',
-          data: new Array(6).fill(0), // Preenche 6 meses com 0
+          data: new Array(6).fill(0), 
           backgroundColor: ['blue'],
           hoverBackgroundColor: ['darkblue'],
         },

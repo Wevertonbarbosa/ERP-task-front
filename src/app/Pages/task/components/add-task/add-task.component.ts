@@ -118,9 +118,8 @@ export class AddTaskComponent implements OnInit {
 
   onStartDateChange(newStartDate: Date) {
     if (newStartDate) {
-      this.dateEndMin = newStartDate; // Atualiza a data mínima para dataFim
-
-      // Se a dataFim for menor que a nova dataInicio, resetamos o campo
+      this.dateEndMin = newStartDate; 
+      
       const currentEndDate = this.registerForm.get('dataFim')?.value;
       if (currentEndDate && currentEndDate < newStartDate) {
         this.registerForm.get('dataFim')?.setValue(null);
@@ -182,7 +181,7 @@ export class AddTaskComponent implements OnInit {
     if (!date) return '';
 
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // +1 porque Janeiro é 0
+    const month = String(date.getMonth() + 1).padStart(2, '0'); 
     const day = String(date.getDate()).padStart(2, '0');
 
     return `${year}-${month}-${day}`;

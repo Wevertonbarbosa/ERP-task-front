@@ -4,7 +4,6 @@
 
     <form [formGroup]="registerForm" (ngSubmit)="onCheckEmail()">
 
-      <!--MUDAR O NGMODAL PARA FORMCONTROL NOS INPUTS E VER SE ESTA PEGANDO OS VALORES -->
       <div class="mb-4">
         <app-input-global [control]="registerForm.get('email')" id="email" label="E-mail" typeInput="email"
           [class]="(registerForm.controls['email'].invalid && (registerForm.controls['email'].touched || registerForm.controls['email'].dirty))? classError : class"></app-input-global>
@@ -31,7 +30,7 @@
         </p-fieldset>
       </div>
 
-      <!-- Botão de Login -->
+
       <div class="flex justify-center content-center my-10">
         <p-button label="Confirmar" type="submit" [loading]="loading" [rounded]="true" size="large" [raised]="true" class="w-full" [disabled]="registerForm.invalid" styleClass="width-full"></p-button>
       </div>

@@ -2,7 +2,7 @@
   <app-menu></app-menu>
 
   <div class="w-full flex flex-wrap justify-center gap-3 p-2">
-    <p-card class="w-full min-w-[324px] flex-1 max-w-[calc(50%-0.75rem)] lg:max-w-[calc(25%-0.75rem)] widthFullCard"
+    <p-card class="w-full min-w-[324px] flex-1 max-w-[calc(50%-0.75rem)]  widthFullCard"
       [style]="{background: 'lightgray'}">
       <div class="w-full flex items-center justify-between text-white">
         <h2 class="text-xl font-semibold italic">Gasto mensal total</h2>
@@ -16,8 +16,7 @@
       </div>
     </p-card>
 
-    <p-card class="w-full min-w-[324px] flex-1 max-w-[calc(50%-0.75rem)] lg:max-w-[calc(25%-0.75rem)] widthFullCard"
-      [style]="{background: 'blue'}">
+    <p-card class="w-full min-w-[324px] flex-1 max-w-[calc(50%-0.75rem)]  widthFullCard" [style]="{background: 'blue'}">
       <div class="w-full flex items-center justify-between">
         <h2 class="text-xl font-semibold italic text-white">Gastos não essenciais</h2>
         <i class="pi pi-info-circle text-xl text-white"></i>
@@ -30,8 +29,7 @@
       </div>
     </p-card>
 
-    <p-card class="w-full min-w-[324px] flex-1 max-w-[calc(50%-0.75rem)] lg:max-w-[calc(25%-0.75rem)] widthFullCard"
-      [style]="{background: 'red'}">
+    <p-card class="w-full min-w-[324px] flex-1 max-w-[calc(50%-0.75rem)]  widthFullCard" [style]="{background: 'red'}">
       <div class="w-full flex items-center justify-between text-white">
         <h2 class="text-xl font-semibold italic">Gastos essenciais</h2>
         <i class="pi pi-wave-pulse text-xl"></i>
@@ -44,7 +42,7 @@
       </div>
     </p-card>
 
-    <p-card class="w-full min-w-[324px] flex-1 max-w-[calc(50%-0.75rem)] lg:max-w-[calc(25%-0.75rem)] widthFullCard"
+    <p-card *ngIf="userRole === 'USER'" class="w-full min-w-[324px] flex-1 max-w-[calc(50%-0.75rem)]  widthFullCard"
       [style]="{background: 'lightgreen'}">
       <div class="w-full flex items-center justify-between text-white">
         <h2 class="text-xl font-semibold italic">Saldo disponível</h2>
@@ -195,7 +193,7 @@
       [breakpoints]="{'768px': {width: '60%', right: '0', left: '0'}, '425px': {width: '90%', right: '0', left: '0'} }"
       [showTransformOptions]="'translateY(100%)'" [showTransitionOptions]="'1000ms'" [hideTransitionOptions]="'1000ms'"
       [showTransformOptions]="'translateX(100%)'" />
-      
+
     <p-confirmdialog />
 
 

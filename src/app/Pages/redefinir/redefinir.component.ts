@@ -76,7 +76,6 @@ export class RedefinirComponent implements OnInit {
               localStorage.removeItem('emailUser');
               setTimeout(() => {
                 this.loading = false;
-                //EMAIL SERÁ USADO PARA UMA FORMA DE GUARDA A ROTA REDEFINIR, PROTECAO
                 this.route.navigate(['login']);
               }, 3000);
             },
