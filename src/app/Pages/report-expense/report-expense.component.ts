@@ -17,6 +17,10 @@ import { ReportMonth } from '../../Interface/reportMonth';
 import { UserGlobalService } from '../../Service/user-global.service';
 import { ExpensesService } from '../../Service/expenses.service';
 import { ReportMonthExpenseComponent } from './components/report-month-expense/report-month-expense.component';
+import { ReportYear } from '../../Interface/reportYear';
+
+import { TabsModule } from 'primeng/tabs';
+import { ReportYearComponent } from './components/report-year/report-year.component';
 
 @Component({
   selector: 'app-report-expense',
@@ -25,12 +29,14 @@ import { ReportMonthExpenseComponent } from './components/report-month-expense/r
     DividerModule,
     CardModule,
     SelectModule,
+    TabsModule,
     ButtonModule,
     OrderListModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
     ReportMonthExpenseComponent,
+    ReportYearComponent,
   ],
   templateUrl: './report-expense.component.html',
   styleUrl: './report-expense.component.css',
@@ -40,11 +46,17 @@ export class ReportExpenseComponent implements OnInit {
   @ViewChild(ReportMonthExpenseComponent)
   reportMonthExpenseComponent!: ReportMonthExpenseComponent;
 
+  @ViewChild(ReportYearComponent)
+  reportYearComponent!: ReportYearComponent;
+
   registerForm!: FormGroup;
+  registerFormYear!: FormGroup;
   expenses!: any[];
   chooseMonth: ReportMonth[] = [];
+  chooseYear: ReportYear[] = [];
   userId!: number;
   monthSelected!: string;
+  yearSelected!: number;
 
   service = inject(ExpensesService);
 
@@ -60,6 +72,15 @@ export class ReportExpenseComponent implements OnInit {
     this.serviceUserGlobal.user$.subscribe((updatedUser) => {
       this.userId = updatedUser.usuarioId;
     });
+
+    this.chooseYear = [
+      { ano: 2025 },
+      { ano: 2024 },
+      { ano: 2023 },
+      { ano: 2022 },
+      { ano: 2021 },
+      { ano: 2020 },
+    ];
 
     this.chooseMonth = [
       { mes: 'Janeiro' },
@@ -80,9 +101,13 @@ export class ReportExpenseComponent implements OnInit {
       mes: ['', [Validators.required]],
     });
 
+    this.registerFormYear = this.fb.group({
+      ano: ['', [Validators.required]],
+    });
+
     this.expenses = [
       {
-        titulo: 'Aluguel',
+        titulo: 'Exemplo',
         valor: 1000,
         descricao: 'Meu aluguel',
         categoria: 'Essencial',
@@ -130,5 +155,15 @@ export class ReportExpenseComponent implements OnInit {
     this.reportMonthExpenseComponent.showDialog();
 
     this.registerForm.reset();
+  }
+
+  onYear() {
+    const formData = { ...this.registerFormYear.value };
+    this.yearSelected = formData.ano.ano;
+   
+
+    this.reportYearComponent.showDialog();
+
+    this.registerFormYear.reset();
   }
 }

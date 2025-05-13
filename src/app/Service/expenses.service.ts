@@ -30,6 +30,15 @@ export class ExpensesService {
     );
   }
 
+  getListYearCategoryTotalExpense(
+    userId: number,
+    year: number
+  ): Observable<any> {
+    return this.http.get<any>(
+      `${this.api}gasto/${userId}/gastos/categoria/anual/${year}`
+    );
+  }
+
   postAddExpenses(idUser: number, data: any): Observable<any> {
     return this.http.post<any>(`${this.api}gasto/${idUser}/registro`, data);
   }

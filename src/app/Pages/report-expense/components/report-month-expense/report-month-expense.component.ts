@@ -40,7 +40,6 @@ import { TooltipModule } from 'primeng/tooltip';
 export class ReportMonthExpenseComponent implements OnInit {
   @ViewChild('contentExpense', { static: false, read: ElementRef })
   el!: ElementRef;
-
   @Input() month!: string;
   expenses!: any[];
 
@@ -93,7 +92,6 @@ export class ReportMonthExpenseComponent implements OnInit {
     try {
       this.service.getListExpensesUser(this.userId).subscribe({
         next: (value) => {
-        
           this.expenses = value.map((expense: any) => ({
             id: expense.id,
             titulo: expense.titulo,
@@ -114,7 +112,6 @@ export class ReportMonthExpenseComponent implements OnInit {
           const currentYear = new Date().getFullYear();
 
           const filteredExpenses = this.expenses.filter((expense) => {
-            
             const [year, month, day] = expense.dataGasto.split('-').map(Number);
             const expenseDate = new Date(year, month - 1, day);
 
@@ -124,18 +121,15 @@ export class ReportMonthExpenseComponent implements OnInit {
             );
           });
 
-          
           this.expenses = filteredExpenses;
 
           this.qtExpensesMonth = this.expenses.length;
 
-          
           this.totalExpense = this.expenses.reduce(
             (sum, expense) => sum + expense.valor,
             0
           );
 
-          
           this.totalValueExpenseCategory = {
             ESSENCIAL:
               filteredExpenses
@@ -155,7 +149,6 @@ export class ReportMonthExpenseComponent implements OnInit {
       console.error('Error do Try Catch', error);
     }
   }
-
 
   getMonthNumber(monthName: string): number {
     const months = [
