@@ -142,9 +142,6 @@ export class DataviewComponent implements OnInit {
                 done: doneMap.get(task.id) ?? false,
               }));
 
-              
-              
-
               this.products = [...this.allProducts];
             },
           });
@@ -174,8 +171,8 @@ export class DataviewComponent implements OnInit {
   }
 
   formatDate(date: string): string {
-    if (!date) return ''; 
-    const [year, month, day] = date.split('-'); 
+    if (!date) return '';
+    const [year, month, day] = date.split('-');
 
     return `${day}-${month}-${year}`;
   }
@@ -187,6 +184,8 @@ export class DataviewComponent implements OnInit {
   }
 
   openModalUpdateTask(item: any) {
+    console.log(item);
+
     if (this.updateTaskComponent) {
       this.updateTaskComponent.showDialog(item);
       this.visibleUpdate = true;
@@ -197,7 +196,7 @@ export class DataviewComponent implements OnInit {
     const selectedFrequencia = event.value;
 
     if (selectedFrequencia === 'TODAS') {
-      this.products = [...this.allProducts]; 
+      this.products = [...this.allProducts];
     } else {
       this.products = this.allProducts.filter(
         (task) => task.frequencia === selectedFrequencia
@@ -207,7 +206,7 @@ export class DataviewComponent implements OnInit {
 
   confirmTaskDone(item: any) {
     console.log(item);
-    
+
     this.confirmationService.confirm({
       target: item.target as EventTarget,
       message: 'Tem certeza que deseja concluír a tarefa?',

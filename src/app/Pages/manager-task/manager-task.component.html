@@ -23,7 +23,8 @@
 
 
               <div class="flex-1 flex flex-col">
-                <span class="font-medium text-sm fontResponsiveSmall">{{ option.titulo }}</span>
+                <span class="font-normal text-xs "><b class="italic">Início:</b> {{option.dataInicio }} <b
+                    class="italic">até </b> {{option.dataFim}}</span>
                 <span [ngClass]="{
                             'text-sm': true,
                             'text-surface-500': !selected,
@@ -31,10 +32,15 @@
                             'text-inherit': selected, 'fontResponsiveSmall': true}">{{ option.descricao }}</span>
               </div>
 
-              <div class="flex flex-col">
-                <span class="font-bold sm:ml-8 fontResponsiveSmall">{{option.categoria }}</span>
-                <span class="font-normal text-xs sm:ml-8"><b class="italic">Início:</b> {{option.dataInicio }} <b
-                    class="italic">até </b> {{option.dataFim}}</span>
+              <div *ngIf="userRole == 'ADMIN'" class="flex gap-2">
+
+                <!-- COLOCAR OS BOTÕES DE EDITAR E EXCLUIR -->
+                <p-button pTooltip="Editar tarefa" icon="pi pi-pencil" (onClick)="openModalUpdateTask(option)"
+                  [rounded]="true" severity="info" [disabled]="option.done" />
+
+                <p-button pTooltip="Excluir tarefa" icon="pi pi-trash" (onClick)="deleteTask(option)" [rounded]="true"
+                  severity="danger" />
+
               </div>
 
             </div>
@@ -132,7 +138,11 @@
 
 
     </div>
-
+    <p-toast
+      [breakpoints]="{'768px': {width: '60%', right: '0', left: '0'}, '425px': {width: '90%', right: '0', left: '0'} }"
+      [showTransformOptions]="'translateY(100%)'" [showTransitionOptions]="'1000ms'" [hideTransitionOptions]="'1000ms'"
+      [showTransformOptions]="'translateX(100%)'" />
+    <p-confirmdialog />
 
   </div>
 
@@ -144,4 +154,11 @@
   <div class="pb-3 flex justify-center w-full">
     <app-report-task-month [dateStart]="dateStartSelected" [dateEnd]="dateEndSelected"></app-report-task-month>
   </div>
+
+  <div class="pb-3 flex justify-center w-full">
+    <app-update-task [visible]="visibleUpdate" (refreshList)="getTaskUser()"></app-update-task>
+  </div>
+
+
+
 </div>
