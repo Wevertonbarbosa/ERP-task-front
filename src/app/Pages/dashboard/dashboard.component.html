@@ -76,7 +76,15 @@
         <span class="m-2 text-center font-medium italic">Tarefas em andamento</span>
       </div>
     </p-card>
+
+
   </div>
+
+  <!-- PAINEL DE DESEMPENHO DO USUARIO MENTORADO -->
+  <div *ngIf="userRole === 'USER'" class="w-full py-3">
+    <app-performance-dashboard></app-performance-dashboard>
+  </div>
+
 
   <div class="w-full">
     <p-divider class="bg-red-700"></p-divider>

@@ -17,4 +17,8 @@ export class UserPaymentService {
   getTotalPayment(idUser: number): Observable<any>{
     return this.http.get<any>(`${this.api}mesada/saldo/${idUser}`)
   }
+
+  getPerformanceDashboard(idUser: number): Observable<any>{
+    return this.http.get<any>(`${this.api}mesada/painel-desempenho/${idUser}`)
+  }
 }

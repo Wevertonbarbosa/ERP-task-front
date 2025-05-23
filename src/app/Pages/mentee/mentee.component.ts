@@ -1,4 +1,10 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  inject,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CardModule } from 'primeng/card';
 import { DataViewModule } from 'primeng/dataview';
@@ -34,6 +40,9 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastGlobalComponent } from '../../Components/toast-global/toast-global.component';
 import { ToastModule } from 'primeng/toast';
 import { ListStatusTaskService } from '../../Service/list-status-task.service';
+
+import { forkJoin } from 'rxjs';
+import { ExpensesService } from '../../Service/expenses.service';
 
 @Component({
   selector: 'app-mentee',
@@ -88,6 +97,8 @@ export class MenteeComponent implements OnInit {
   @ViewChild(AddPaymentComponent) addPaymentComponent!: AddPaymentComponent;
   @ViewChild(UpdateMenteeComponent)
   updateMenteeComponent!: UpdateMenteeComponent;
+
+  private expensesService = inject(ExpensesService);
 
   constructor(
     private service: UserService,
@@ -209,8 +220,6 @@ export class MenteeComponent implements OnInit {
     try {
       this.service.getMeentFromAdmin(this.userId).subscribe({
         next: (value) => {
-          console.log(value);
-
           this.userMentee = value.map((data: any) => ({
             id: data.usuarioId,
             email: data.email,
@@ -223,6 +232,8 @@ export class MenteeComponent implements OnInit {
               data.tarefasConcluidas,
               data.tarefasPendentes
             ),
+            valorMesadaMensal: data.valorMesadaMensal,
+            despesasTotal: 0,
           }));
 
           this.nameMentee = value.map((data: any) => ({
@@ -230,7 +241,25 @@ export class MenteeComponent implements OnInit {
             id: data.usuarioId,
           }));
 
-          this.userMenteeFiltered = [...this.userMentee];
+          const gastosRequests = this.userMentee.map((mentee) =>
+            this.expensesService.getExpensesTotal(mentee.id)
+          );
+
+          forkJoin(gastosRequests).subscribe({
+            next: (gastos: number[]) => {
+              this.userMentee = this.userMentee.map((mentee, index) => ({
+                ...mentee,
+                despesasTotal: gastos[index] ?? 0,
+              }));
+
+              // ✅ MOVER PARA CÁ
+              console.log(this.userMentee);
+              this.userMenteeFiltered = [...this.userMentee];
+            },
+            error: (err) => {
+              console.error('Erro ao carregar os gastos: ', err);
+            },
+          });
         },
         error: (err) => {
           console.error('Erro para carregar os dados ', err.error);

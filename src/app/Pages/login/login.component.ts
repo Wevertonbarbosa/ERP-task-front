@@ -19,9 +19,8 @@ import { InputGlobalComponent } from '../../Components/input-global/input-global
 import { InputPasswordGlobalComponent } from '../../Components/input-password-global/input-password-global.component';
 import { LoginUserService } from '../../Service/login-user.service';
 import { ToastGlobalComponent } from '../../Components/toast-global/toast-global.component';
-import { LoginMenteeComponent } from "./components/login-mentee/login-mentee.component";
-import { Router } from '@angular/router';
 
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -36,8 +35,7 @@ import { Router } from '@angular/router';
     InputGlobalComponent,
     InputPasswordGlobalComponent,
     ToastGlobalComponent,
-    LoginMenteeComponent
-],
+  ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
   providers: [MessageService, LoginUserService],
@@ -48,7 +46,6 @@ export class LoginComponent implements OnInit {
   keyToast: string = 'br';
   classError = ['w-full', 'ng-dirty', 'ng-invalid'];
   class = ['w-full'];
-  
 
   constructor(
     private fb: FormBuilder,
@@ -75,10 +72,10 @@ export class LoginComponent implements OnInit {
               'Usuário cadastrado!',
               `Que bom te ver por aqui, ${value.nome}!`
             );
-            setTimeout(()=>{
+            setTimeout(() => {
               this.loading = false;
               this.route.navigate(['dashboard']);
-            },3000)
+            }, 3000);
           },
           error: (err) => {
             console.error('Erro para login ', err.error);
@@ -109,6 +106,4 @@ export class LoginComponent implements OnInit {
       life: 4000,
     });
   }
-
- 
 }

@@ -10,6 +10,7 @@ import { ListStatusTaskService } from '../../Service/list-status-task.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { UserGlobalService } from '../../Service/user-global.service';
+import { PerformanceDashboardComponent } from "./components/performance-dashboard/performance-dashboard.component";
 
 @Component({
   selector: 'app-dashboard',
@@ -24,7 +25,8 @@ import { UserGlobalService } from '../../Service/user-global.service';
     DividerModule,
     KnobModule,
     FinanceComponent,
-  ],
+    PerformanceDashboardComponent
+],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
   providers: [ListStatusTaskService],
@@ -39,6 +41,7 @@ export class DashboardComponent implements OnInit {
   valueKnob!: string;
 
   userId!: number;
+  userRole!: string;
 
   constructor(
     private service: ListStatusTaskService,
@@ -49,14 +52,12 @@ export class DashboardComponent implements OnInit {
     this.serviceUserGlobal.user$.subscribe((updatedUser) => {
       this.userName = updatedUser.nome;
       this.userId = updatedUser.usuarioId;
+      this.userRole = updatedUser.role;
     });
 
     try {
       this.service.getListTaskStatusUser(this.userId).subscribe({
         next: (value) => {
-          console.log(value);
-          
-
           this.taskDone = value.tarefasConcluidas;
           this.taskMissing = value.tarefasPendentes;
 
@@ -82,7 +83,6 @@ export class DashboardComponent implements OnInit {
     } catch (error) {
       console.error('Error do Try Catch', error);
     }
-
 
     this.chartOptions = {
       responsive: true,
