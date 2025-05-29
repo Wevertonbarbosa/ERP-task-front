@@ -13,7 +13,7 @@ import { SelectModule } from 'primeng/select';
 import { Select } from 'primeng/select';
 import { InputGlobalComponent } from '../../../../Components/input-global/input-global.component';
 import { ToastGlobalComponent } from '../../../../Components/toast-global/toast-global.component';
-import { InputPasswordGlobalComponent } from '../../../../Components/input-password-global/input-password-global.component';
+
 import { User } from '../../../../Interface/user';
 
 import { MessageService } from 'primeng/api';
@@ -32,7 +32,6 @@ import { UserGlobalService } from '../../../../Service/user-global.service';
     DialogModule,
     InputGlobalComponent,
     ToastGlobalComponent,
-    InputPasswordGlobalComponent,
   ],
   templateUrl: './add-mentee.component.html',
   styleUrl: './add-mentee.component.css',
@@ -67,7 +66,6 @@ export class AddMenteeComponent implements OnInit {
     this.registerForm = this.fb.group({
       nome: ['', [Validators.required, Validators.minLength(2)]],
       email: ['', [Validators.required, Validators.email]],
-      senha: ['', [Validators.required, Validators.minLength(6)]],
       role: [this.typeUser[0], Validators.required],
     });
   }

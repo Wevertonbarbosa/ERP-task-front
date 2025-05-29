@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { MenuComponent } from '../../Components/menu/menu.component';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
@@ -17,6 +17,9 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
+import { CarouselModule } from 'primeng/carousel';
+import { UserPaymentService } from '../../Service/user-payment.service';
+
 @Component({
   selector: 'app-expenses',
   imports: [
@@ -32,6 +35,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     TableModule,
     TabsModule,
     FormExpenseComponent,
+    CarouselModule,
   ],
   templateUrl: './expenses.component.html',
   styleUrl: './expenses.component.css',
@@ -56,6 +60,15 @@ export class ExpensesComponent implements OnInit {
   listEssentialExpenses: any[] = [];
   listEssentialExpensesNo: any[] = [];
 
+  responsiveOptions: any[] | undefined;
+  data!: any[];
+
+  totalPoints!: number;
+  donePoints!: number;
+  donePercentage!: number;
+  valueProportional!: number;
+  valueAllowance!: number;
+
   constructor(
     private service: ExpensesService,
     private serviceUser: UserService,
@@ -64,18 +77,130 @@ export class ExpensesComponent implements OnInit {
     private serviceUserGlobal: UserGlobalService
   ) {}
 
+  private servicePayment = inject(UserPaymentService);
+
   ngOnInit() {
     this.serviceUserGlobal.user$.subscribe((updatedUser) => {
       this.userId = updatedUser.usuarioId;
-      this.userRole = updatedUser.role
+      this.userRole = updatedUser.role;
     });
-    
-    
+
+    this.getPerformance(this.userId);
+
+    this.responsiveOptions = [
+      {
+        breakpoint: '1400px',
+        numVisible: 2,
+        numScroll: 1,
+      },
+      {
+        breakpoint: '1199px',
+        numVisible: 3,
+        numScroll: 1,
+      },
+      {
+        breakpoint: '767px',
+        numVisible: 2,
+        numScroll: 1,
+      },
+      {
+        breakpoint: '575px',
+        numVisible: 1,
+        numScroll: 1,
+      },
+    ];
 
     this.getTotalExpensesUser();
     this.getUserById();
     this.getUserExpenseList();
     this.getCategoryTotal();
+  }
+
+  getPerformance(id: number) {
+    try {
+      this.servicePayment.getPerformanceDashboard(id).subscribe({
+        next: (value) => {
+          this.valueAllowance = value.valor;
+          this.totalPoints = value.totalPontosPeriodo;
+          this.donePoints = value.pontosConcluidos;
+          this.donePercentage = value.percentualConclusao;
+          this.valueProportional = value.valorProporcional;
+          this.data = [
+            {
+              name: 'Mesada disponível no mês',
+              price: this.formatValueCurrencyBR(this.valueAllowance),
+              icon: 'pi pi-money-bill',
+              bgColor: 'bg-green-500',
+            },
+            {
+              name: 'Total de pontos possíveis no período',
+              price: this.totalPoints,
+              icon: 'pi pi-sort-amount-up-alt',
+              bgColor: 'bg-purple-500',
+            },
+            {
+              name: 'Pontos acumulados até o momento',
+              price: this.donePoints,
+              icon: 'pi pi-caret-up',
+              bgColor: 'bg-blue-500',
+            },
+            {
+              name: 'Porcentagem de conclusão',
+              price: this.donePercentage,
+              icon: 'pi pi-percentage',
+              bgColor: 'bg-black',
+            },
+            {
+              name: 'Mesada proporcional',
+              price: this.formatValueCurrencyBR(this.valueProportional),
+              icon: 'pi pi-wallet',
+              bgColor: 'bg-blue-500',
+            },
+          ];
+        },
+        error: (err) => {
+          console.error('Erro para carregar os dados do painel ', err.error);
+          this.totalPoints = 0;
+          this.donePoints = 0;
+          this.donePercentage = 0.0;
+          this.valueProportional = 0;
+          this.data = [
+            {
+              name: 'Mesada disponível no mês',
+              price: this.formatValueCurrencyBR(this.valueAllowance),
+              icon: 'pi pi-money-bill',
+              bgColor: 'bg-green-500',
+            },
+            {
+              name: 'Total de pontos possíveis no período',
+              price: this.totalPoints,
+              icon: 'pi pi-sort-amount-up-alt',
+              bgColor: 'bg-purple-500',
+            },
+            {
+              name: 'Pontos acumulados até o momento',
+              price: this.donePoints,
+              icon: 'pi pi-caret-up',
+              bgColor: 'bg-blue-500',
+            },
+            {
+              name: 'Porcentagem de conclusão',
+              price: this.donePercentage,
+              icon: 'pi pi-percentage',
+              bgColor: 'bg-black',
+            },
+            {
+              name: 'Mesada proporcional',
+              price: this.formatValueCurrencyBR(this.valueProportional),
+              icon: 'pi pi-wallet',
+              bgColor: 'bg-blue-500',
+            },
+          ];
+        },
+      });
+    } catch (error) {
+      console.error('Error do Try Catch', error);
+    }
   }
 
   getUserById() {
@@ -244,6 +369,9 @@ export class ExpensesComponent implements OnInit {
   }
 
   formatValueCurrencyBR(valor: number): string {
+    if (valor === undefined || valor === null) {
+      return 'R$ 0,00';
+    }
     return valor.toLocaleString('pt-BR', {
       style: 'currency',
       currency: 'BRL',

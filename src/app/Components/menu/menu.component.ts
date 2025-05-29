@@ -207,7 +207,13 @@ export class MenuComponent implements OnInit {
   }
 
   logoutUser() {
+    this.loading = true;
     localStorage.clear();
-    this.route.navigate(['login']);
+    setTimeout(() => {
+      this.route.navigate(['login']).then(() => {
+        location.reload();
+      });
+      this.loading = false;
+    }, 400);
   }
 }

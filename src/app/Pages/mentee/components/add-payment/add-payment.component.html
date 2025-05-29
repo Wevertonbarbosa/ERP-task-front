@@ -25,6 +25,28 @@
             </div>
           </div>
 
+          <div class="m-4 removePaddingAndMargin">
+
+            <app-input-global [control]="registerForm.get('totalPontosPeriodo')" id="totalPontosPeriodo"
+              label="Pontos possíveis no período" typeInput="number"
+              [class]="(registerForm.controls['totalPontosPeriodo'].invalid && (registerForm.controls['totalPontosPeriodo'].touched || registerForm.controls['totalPontosPeriodo'].dirty))? classError : class"></app-input-global>
+
+            <div
+              *ngIf="(registerForm.controls['totalPontosPeriodo'].invalid && (registerForm.controls['totalPontosPeriodo'].touched || registerForm.controls['totalPontosPeriodo'].dirty))">
+
+              <span class="text-xs text-red-600 font-semibold"
+                *ngIf="registerForm.controls['totalPontosPeriodo'].errors?.['required']">
+                Os pontos possíveis no período precisa ser
+                preenchido!
+              </span>
+
+
+
+            </div>
+          </div>
+
+
+
 
           <div class="flex justify-center content-center py-7">
             <p-button label="Confirmar" type="submit" [loading]="loading" [rounded]="true" size="large" [raised]="true"

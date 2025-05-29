@@ -118,8 +118,8 @@ export class AddTaskComponent implements OnInit {
 
   onStartDateChange(newStartDate: Date) {
     if (newStartDate) {
-      this.dateEndMin = newStartDate; 
-      
+      this.dateEndMin = newStartDate;
+
       const currentEndDate = this.registerForm.get('dataFim')?.value;
       if (currentEndDate && currentEndDate < newStartDate) {
         this.registerForm.get('dataFim')?.setValue(null);
@@ -145,7 +145,17 @@ export class AddTaskComponent implements OnInit {
               'Tarefa foi cadastrada com sucesso!'
             );
             this.refreshDataListTask();
-            this.registerForm.reset();
+
+            this.registerForm.reset({
+              titulo: '',
+              descricao: '',
+              categoria: '',
+              frequencia: '',
+              dataInicio: '',
+              dataFim: '',
+              diasSemana: [],
+            });
+
             this.loading = false;
           },
           error: (err) => {
@@ -181,7 +191,7 @@ export class AddTaskComponent implements OnInit {
     if (!date) return '';
 
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0'); 
+    const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
 
     return `${year}-${month}-${day}`;

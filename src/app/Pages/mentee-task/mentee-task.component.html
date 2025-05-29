@@ -58,11 +58,32 @@
               </div>
 
 
+              <div class="mb-4">
+                <app-input-global [control]="registerForm.get('pontuacao')" id="pontos" label="Pontos da Tarefa"
+                  typeInput="number"
+                  [class]="(registerForm.controls['pontuacao'].invalid && (registerForm.controls['pontuacao'].touched || registerForm.controls['pontuacao'].dirty))? classError : class"></app-input-global>
+
+                <div
+                  *ngIf="(registerForm.controls['pontuacao'].invalid && (registerForm.controls['pontuacao'].touched || registerForm.controls['pontuacao'].dirty))">
+
+                  <span class="text-xs text-red-600 font-semibold"
+                    *ngIf="registerForm.controls['pontuacao'].errors?.['required']">Pontos da tarefa precisa ser
+                    preenchido!</span>
+
+                  <span class="text-xs text-red-600 font-semibold"
+                    *ngIf="registerForm.controls['pontuacao'].errors?.['min']">Pontos da tarefa precisa ser maior
+                    que 0!</span>
+                </div>
+              </div>
+
+
+
               <div class="w-full flex gap-2 mb-4 containerFlexColumn">
 
                 <div class="w-full">
-                  <p-select [options]="this.frequence" formControlName="frequencia" name="frequencia" [checkmark]="true" (onChange)="onSelectedFrequence($event)"
-                    optionLabel="choose" [showClear]="true" placeholder="Frequência"
+                  <p-select [options]="this.frequence" formControlName="frequencia" name="frequencia" [checkmark]="true"
+                    (onChange)="onSelectedFrequence($event)" optionLabel="choose" [showClear]="true"
+                    placeholder="Frequência"
                     [class]="(registerForm.controls['frequencia'].invalid && (registerForm.controls['frequencia'].touched || registerForm.controls['frequencia'].dirty))? classError : class" />
 
                   <div
@@ -124,7 +145,7 @@
 
                 <div class="w-full">
 
-                 
+
                   <p-floatlabel variant="in">
                     <p-datepicker styleClass="width-full" inputId="in_label" formControlName="dataFim" nome="dataFim"
                       dateFormat="dd-mm-yy" showIcon iconDisplay="input" readonlyInput [minDate]="dateEndMin"
@@ -182,17 +203,17 @@
                   [disabled]="registerForm.invalid || !isMenteeSelected"></p-button>
               </div>
 
-              
+
             </form>
-            
+
           </div>
-          
+
         </p-fieldset>
-        
+
       </p-card>
     </div>
   </div>
   <app-toast-global [key]="keyToast">
   </app-toast-global>
-  
+
 </div>

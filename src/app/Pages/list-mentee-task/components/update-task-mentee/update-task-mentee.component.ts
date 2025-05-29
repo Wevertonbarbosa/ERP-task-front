@@ -109,6 +109,7 @@ export class UpdateTaskMenteeComponent implements OnInit {
       titulo: ['', [Validators.required, Validators.minLength(3)]],
       descricao: ['', [Validators.required, Validators.minLength(8)]],
       categoria: ['', [Validators.required, Validators.minLength(3)]],
+      pontuacao: [null, [Validators.required, Validators.min(1)]],
       frequencia: ['', [Validators.required]],
       dataInicio: ['', [Validators.required]],
       dataFim: ['', [Validators.required]],
@@ -124,6 +125,7 @@ export class UpdateTaskMenteeComponent implements OnInit {
       this.registerForm.get('titulo')?.setValue(item.titulo);
       this.registerForm.get('descricao')?.setValue(item.descricao);
       this.registerForm.get('categoria')?.setValue(item.categoria);
+      this.registerForm.get('pontuacao')?.setValue(item.pontuacao);
 
       const selectedFrequency = this.frequence.find(
         (f) => f.choose === item.frequencia
@@ -165,6 +167,7 @@ export class UpdateTaskMenteeComponent implements OnInit {
     const formData = { ...this.registerForm.value };
     formData.status = this.taskUpdate.status;
     formData.frequencia = formData.frequencia.choose;
+    formData.pontuacao = Number(formData.pontuacao);
     formData.dataInicio = this.formatDate(formData.dataInicio);
     formData.dataFim = this.formatDate(formData.dataFim);
 

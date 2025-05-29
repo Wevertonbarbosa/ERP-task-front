@@ -146,6 +146,7 @@ export class ListMenteeTaskComponent implements OnInit {
                 titulo: task.titulo,
                 descricao: task.descricao,
                 categoria: task.categoria,
+                pontuacao: task.pontuacao,
                 frequencia: task.frequencia,
                 dataInicio: this.formatDate(task.dataInicio),
                 dataFim: this.formatDate(task.dataFim),

@@ -43,13 +43,17 @@ export class PerformanceDashboardComponent implements OnInit {
     try {
       this.service.getPerformanceDashboard(id).subscribe({
         next: (value) => {
-          this.totalPoints = value.totalPontosPeriodo || 0;
-          this.donePoints = value.pontosConcluidos || 0;
-          this.donePercentage = value.percentualConclusao || 0;
-          this.valueProportional = value.valorProporcional || 0;
+          this.totalPoints = value.totalPontosPeriodo;
+          this.donePoints = value.pontosConcluidos;
+          this.donePercentage = value.percentualConclusao;
+          this.valueProportional = value.valorProporcional;
         },
         error: (err) => {
           console.error('Erro para carregar os dados do painel ', err.error);
+          this.totalPoints = 0;
+          this.donePoints = 0;
+          this.donePercentage = 0.0;
+          this.valueProportional = 0;
         },
       });
     } catch (error) {

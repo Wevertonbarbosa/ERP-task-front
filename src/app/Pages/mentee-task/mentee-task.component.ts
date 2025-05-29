@@ -116,6 +116,7 @@ export class MenteeTaskComponent implements OnInit {
       titulo: ['', [Validators.required, Validators.minLength(3)]],
       descricao: ['', [Validators.required, Validators.minLength(8)]],
       categoria: ['', [Validators.required, Validators.minLength(3)]],
+      pontuacao: [null, [Validators.required, Validators.min(1)]],
       frequencia: ['', [Validators.required]],
       dataInicio: ['', [Validators.required]],
       dataFim: ['', [Validators.required]],
@@ -158,9 +159,8 @@ export class MenteeTaskComponent implements OnInit {
 
   onStartDateChange(newStartDate: Date) {
     if (newStartDate) {
-      this.dateEndMin = newStartDate; 
+      this.dateEndMin = newStartDate;
 
-      
       const currentEndDate = this.registerForm.get('dataFim')?.value;
       if (currentEndDate && currentEndDate < newStartDate) {
         this.registerForm.get('dataFim')?.setValue(null);
@@ -181,11 +181,12 @@ export class MenteeTaskComponent implements OnInit {
 
   onAddTaskMentee() {
     const formData = { ...this.registerForm.value };
+
     formData.frequencia = formData.frequencia.choose;
+    formData.pontuacao = Number(formData.pontuacao);
     formData.dataInicio = this.formatDate(formData.dataInicio);
     formData.dataFim = this.formatDate(formData.dataFim);
     formData.diasSemana = formData.diasSemana.map((d: DaysList) => d.day);
-
 
     try {
       this.loading = true;
@@ -200,18 +201,38 @@ export class MenteeTaskComponent implements OnInit {
                 'Tarefa foi cadastrada com sucesso!'
               );
 
-              this.registerForm.reset();
+              this.registerForm.reset({
+                titulo: '',
+                descricao: '',
+                categoria: '',
+                pontuacao: null,
+                frequencia: '',
+                dataInicio: '',
+                dataFim: '',
+                diasSemana: [],
+              });
+
               this.loading = false;
             },
             error: (err) => {
               console.error('Erro para registrar tarefa ', err.error);
-              this.showToasRight(
-                'error',
-                'Erro ao cadastrar tarefa',
-                err.error.nome == undefined
-                  ? 'Estamos ajustando voltamos em breve'
-                  : err.error.nome
-              );
+
+              if (err.error.message) {
+                this.showToasRight(
+                  'error',
+                  'Error ao cadastrar tarefa',
+                  err.error.message
+                );
+              } else {
+                this.showToasRight(
+                  'error',
+                  'Erro ao cadastrar tarefa',
+                  err.error.nome == undefined
+                    ? 'Estamos ajustando voltamos em breve'
+                    : err.error.nome
+                );
+              }
+
               this.loading = false;
             },
           });
@@ -223,9 +244,9 @@ export class MenteeTaskComponent implements OnInit {
   }
 
   formatDate(date: Date): string {
-    if (!date) return ''; 
+    if (!date) return '';
     const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0'); 
+    const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
 
     return `${year}-${month}-${day}`;

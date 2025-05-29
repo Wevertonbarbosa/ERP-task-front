@@ -15,6 +15,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { MessageService } from 'primeng/api';
 import { ToastGlobalComponent } from '../../../../Components/toast-global/toast-global.component';
 import { UserPaymentService } from '../../../../Service/user-payment.service';
+import { InputGlobalComponent } from '../../../../Components/input-global/input-global.component';
 
 @Component({
   selector: 'app-add-payment',
@@ -28,6 +29,7 @@ import { UserPaymentService } from '../../../../Service/user-payment.service';
     ButtonModule,
     DialogModule,
     ToastGlobalComponent,
+    InputGlobalComponent,
   ],
   templateUrl: './add-payment.component.html',
   styleUrl: './add-payment.component.css',
@@ -53,6 +55,7 @@ export class AddPaymentComponent implements OnInit {
   ngOnInit() {
     this.registerForm = this.fb.group({
       valor: [, [Validators.required]],
+      totalPontosPeriodo: [null, [Validators.required, Validators.min(1)]],
     });
   }
 
@@ -66,6 +69,7 @@ export class AddPaymentComponent implements OnInit {
 
   postAddPayment() {
     const formData = { ...this.registerForm.value };
+    formData.totalPontosPeriodo = Number(formData.totalPontosPeriodo);
 
     try {
       this.loading = true;
@@ -82,13 +86,21 @@ export class AddPaymentComponent implements OnInit {
         },
         error: (err) => {
           console.error('Erro para add mesada para usuário ', err.error);
-          this.showToasRight(
-            'error',
-            'Erro ao add mesada',
-            err.error.nome == undefined
-              ? 'Estamos ajustando voltamos em breve'
-              : err.error.nome
-          );
+          if (err.error.message) {
+            this.showToasRight(
+              'error',
+              'Error ao cadastrar mesada',
+              err.error.message
+            );
+          } else {
+            this.showToasRight(
+              'error',
+              'Erro ao add mesada',
+              err.error.nome == undefined
+                ? 'Estamos ajustando voltamos em breve'
+                : err.error.nome
+            );
+          }
 
           this.loading = false;
         },

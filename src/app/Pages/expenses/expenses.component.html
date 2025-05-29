@@ -1,6 +1,38 @@
 <div class="w-full bg-slate-100 min-h-dvh">
   <app-menu></app-menu>
 
+
+  <div class="py-3">
+    <p-carousel [value]="data" [numVisible]="3" [numScroll]="3" [circular]="false"
+      [responsiveOptions]="responsiveOptions">
+      <ng-template let-product #item>
+        <p-card>
+          <div class="p-5 pt-0">
+            <div class="mb-4">
+              <div class="relative mx-auto">
+                <span class="mb-4 font-medium text-xl italic">{{ product.name }}</span>
+              </div>
+            </div>
+
+            <p-divider />
+
+            <div class="flex justify-around items-center">
+              <span class="mt-2 font-semibold text-xl">{{ product.price }}</span>
+
+              <span [ngClass]="[product.bgColor ,'p-3', 'rounded-full']">
+                <i [ngClass]="[product.icon, 'text-3xl','font-extrabold', 'text-white']"></i>
+              </span>
+            </div>
+
+          </div>
+
+        </p-card>
+      </ng-template>
+    </p-carousel>
+  </div>
+
+
+
   <div class="w-full flex flex-wrap justify-center gap-3 p-2">
     <p-card class="w-full min-w-[324px] flex-1 max-w-[calc(50%-0.75rem)]  widthFullCard"
       [style]="{background: 'lightgray'}">
