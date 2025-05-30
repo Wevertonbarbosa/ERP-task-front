@@ -25,4 +25,5 @@ export class InputGlobalComponent {
   @Input() id!: string;
   @Input() label!: string;
   @Input() typeInput!: string;
+  // @Input() disabled!: boolean;
 }

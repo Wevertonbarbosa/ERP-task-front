@@ -43,25 +43,7 @@
 
         </div>
 
-        <!-- <div class="mb-4">
-
-          <app-input-password-global [control]="registerForm.get('senha')!" id="senha" name="senha" placeholder="Senha"
-            [class]="(registerForm.controls['senha'].invalid && (registerForm.controls['senha'].touched || registerForm.controls['senha'].dirty))? classError : class">
-          </app-input-password-global>
-
-          <div
-            *ngIf="(registerForm.controls['senha'].invalid && (registerForm.controls['senha'].touched || registerForm.controls['senha'].dirty))">
-
-            <span class="text-xs text-red-600 font-semibold"
-              *ngIf="registerForm.controls['senha'].errors?.['required']">Senha precisa ser preenchido!</span>
-
-            <span class="text-xs text-red-600 font-semibold"
-              *ngIf="registerForm.controls['senha'].errors?.['minlength']">Senha precisa ser maior que 6
-              caracteres!</span>
-          </div>
-
-        </div> -->
-
+        
         <div class="card flex justify-center">
           <p-select [options]="typeUser" formControlName="role" optionDisabled="disabled" [checkmark]="true" name="role"
             optionLabel="role" placeholder="Role" class="w-full" />
@@ -75,7 +57,7 @@
       </form>
     </div>
   </p-dialog>
-  
+
   <app-toast-global [key]="keyToast">
   </app-toast-global>
 

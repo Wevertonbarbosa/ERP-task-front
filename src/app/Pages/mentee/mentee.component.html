@@ -23,6 +23,8 @@
 
                   <div class="flex p-1 items-center gap-2 w-full containerMenteeResponsive">
 
+
+
                     <div class="w-1/12 flex justify-center items-center px-4">
                       <i class="rounded-border pi pi-user text-4xl text-blue-700" alt="user"></i>
                     </div>
@@ -41,7 +43,7 @@
                           [strokeWidth]="5" valueTemplate="{value}%" [readonly]="true" />
                       </div>
                       <div class="">
-                        <p-divider />
+                        <p-divider layout="vertical" />
                       </div>
 
                       <div class="flex flex-col w-full">
@@ -49,20 +51,28 @@
                         <span class="font-semibold text-base italic">
                           {{formatValueCurrencyBR(item.saldo)}}
                         </span>
-
                       </div>
+
+
 
                     </div>
 
-                    <div class="flex gap-2 w-full">
+                    <div class="">
+                      <p-divider layout="vertical"/>
+                    </div>
+
+                    <div class="flex gap-2 w-full items-center">
 
                       <div class="flex flex-col w-full">
-                        <span class="text-lg fontResponsiveSmall">Mesada disponível:</span>
+                        <span class="text-lg fontResponsiveSmall">Mesada depositada:</span>
                         <span class="font-semibold text-base italic">
                           {{formatValueCurrencyBR(item.valorMesadaMensal) || 0}}
                         </span>
                       </div>
 
+                      <div class="">
+                        <p-divider layout="vertical" />
+                      </div>
 
                       <div class="flex flex-col w-full">
                         <span class="text-lg fontResponsiveSmall">Despesas:</span>

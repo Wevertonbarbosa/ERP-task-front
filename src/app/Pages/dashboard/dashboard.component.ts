@@ -10,7 +10,8 @@ import { ListStatusTaskService } from '../../Service/list-status-task.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { UserGlobalService } from '../../Service/user-global.service';
-import { PerformanceDashboardComponent } from "./components/performance-dashboard/performance-dashboard.component";
+import { PerformanceDashboardComponent } from './components/performance-dashboard/performance-dashboard.component';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -25,8 +26,9 @@ import { PerformanceDashboardComponent } from "./components/performance-dashboar
     DividerModule,
     KnobModule,
     FinanceComponent,
-    PerformanceDashboardComponent
-],
+    PerformanceDashboardComponent,
+    ResetPasswordComponent,
+  ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
   providers: [ListStatusTaskService],
@@ -42,6 +44,7 @@ export class DashboardComponent implements OnInit {
 
   userId!: number;
   userRole!: string;
+  firstAcess!: boolean;
 
   constructor(
     private service: ListStatusTaskService,
@@ -50,9 +53,12 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this.serviceUserGlobal.user$.subscribe((updatedUser) => {
+      console.log(updatedUser);
+
       this.userName = updatedUser.nome;
       this.userId = updatedUser.usuarioId;
       this.userRole = updatedUser.role;
+      this.firstAcess = updatedUser.primeiroAcesso;
     });
 
     try {

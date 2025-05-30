@@ -2,7 +2,7 @@
   <app-menu></app-menu>
 
 
-  <div class="py-3">
+  <div *ngIf="userRole === 'USER'" class="py-3">
     <p-carousel [value]="data" [numVisible]="3" [numScroll]="3" [circular]="false"
       [responsiveOptions]="responsiveOptions">
       <ng-template let-product #item>
