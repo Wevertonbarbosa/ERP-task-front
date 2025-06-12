@@ -1,7 +1,7 @@
 <p-dialog header="Relatório por período" [modal]="true" [(visible)]="visible"
   [style]="{ width: '41rem', padding: '0px' }" [draggable]="false" [resizable]="false"
   [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
-  
+
   <div #contentExpense class="viewReport border-2 bg-white ">
 
     <div class="w-full flex justify-between p-4">
@@ -88,7 +88,7 @@
 
       </div>
 
-      <div class="w-full pb-2">
+      <div *ngIf="userRole === 'USER'" class="w-full pb-2">
         <div class="w-full border p-2 py-3 rounded-xl">
           <div class="w-full flex justify-evenly items-center pb-2">
             <span class=" font-medium  text-2xl">
@@ -113,7 +113,7 @@
 
   </div>
 
-  
+
   <ng-template #footer>
     <div class=" w-full p-2 flex justify-end">
       <p-button icon="pi pi-print" [rounded]="true" pTooltip="Exportar para PDF" [text]="true" [raised]="true"

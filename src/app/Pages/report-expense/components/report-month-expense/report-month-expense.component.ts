@@ -45,6 +45,7 @@ export class ReportMonthExpenseComponent implements OnInit {
 
   userName!: string;
   userId!: number;
+  userRole!: string;
   qtExpensesMonth: number = 0;
   totalExpense: number = 0;
 
@@ -64,6 +65,7 @@ export class ReportMonthExpenseComponent implements OnInit {
     this.serviceUserGlobal.user$.subscribe((updatedUser) => {
       this.userName = updatedUser.nome;
       this.userId = updatedUser.usuarioId;
+      this.userRole = updatedUser.role;
     });
 
     this.getPaymentUserTotal();

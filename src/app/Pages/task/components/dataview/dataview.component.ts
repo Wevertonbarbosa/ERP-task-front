@@ -112,8 +112,6 @@ export class DataviewComponent implements OnInit {
         next: (value) => {
           this.serviceTaskCheck.getTaskSignal(this.userId).subscribe({
             next: (signalTasks) => {
-              console.log(signalTasks);
-
               const signalMap = new Map(
                 signalTasks.map((task: any) => [
                   task.tarefa,
@@ -299,7 +297,9 @@ export class DataviewComponent implements OnInit {
       this.serviceTaskCheck
         .postAdminCheckTask(idTask, idAdmin, data)
         .subscribe({
-          next: (value) => {},
+          next: (value) => {
+            this.getTaskUser();
+          },
           error: (err) => {
             console.error('Error para sinalizar tarefa concluida', err);
           },
@@ -312,7 +312,9 @@ export class DataviewComponent implements OnInit {
   postTaskSignalDoneUser(idTask: number, idUser: number, data: any) {
     try {
       this.serviceTaskCheck.postSignalTask(idTask, idUser, data).subscribe({
-        next: (value) => {},
+        next: (value) => {
+          this.getTaskUser();
+        },
         error: (err) => {
           console.error('Error para sinalizar tarefa concluida', err);
         },
